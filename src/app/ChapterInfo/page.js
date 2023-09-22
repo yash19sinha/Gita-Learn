@@ -1,14 +1,13 @@
 // pages/ChapterInfo.js
 "use client"
-
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
-import { Navbar } from '../components/Navbar';
+
 
 function ChapterInfo() {
   const searchParams = useSearchParams()
   const chapterNumber = searchParams.get('chapterNumber');
-//   const [chapters, setChapters] = useState([]);
   const [verses, setVerses] = useState([]);
 
   useEffect(() => {
@@ -33,6 +32,10 @@ function ChapterInfo() {
         console.log('not working')
     }
   }, [chapterNumber]);
+
+
+
+  
   
 
   return (
@@ -49,21 +52,28 @@ function ChapterInfo() {
   <table className="min-w-full mb-4 bg-white rounded shadow-md">
     {/* Table head */}
     <thead>
-      <tr>
-        <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Verse Number</th>
-        <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Text</th>
-      </tr>
+        <tr>
+          <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Verse Number</th>
+          <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Text</th>
+        </tr>
     </thead>
     <tbody>
       {verses.map((verse) => (
         <tr key={verse.verse_number} className="text-center hover:bg-gray-100">
-          <td className="px-4 py-2">{verse.verse_number}</td>
-          <td className="px-4 py-2">{verse.text}</td>
+          
+            <td className="px-4 py-2">{verse.verse_number}</td>         
+          
+            <td className="px-4 py-2">
+            <Link href={`/VerseDetail?chapterVerse=${chapterNumber}.${verse.verse_number}`}>
+              {verse.text}
+            </Link>
+            </td>
+          
         </tr>
       ))}
-    </tbody>
-  </table>
-</div>
+      </tbody>
+    </table>
+  </div>
 
 
 

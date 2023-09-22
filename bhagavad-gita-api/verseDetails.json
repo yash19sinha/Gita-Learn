@@ -1,0 +1,25 @@
+{
+    "1.1": {
+      "chapter_number": 1,
+      "verse_number": 1,
+      "sanskrit_shlok": "Sanskrit Shlok 1",
+      "translation": "Translation 1",
+      "purport": "Purport 1"
+    },
+    "1.2": {
+      "chapter_number": 1,
+      "verse_number": 2,
+      "sanskrit_shlok": "Sanskrit Shlok 2",
+      "translation": "Translation 2",
+      "purport": "Purport 2"
+    },
+   
+    "18.40": {
+      "chapter_number": 18,
+      "verse_number": 40,
+      "sanskrit_shlok": "Sanskrit Shlok 40",
+      "translation": "Translation 40",
+      "purport": "Purport 40"
+    }
+  }
+  
