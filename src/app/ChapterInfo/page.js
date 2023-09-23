@@ -9,6 +9,7 @@ function ChapterInfo() {
   const searchParams = useSearchParams()
   const chapterNumber = searchParams.get('chapterNumber');
   const [verses, setVerses] = useState([]);
+  const [chapters, setChapters] = useState([]);
 
   useEffect(() => {
     async function fetchVerses() {
@@ -32,19 +33,44 @@ function ChapterInfo() {
         console.log('not working')
     }
   }, [chapterNumber]);
-
-
-
   
-  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:4000/api/chapters');
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setChapters(data.chapters);
+      } catch (error) {
+        console.error('Error fetching chapters with descriptions:', error);
+        // Handle error here
+      }
+    }
+    fetchData();
+  }, []);
+
+  // Find the selected chapter using chapterNumber
+  const selectedChapter = chapters.find((chapter) => chapter.chapter_number === parseInt(chapterNumber));
+
+
 
   return (
     
     <div className="p-4 bg-gray-100">
         
-    
-      <h1 className="mb-4 text-2xl font-bold">Chapter {chapterNumber} Information</h1>
-     
+        <h1 className="mb-4 text-2xl font-bold">Chapter {chapterNumber} Information</h1>
+      
+      {selectedChapter ? (
+        <div className="justify-center w-full mb-4 shadow-xl card-body card bg-base-100">
+          <h2 className="p-1 text-xl font-semibold">Chapter {selectedChapter.chapter_number} {selectedChapter.name}</h2>
+          <p className="p-1 text-lg">{selectedChapter.description}</p>
+        </div>
+      ) : (
+        <p>Loading chapter information...</p>
+      )}
       
       
       <h2 className="mb-2 text-xl font-semibold">Verses</h2>

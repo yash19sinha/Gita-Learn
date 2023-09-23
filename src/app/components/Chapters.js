@@ -22,6 +22,16 @@ function Chapters() {
     fetchData();
   }, []);
 
+  function truncateText(text, maxLength) {
+    const words = text.split(' ');
+    if (words.length <= maxLength) {
+      return text;
+    }
+    const truncatedWords = words.slice(0, maxLength);
+    return `${truncatedWords.join(' ')}...`;
+  }
+  
+
   return (
     <div className="p-4">
       <h1 className="mb-4 text-3xl font-semibold">Bhagavad Gita Chapters</h1>
@@ -35,7 +45,9 @@ function Chapters() {
           <Link  href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
             <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</h2>
             <p className="p-1 text-lg">{chapter.name}</p>
-            <p className="p-1 text-sm text-gray-600">{chapter.description}</p>
+            <p className="p-1 text-sm text-gray-600">
+            {truncateText(chapter.description, 40)} {/* Limit to 20 words */}
+            </p>
           </Link>
          
           </li>
