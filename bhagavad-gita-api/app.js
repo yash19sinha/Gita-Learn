@@ -62,6 +62,33 @@ app.get('/api/verse/:chapterVerse', (req, res) => {
 
 
 
+
+// Add this code to your app.js
+app.get('/api/audio/:chapterVerse', (req, res) => {
+  const { chapterVerse } = req.params;
+
+  // Read the audio JSON file and parse its contents
+  fs.readFile('./audio.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading audio JSON file:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    const audioData = JSON.parse(data);
+
+    // Check if audio data for the specified chapter-verse identifier exists
+    if (audioData[chapterVerse]) {
+      res.json({ audio: audioData[chapterVerse] });
+    } else {
+      res.status(404).json({ error: 'Audio not found' });
+    }
+  });
+});
+
+
+
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

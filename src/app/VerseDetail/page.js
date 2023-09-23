@@ -7,6 +7,7 @@ function VerseDetail() {
     const searchParams = useSearchParams()
     const chapterVerse = searchParams.get('chapterVerse');
     const [verseDetails, setVerseDetails] = useState({});
+    const [audioData, setAudioData] = useState({});
 
   useEffect(() => {
     async function fetchVerseDetails() {
@@ -24,9 +25,25 @@ function VerseDetail() {
         // Handle error here
       }
     }
+    
+    async function fetchAudioData() {
+      try {
+        const response = await fetch(`http://localhost:4000/api/audio/${chapterVerse}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setAudioData(data.audio);
+      } catch (error) {
+        console.error('Error fetching audio data:', error);
+        // Handle error here
+      }
+    }
 
     if (chapterVerse) {
       fetchVerseDetails();
+      fetchAudioData();
+      
     }
   }, [chapterVerse]);
 
@@ -48,7 +65,18 @@ function VerseDetail() {
       <h2 className="text-xl font-semibold">Purport</h2>
       <p className="text-lg">{verseDetails.purport}</p>
     </div>
+     {/* Display audio data */}
+     <div className="mb-4">
+        <h2 className="text-xl font-semibold">Audio</h2>
+        {audioData.audioUrl && (
+          <audio controls>
+            <source src={audioData.audioUrl} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        )}
+      </div>
   </div>
+  
   
   );
 }
