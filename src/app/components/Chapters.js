@@ -1,8 +1,10 @@
 // components/Chapters.js
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+
 function Chapters() {
   const [chapters, setChapters] = useState([]);
+  const [showAllChapters, setShowAllChapters] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,35 +32,36 @@ function Chapters() {
     const truncatedWords = words.slice(0, maxLength);
     return `${truncatedWords.join(' ')}...`;
   }
-  
+
+  const chaptersToShow = showAllChapters ? chapters : chapters.slice(0, 5);
 
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-3xl font-semibold">Bhagavad Gita Chapters</h1>
-      <div className="flex justify-center pt-6 pb-6 bg-slate-200">
-      <ul className='grid w-full grid-cols-1 gap-10 m-5 justify-items-center xl:grid-cols-2 xl:max-w-screen-xl lg:max-w-screen-lg'>
-      
-        {chapters.map((chapter) => (
-          
-          <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-xl card-body card bg-base-100">
-            
-          <Link  href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-            <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</h2>
-            <p className="p-1 text-lg">{chapter.name}</p>
-            <p className="p-1 text-sm text-gray-600">
-            {truncateText(chapter.description, 40)} {/* Limit to 20 words */}
-            </p>
-          </Link>
-         
-          </li>
-          
+      <h1 className="p-5 m-4 mb-4 text-5xl font-semibold text-center text-white bg-orange-400">
+        Dive Into The Bhagavad Gita
+      </h1>
+      <div className="flex justify-center pt-6 pb-6 ">
+        <ul className='grid w-full grid-cols-1 gap-10 p-10 m-5 justify-items-center xl:max-w-screen-xl lg:max-w-screen-lg'>
+          {chaptersToShow.map((chapter) => (
+            <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-2xl card-body card bg-base-100">
+              <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</h2>
+                <p className="p-1 text-lg">{chapter.name}</p>
+                <p className="p-1 text-sm text-gray-600">{truncateText(chapter.description, 40)}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
         
-        ))}
-      
-      </ul>
+      </div>
+       <div className='flex justify-center'>
+          {!showAllChapters && (
+              <button onClick={() => setShowAllChapters(true)} className="p-3 m-2 text-xl text-white bg-blue-500 rounded-md w-72 hover:bg-blue-600">
+                View All 18 Chapters
+              </button>
+            )}
       </div>
     </div>
-    
   );
 }
 
