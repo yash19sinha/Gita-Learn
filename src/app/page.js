@@ -8,7 +8,7 @@ import Chapters from './components/Chapters'
 export default function Home() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="min-h-screen hero" style={{backgroundImage: 'url(https://png.pngtree.com/thumb_back/fh260/background/20230524/pngtree-the-hindu-god-lord-krishna-is-depicted-image_2682659.jpg)'}}>
         
         <div className="text-center hero-content text-neutral-content">
