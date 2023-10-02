@@ -8,9 +8,28 @@ import { useEffect, useState } from 'react';
 function ChapterInfo() {
   const searchParams = useSearchParams()
   const chapterNumber = searchParams.get('chapterNumber');
-  const [verses, setVerses] = useState([]);
   const [chapters, setChapters] = useState([]);
+  
+  const [verses, setVerses] = useState([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:4000/api/chapters');
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setChapters(data.chapters);
+      } catch (error) {
+        console.error('Error fetching chapters with descriptions:', error);
+        // Handle error here
+      }
+    }
+    fetchData();
+  }, []);
+  
   useEffect(() => {
     async function fetchVerses() {
       try {
@@ -34,23 +53,7 @@ function ChapterInfo() {
     }
   }, [chapterNumber]);
   
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('http://localhost:4000/api/chapters');
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setChapters(data.chapters);
-      } catch (error) {
-        console.error('Error fetching chapters with descriptions:', error);
-        // Handle error here
-      }
-    }
-    fetchData();
-  }, []);
 
   // Find the selected chapter using chapterNumber
   const selectedChapter = chapters.find((chapter) => chapter.chapter_number === parseInt(chapterNumber));
