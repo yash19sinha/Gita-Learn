@@ -67,25 +67,25 @@ export const Navbar = () => {
     
     
     
-    <a className="text-xl normal-case btn btn-ghost">GitaLearn</a>
+    <a className="text-2xl font-bold normal-case btn btn-ghost">GitaLearn</a>
   </div>
   <div className="hidden navbar-center lg:flex">
-    <ul className="px-1 menu menu-horizontal">
-    <li><a>Home</a></li>
-      <li><a>Bhagvad Gita</a></li>
+    <ul className="gap-4 px-1 menu menu-horizontal">
+    <li className='text-lg font-semibold'><a>Home</a></li>
+      <li className='text-lg font-semibold'><a>Bhagvad Gita</a></li>
       <div className="form-control">
       <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
     </div>
       <li tabIndex={0}>
         <details>
-          <summary>Chapters</summary>
+          <summary className='text-lg font-semibold'>Chapters</summary>
           <ul className="p-2">
             <li><a>Chapter 1</a></li>
             <li><a>Chapter 2</a></li>
           </ul>
         </details>
       </li>
-      <li><a>Quotes</a></li>
+      <li className='text-lg font-semibold'><a>Quotes</a></li>
     </ul>
   </div>
   <div className="navbar-end">
