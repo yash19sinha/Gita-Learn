@@ -67,7 +67,7 @@ function ChapterInfo() {
         <h1 className="mb-4 text-2xl font-bold">Chapter {chapterNumber} Information</h1>
       
       {selectedChapter ? (
-        <div className="justify-center w-full mb-4 shadow-xl card-body card bg-base-100">
+        <div className="justify-center w-full mb-4 shadow-lg card-body card bg-gray-50">
           <h2 className="p-1 text-xl font-semibold">Chapter {selectedChapter.chapter_number} {selectedChapter.name}</h2>
           <p className="p-1 text-lg">{selectedChapter.description}</p>
         </div>
