@@ -70,7 +70,7 @@ function Chapters() {
     return `${truncatedWords.join(' ')}...`;
   }
 
-  const chaptersToShow = showAllChapters ? chapters : chapters.slice(0, 8);
+  const chaptersToShow = showAllChapters ? chapters : chapters.slice(0, 3);
 
   return (
     <>

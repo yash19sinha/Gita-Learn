@@ -86,6 +86,46 @@ app.get('/api/audio/:chapterVerse', (req, res) => {
   });
 });
 
+//random
+app.get('/api/verses/random', (req, res) => {
+  // Get a random chapter-verse identifier
+  const { chapterVerse } = req.params;
+
+  // Read the JSON file and parse its contents
+  fs.readFile('./verseDetails.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading verse details JSON file:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+
+    const verseDetails = JSON.parse(data);
+
+    // Check if verse details for the specified chapter-verse identifier exist
+    if (verseDetails[chapterVerse]) {
+      res.json({ verseDetails: verseDetails[chapterVerse] });
+    } else {
+      res.status(404).json({ error: 'Verse not found' });
+    }
+  });
+
+  const verseKeys = Object.keys(versesData);
+  console.log('Verse Keys:', verseKeys);
+
+  const randomVerseKey = verseKeys[Math.floor(Math.random() * verseKeys.length)];
+  console.log('Random Verse Key:', randomVerseKey);
+
+  // Retrieve the random verse using the identifier
+  const randomVerse = versesData[randomVerseKey];
+
+  if (randomVerse) {
+    res.json({ verse: randomVerse });
+  } else {
+    res.status(404).json({ error: 'Verse not found' });
+  }
+});
+
+
 
 
 

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import Chapters from './components/Chapters'
+import VerseDay from './components/VerseDay'
 
 
 export default function Home() {
@@ -19,7 +20,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+     <VerseDay/> 
       <Chapters/>
+      
      
       
       <Footer/>
