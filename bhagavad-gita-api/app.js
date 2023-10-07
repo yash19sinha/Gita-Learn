@@ -29,7 +29,6 @@ app.get('/api/verses/:chapterNumber', (req, res) => {
     const verses = versesData[chapterNumber].map((verse) => ({
       verse_number: verse.verse_number,
       text: verse.text,
-      
     }));
     res.json({ verses });
   } else {
@@ -60,9 +59,6 @@ app.get('/api/verse/:chapterVerse', (req, res) => {
   });
 });
 
-
-
-
 // Add this code to your app.js
 app.get('/api/audio/:chapterVerse', (req, res) => {
   const { chapterVerse } = req.params;
@@ -86,48 +82,25 @@ app.get('/api/audio/:chapterVerse', (req, res) => {
   });
 });
 
-//random
-app.get('/api/verses/random', (req, res) => {
-  // Get a random chapter-verse identifier
-  const { chapterVerse } = req.params;
+// Define and initialize currentVerseIndex here
+let currentVerseIndex = 0;
 
-  // Read the JSON file and parse its contents
-  fs.readFile('./verseDetails.json', 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading verse details JSON file:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
+app.get('/api/verse-of-the-day', (req, res) => {
+  if (currentVerseIndex >= Object.keys(versesData).length) {
+    // Reset the verse index if we've reached the end of the data
+    currentVerseIndex = 0;
+  }
 
-    const verseDetails = JSON.parse(data);
+  const verseKey = Object.keys(versesData)[currentVerseIndex];
+  const verse = versesData[verseKey];
+  currentVerseIndex++;
 
-    // Check if verse details for the specified chapter-verse identifier exist
-    if (verseDetails[chapterVerse]) {
-      res.json({ verseDetails: verseDetails[chapterVerse] });
-    } else {
-      res.status(404).json({ error: 'Verse not found' });
-    }
-  });
-
-  const verseKeys = Object.keys(versesData);
-  console.log('Verse Keys:', verseKeys);
-
-  const randomVerseKey = verseKeys[Math.floor(Math.random() * verseKeys.length)];
-  console.log('Random Verse Key:', randomVerseKey);
-
-  // Retrieve the random verse using the identifier
-  const randomVerse = versesData[randomVerseKey];
-
-  if (randomVerse) {
-    res.json({ verse: randomVerse });
+  if (verse) {
+    res.json({ verse }); // Include the entire 'verse' object in the response
   } else {
     res.status(404).json({ error: 'Verse not found' });
   }
 });
-
-
-
-
 
 // Start the server
 app.listen(PORT, () => {

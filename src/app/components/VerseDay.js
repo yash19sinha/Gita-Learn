@@ -1,41 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
-const RandomVerseCard = () => {
-  const [randomVerse, setRandomVerse] = useState(null);
+function VerseDay() {
+  const [verse, setVerse] = useState(null);
+
 
   useEffect(() => {
-    async function fetchRandomVerse() {
+    async function fetchVerseOfDay() {
       try {
-        const response = await fetch('http://localhost:4000/api/verses/random');
+        const response = await fetch('http://localhost:4000/api/verse-of-the-day');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log('Random Verse Data:', data.verse);
-        // Handle the retrieved verse data
+
+        // Assuming that data.verse is the key of the verse you want to display
+        const verseText = data.verse ? data.verse.sanskrit_shlok : 'Verse not found';
+
+        setVerse(verseText);
       } catch (error) {
-        console.error('Error fetching random verse:', error);
-        // Handle the error
+        console.error('Error fetching verse of the day:', error);
+        // Handle error here
       }
     }
-    fetchRandomVerse();
+
+    fetchVerseOfDay();
   }, []);
-  
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold">Random Verse</h2>
-      {randomVerse ? (
-        <div>
-          <p>Chapter {randomVerse.chapter_number}</p>
-          <p>Verse {randomVerse.verse_number}</p>
-          <p>{randomVerse.text}</p>
-        </div>
-      ) : (
-        <p>Loading random verse...</p>
-      )}
-    </div>
+    <div className='flex'>
+    <div className="justify-center w-full p-4 px-48 m-4 mx-6 rounded-lg shadow-lg card-body card bg-gray-50">
+    <h2 className="mb-2 text-xl font-semibold">Verse of the Day</h2>
+    {verse ? (
+      <div>
+        <p className="text-gray-700">{verse}</p>
+      </div>
+    ) : (
+      <p className="text-gray-700">Loading verse of the day...</p>
+    )}
+  </div>
+  </div>
+  
   );
-};
+}
 
-export default RandomVerseCard;
+export default VerseDay;
