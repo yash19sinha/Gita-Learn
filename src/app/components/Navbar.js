@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 
 
@@ -89,7 +90,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn bg-orange-600 text-white border-none">Login</a>
+        <a href="login"className="btn bg-orange-600 text-white border-none">Login</a>
       </div>
     </div>
   )
