@@ -1,4 +1,5 @@
 // components/Chapters.js
+"use client"
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
@@ -59,18 +60,6 @@ function Chapters() {
 
 
 
-
-  function truncateText(text, maxLength) {
-    const words = text.split(' ');
-    if (words.length <= maxLength) {
-      return text;
-    }
-    const truncatedWords = words.slice(0, maxLength);
-    return `${truncatedWords.join(' ')}...`;
-  }
-
-  const chaptersToShow = showAllChapters ? chapters : chapters.slice(0, 3);
-
   return (
     <>
       <h1 className="p-5 my-4 text-5xl font-semibold text-center text-white bg-orange-400">
@@ -79,35 +68,20 @@ function Chapters() {
       <div className="mb-4">
         <div className="flex justify-center pt-6 pb-6 bg-gray-50 ">
           <ul className='grid w-full grid-cols-1 gap-10 p-10 m-5 justify-items-center xl:max-w-screen-xl lg:max-w-screen-lg md:grid-cols-3'>
-            {chaptersToShow.map((chapter) => (
+            {chapters.map((chapter) => (
               <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-2xl card-body card bg-gray-50 outline-5">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
                   <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</h2>
                   <p className="p-1 text-lg">{chapter.name}</p>
-                  <p className="p-1 text-sm text-gray-600">{truncateText(chapter.description, 40)}</p>
+                
                 </Link>
 
              
-              
-                {chapter.verses && chapter.verses.length > 8 && (
-                  <button
-                    onClick={() => setShowAllChapters(true)}
-                    className="p-3 m-2 text-xl text-white bg-blue-500 rounded-md w-72 hover:bg-blue-600"
-                  >
-                    See All Verses
-                  </button>
-                )}
               </li>
             ))}
           </ul>
         </div>
-        <div className='flex justify-center'>
-          {!showAllChapters && (
-            <button onClick={() => setShowAllChapters(true)} className="p-3 m-2 text-xl text-white bg-blue-500 rounded-md w-72 hover:bg-blue-600">
-              View All 18 Chapters
-            </button>
-          )}
-        </div>
+        
       </div>
     </>
   );

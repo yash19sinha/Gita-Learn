@@ -6,6 +6,7 @@ const fs = require('fs');
 const PORT = process.env.PORT || 4000;
 const data = require('./bhagavad_gita.json'); // Load the JSON data
 const versesData = require('./verses.json'); 
+const booksData = require('./books.json'); // Load the JSON data for books
 
 app.use(express.json());
 
@@ -102,6 +103,10 @@ app.get('/api/verse-of-the-day', (req, res) => {
   }
 });
 
+
+app.get('/api/books', (req, res) => {
+  res.json({ books: booksData });
+});
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

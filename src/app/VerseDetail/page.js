@@ -58,6 +58,14 @@ function VerseDetail() {
       <p className="text-lg">{verseDetails.sanskrit_shlok}</p>
     </div>
     <div className="mb-4">
+      <h2 className="text-xl font-semibold">English Shlok</h2>
+      <p className="text-lg">{verseDetails.english_shlok}</p>
+    </div>
+    <div className="mb-4">
+      <h2 className="text-xl font-semibold">Synonyms</h2>
+      <p className="text-lg">{verseDetails.synonyms}</p>
+    </div>
+    <div className="mb-4">
       <h2 className="text-xl font-semibold">Translation</h2>
       <p className="text-lg">{verseDetails.translation}</p>
     </div>

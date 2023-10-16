@@ -82,15 +82,15 @@ function ChapterInfo() {
     {/* Table head */}
     <thead>
         <tr>
-          <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Verse Number</th>
+        
           <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Text</th>
         </tr>
     </thead>
     <tbody>
       {verses.map((verse) => (
-        <tr key={verse.verse_number} className="text-center hover:bg-gray-100">
+        <tr key={verse.verse_number} className="text-start hover:bg-gray-100">
           
-            <td className="px-4 py-2">{verse.verse_number}</td>         
+                  
           
             <td className="px-4 py-2">
             <Link href={`/VerseDetail?chapterVerse=${chapterNumber}.${verse.verse_number}`}>
@@ -102,6 +102,7 @@ function ChapterInfo() {
       ))}
       </tbody>
     </table>
+    
   </div>
 
 

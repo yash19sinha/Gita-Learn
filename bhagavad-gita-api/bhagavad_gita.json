@@ -1,61 +1,73 @@
 {
     "chapters": [
       {
+        "bookId": 1,
         "chapter_number": 1,
-        "name": "Arjuna Visada Yoga",
+        "name": "Observing the Armies on the Battlefield of Kurukṣetra",
         "description": "The first chapter of the Bhagavad Gita - 'Arjuna Vishada Yoga' introduces the setup, the setting, the characters and the circumstances that led to the epic battle of Mahabharata, fought between the Pandavas and the Kauravas. It outlines the reasons that led to the revelation of the of Bhagavad Gita. As both armies stand ready for the battle, the mighty warrior Arjuna, on observing the warriors on both sides becomes increasingly sad and depressed due to the fear of losing his relatives and friends and the consequent sins attributed to killing his own relatives. So, he surrenders to Lord Krishna, seeking a solution. Thus, follows the wisdom of the Bhagavad Gita.."
       },
       {
+        "bookId": 1,
         "chapter_number": 2,
-        "name": "Sankhya Yoga",
+        "name": "Contents of the Gītā Summarized",
         "description": "The second chapter of the Bhagavad Gita is 'Sankhya Yoga'. This is the most important chapter of the Bhagavad Gita as Lord Krishna condenses the teachings of the entire Gita in this chapter. This chapter is the essence of the entire Gita. 'Sankhya Yoga' can be categorized into 4 main topics - 1. Arjuna completely surrenders himself to Lord Krishna and accepts his position as a disciple and Krishna as his Guru. He requests Krishna to guide him on how to dismiss his sorrow. 2. Explanation of the main cause of all grief, which is ignorance of the true nature of Self. 3. Karma Yoga - the discipline of selfless action without being attached to its fruits. 4. Description of a Perfect Man - One whose mind is steady and one-pointed."
       },
       {
+        "bookId": 1,
         "chapter_number": 3,
         "name": "Karma Yoga",
         "description": "The third chapter of the Bhagavad Gita is 'Karma Yoga' or the 'Path of Selfless Service'. Here Lord Krishna emphasizes the importance of karma in life. He reveals that it is important for every human being to engage in some sort of activity in this material world. Further, he describes the kinds of actions that lead to bondage and the kinds that lead to liberation. Those persons who continue to perform their respective duties externally for the pleasure of the Supreme, without attachment to its rewards get liberation at the end."
       },
       {
+        "bookId": 1,
         "chapter_number": 4,
         "name": "Jnana Karma Sanyasa Yoga",
         "description": "The fourth chapter of the Bhagavad Gita is 'Jnana Karma Sanyasa Yoga'. In this chapter, Krishna glorifies the Karma Yoga and imparts the Transcendental Knowledge (the knowledge of the soul and the Ultimate Truth) to Arjuna. He reveals the reason behind his appearance in this material world. He reveals that even though he is eternal, he reincarnates time after time to re-establish dharma and peace on this Earth. His births and activities are eternal and are never contaminated by material flaws. Those persons who know and understand this Truth engage in his devotion with full faith and eventually attain Him. They do not have to take birth in this world again."
       },
       {
+        "bookId": 1,
         "chapter_number": 5,
         "name": "Chapter 5",
         "description": "Description of Chapter 1..."
       },
       {
+        "bookId": 1,
         "chapter_number": 6,
         "name": "Chapter 6",
         "description": "Description of Chapter 2..."
       },
       {
+        "bookId": 2,
         "chapter_number": 7,
         "name": "Chapter 7",
         "description": "Description of Chapter 1..."
       },
       {
+        "bookId": 2,
         "chapter_number": 8,
         "name": "Chapter 8",
         "description": "Description of Chapter 2..."
       },
       {
+        "bookId": 2,
         "chapter_number": 9,
         "name": "Chapter 9",
         "description": "Description of Chapter 1..."
       },
       {
+        "bookId": 2,
         "chapter_number": 10,
         "name": "Chapter 10",
         "description": "Description of Chapter 2..."
       },
       {
+        "bookId": 2,
         "chapter_number": 11,
         "name": "Chapter 11",
         "description": "Description of Chapter 1..."
       },
       {
+        "bookId": 2,
         "chapter_number": 12,
         "name": "Chapter 12",
         "description": "Description of Chapter 2..."

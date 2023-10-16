@@ -4,8 +4,9 @@ import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
 import Chapters from './components/Chapters'
 import VerseDay from './components/VerseDay'
-import Carousel from './components/Carousel'
+// import Carousel from './components/Carousel'
 import Quiz from './components/Quiz'
+import BooksCard from './components/BooksCard'
 
 
 export default function Home() {
@@ -23,7 +24,8 @@ export default function Home() {
         </div>
       </div>
      <VerseDay/> 
-     <Carousel/>
+     {/* <Carousel/> */}
+     <BooksCard/>
       <Chapters/>
       <Quiz/>
       
