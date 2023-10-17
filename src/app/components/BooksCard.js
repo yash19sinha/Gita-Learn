@@ -22,8 +22,12 @@ function BooksCard() {
   }, []);
 
   return (
+    <>
+    <h2 className="p-5 my-8 text-4xl font-bold text-center text-white bg-orange-400">
+        Our Books
+      </h2>
     <div className="container">
-      <h2 className="mt-4 mb-4 text-2xl font-bold">Books</h2>
+      
       <div className="flex justify-center">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {books.map((book, index) => (
@@ -41,6 +45,7 @@ function BooksCard() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

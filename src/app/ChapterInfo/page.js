@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
+import { Navbar } from '../components/Navbar';
 
 
 function ChapterInfo() {
@@ -61,47 +62,44 @@ function ChapterInfo() {
 
 
   return (
+    <>
+    <Navbar/>
     
-    <div className="p-4 bg-gray-100">
+    <div className="p-4 bg-white ">
+
+      
         
-        <h1 className="mb-4 text-2xl font-bold">Chapter {chapterNumber} Information</h1>
+          <h1 className="flex justify-center mb-4 text-2xl font-semibold">Chapter {chapterNumber}</h1>
+          
+          {selectedChapter ? (
+            <div className="flex justify-center w-full mb-4 bg-gray-50">
+              <h2 className="justify-center p-1 text-4xl font-semibold">{selectedChapter.name}</h2>
+            </div>
+          ) : (
+            <p>Loading chapter information...</p>
+          )}
       
-      {selectedChapter ? (
-        <div className="justify-center w-full mb-4 shadow-lg card-body card bg-gray-50">
-          <h2 className="p-1 text-xl font-semibold">Chapter {selectedChapter.chapter_number} {selectedChapter.name}</h2>
-          <p className="p-1 text-lg">{selectedChapter.description}</p>
-        </div>
-      ) : (
-        <p>Loading chapter information...</p>
-      )}
       
       
-      <h2 className="mb-2 text-xl font-semibold">Verses</h2>
+      
+     
       <div className="items-center justify-center overflow-x-auto md:m-10">
-  <table className="min-w-full mb-4 bg-white rounded shadow-md">
-    {/* Table head */}
-    <thead>
-        <tr>
-        
-          <th className="px-4 py-2 font-semibold text-center border-b-2 border-gray-300">Text</th>
-        </tr>
-    </thead>
-    <tbody>
+
       {verses.map((verse) => (
-        <tr key={verse.verse_number} className="text-start hover:bg-gray-100">
+        <p key={verse.verse_number} className="p-4 px-10 mx-20 text-xl font-normal text-justify hover:bg-gray-100">
           
                   
           
-            <td className="px-4 py-2">
             <Link href={`/VerseDetail?chapterVerse=${chapterNumber}.${verse.verse_number}`}>
               {verse.text}
             </Link>
-            </td>
+            
           
-        </tr>
+        </p>
       ))}
-      </tbody>
-    </table>
+        
+        
+ 
     
   </div>
 
@@ -111,6 +109,7 @@ function ChapterInfo() {
       
       
     </div>
+    </>
   );
 }
 

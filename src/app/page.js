@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
-import Chapters from './components/Chapters'
+// import Chapters from './components/Chapters'
 import VerseDay from './components/VerseDay'
 // import Carousel from './components/Carousel'
 import Quiz from './components/Quiz'
@@ -26,7 +26,7 @@ export default function Home() {
      <VerseDay/> 
      {/* <Carousel/> */}
      <BooksCard/>
-      <Chapters/>
+      {/* <Chapters/> */}
       <Quiz/>
       
       
