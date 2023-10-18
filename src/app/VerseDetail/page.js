@@ -2,6 +2,7 @@
 "use client"
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
+import { Navbar } from '../components/Navbar';
 
 function VerseDetail() {
     const searchParams = useSearchParams()
@@ -52,34 +53,35 @@ function VerseDetail() {
 
   return (
     <>
-    <div className=''>
+    <Navbar/>
+    
       <div className="p-4 ">
-      <h1 className="flex justify-center mb-4 text-3xl font-semibold">Bg. {chapterVerse}</h1>
-      <div className="mb-4">
+      <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
+      <div className="flex justify-center mb-4">
         
-        <p className="flex justify-center text-lg">{verseDetails.sanskrit_shlok}</p>
+        <p className="flex p-5 text-xl text-center w-80">{verseDetails.sanskrit_shlok}</p>
       </div>
-      <div className="mb-4">
+      <div className="flex justify-center mb-4">
       
-        <p className="flex justify-center text-lg italic">{verseDetails.english_shlok}</p>
+        <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
       </div>
-      <div className="mb-4">
-        <h2 className="flex justify-center text-xl font-semibold ">Synonyms</h2>
-        <p className="flex justify-center text-lg ">{verseDetails.synonyms}</p>
+      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
+        <h2 className="flex justify-center p-3 text-2xl font-bold">Synonyms</h2>
+        <p className="flex justify-center p-3 text-lg ">{verseDetails.synonyms}</p>
       </div>
-      <div className="mb-4">
-        <h2 className="flex justify-center text-xl font-semibold ">Translation</h2>
-        <p className="flex justify-center text-lg font-bold">{verseDetails.translation}</p>
+      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
+        <h2 className="flex justify-center p-3 text-2xl font-bold ">Translation</h2>
+        <p className="flex justify-center p-3 text-lg font-semibold">{verseDetails.translation}</p>
       </div>
-      <div>
-        <h2 className="flex justify-center text-xl font-semibold ">Purport</h2>
-        <p className="flex justify-center text-lg ">{verseDetails.purport}</p>
+      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
+        <h2 className="flex justify-center p-3 text-2xl font-bold">Purport</h2>
+        <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
       </div>
       {/* Display audio data */}
-      <div className="mb-4">
+      <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
           <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
           {audioData.audioUrl && (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center p-5">
               <audio controls className="w-full">
                 <source src={audioData.audioUrl} type="audio/mpeg" />
                 Your browser does not support the audio element.
@@ -89,7 +91,7 @@ function VerseDetail() {
 
         </div>
     </div>
-  </div>
+  
   </>
   
   );
