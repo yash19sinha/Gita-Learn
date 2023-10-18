@@ -65,15 +65,15 @@ function ChapterInfo() {
     <>
     <Navbar/>
     
-    <div className="p-4 bg-white ">
+    <div className="p-4 mt-4 bg-white">
 
       
         
           <h1 className="flex justify-center mb-4 text-2xl font-semibold">Chapter {chapterNumber}</h1>
           
           {selectedChapter ? (
-            <div className="flex justify-center w-full mb-4 bg-gray-50">
-              <h2 className="justify-center p-1 text-4xl font-semibold">{selectedChapter.name}</h2>
+            <div className="flex justify-center w-full mb-4 bg-white">
+              <h2 className="flex justify-center p-1 text-3xl font-semibold sm:text-4xl">{selectedChapter.name}</h2>
             </div>
           ) : (
             <p>Loading chapter information...</p>
@@ -86,7 +86,7 @@ function ChapterInfo() {
       <div className="items-center justify-center overflow-x-auto md:m-10">
 
       {verses.map((verse) => (
-        <p key={verse.verse_number} className="p-4 px-10 mx-20 text-xl font-normal text-justify hover:bg-gray-100">
+        <p key={verse.verse_number} className="p-4 text-xl font-normal text-justify sm:mx-20 sm:px-10 hover:bg-gray-100">
           
                   
           

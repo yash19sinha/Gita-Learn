@@ -51,40 +51,46 @@ function VerseDetail() {
   
 
   return (
-    <div className="p-4">
-    <h1 className="mb-4 text-3xl font-semibold">Verse {chapterVerse} Details</h1>
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold">Sanskrit Shlok</h2>
-      <p className="text-lg">{verseDetails.sanskrit_shlok}</p>
-    </div>
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold">English Shlok</h2>
-      <p className="text-lg">{verseDetails.english_shlok}</p>
-    </div>
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold">Synonyms</h2>
-      <p className="text-lg">{verseDetails.synonyms}</p>
-    </div>
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold">Translation</h2>
-      <p className="text-lg">{verseDetails.translation}</p>
-    </div>
-    <div>
-      <h2 className="text-xl font-semibold">Purport</h2>
-      <p className="text-lg">{verseDetails.purport}</p>
-    </div>
-     {/* Display audio data */}
-     <div className="mb-4">
-        <h2 className="text-xl font-semibold">Audio</h2>
-        {audioData.audioUrl && (
-          <audio controls>
-            <source src={audioData.audioUrl} type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
-        )}
+    <>
+    <div className=''>
+      <div className="p-4 ">
+      <h1 className="flex justify-center mb-4 text-3xl font-semibold">Bg. {chapterVerse}</h1>
+      <div className="mb-4">
+        
+        <p className="flex justify-center text-lg">{verseDetails.sanskrit_shlok}</p>
       </div>
+      <div className="mb-4">
+      
+        <p className="flex justify-center text-lg italic">{verseDetails.english_shlok}</p>
+      </div>
+      <div className="mb-4">
+        <h2 className="flex justify-center text-xl font-semibold ">Synonyms</h2>
+        <p className="flex justify-center text-lg ">{verseDetails.synonyms}</p>
+      </div>
+      <div className="mb-4">
+        <h2 className="flex justify-center text-xl font-semibold ">Translation</h2>
+        <p className="flex justify-center text-lg font-bold">{verseDetails.translation}</p>
+      </div>
+      <div>
+        <h2 className="flex justify-center text-xl font-semibold ">Purport</h2>
+        <p className="flex justify-center text-lg ">{verseDetails.purport}</p>
+      </div>
+      {/* Display audio data */}
+      <div className="mb-4">
+          <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
+          {audioData.audioUrl && (
+            <div className="flex items-center justify-center">
+              <audio controls className="w-full">
+                <source src={audioData.audioUrl} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          )}
+
+        </div>
+    </div>
   </div>
-  
+  </>
   
   );
 }
