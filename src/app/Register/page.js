@@ -10,7 +10,15 @@ return(
     <>
     <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-gray-100">
     <main className="flex flex-col items-center justify-center flex-1 w-full px-20 text-center">
+    
         <div className="flex w-2/3 max-w-4xl bg-white shadow-2xl rounded-2xl">
+        <div className="w-2/5 px-12 text-white bg-orange-500 rounded-tr-2xl rounded-br-2xl py-36">
+                <h2 className="mb-2 text-3xl font-bold">Hello, folks !</h2>
+                <div className="inline-block w-10 mb-2 border-2 border-white"></div>
+                    <p className="mb-10">Fill up personal information and start journey with us.</p>
+                    <Link href="#" className="inline-block px-12 py-2 font-semibold border-2 border-white rounded-full hover:bg-white hover:text-orange-500">Sign Up</Link>
+
+            </div>
             <div className="w-3/5 p-5">
                 <div className="font-bold text-left">Gita<span className="text-orange-500">Learn</span></div>
                 <div className="py-10">
@@ -30,6 +38,9 @@ return(
                     <p className="my-3 text-gray-500">or use your email account</p>
                     <div className="flex flex-col items-center mb-3">
                         <div className="flex items-center w-64 p-2 mr-2 bg-gray-100"><FaRegEnvelope className="m-2 text-gray-500"/>
+                        <input type="text" name="name" placeholder="Name" className="flex-1 text-sm bg-gray-100 outline-none "/>
+                        </div>
+                        <div className="flex items-center w-64 p-2 mr-2 bg-gray-100"><FaRegEnvelope className="m-2 text-gray-500"/>
                         <input type="email" name="email" placeholder="Email" className="flex-1 text-sm bg-gray-100 outline-none "/>
                         </div>
                         <div className="flex items-center w-64 p-2 mr-2 bg-gray-100"><MdLockOutline className="m-2 text-gray-500"/>
@@ -44,13 +55,7 @@ return(
                 </div>
 
             </div>
-            <div className="w-2/5 px-12 text-white bg-orange-500 rounded-tr-2xl rounded-br-2xl py-36">
-                <h2 className="mb-2 text-3xl font-bold">Hello, folks !</h2>
-                <div className="inline-block w-10 mb-2 border-2 border-white"></div>
-                    <p className="mb-10">Fill up personal information and start journey with us.</p>
-                    <Link href="Register" className="inline-block px-12 py-2 font-semibold border-2 border-white rounded-full hover:bg-white hover:text-orange-500">Sign Up</Link>
-
-            </div>
+            
 
         </div>
 
