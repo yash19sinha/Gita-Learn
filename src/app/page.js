@@ -18,7 +18,11 @@ export default function Home() {
         <div className="text-center hero-content text-neutral-content">
           <div className="max-w-md">
             <h1 className="mb-5 text-5xl font-bold text-white">Gita Learn</h1>
+<<<<<<< HEAD
+            <p className="mb-5 text-2xl">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+=======
             <p className="mb-5 text-xl font-semibold">"Embark on a spiritual journey like no other with 'Gita Learn' – your gateway to the profound wisdom of the Bhagavad Gita."</p>
+>>>>>>> fa2993e5d5639d61fc16968bcf63b5793e191a57
             <button className="btn btn-primary">Get Started</button>
           </div>
         </div>
