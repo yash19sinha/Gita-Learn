@@ -3,6 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 function VerseDetail() {
     const searchParams = useSearchParams()
@@ -54,12 +55,13 @@ function VerseDetail() {
   return (
     <>
     <Navbar/>
+  
     
       <div className="p-4 ">
       <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
       <div className="flex justify-center mb-4">
         
-        <p className="flex p-5 text-xl text-center w-80">{verseDetails.sanskrit_shlok}</p>
+        <p className="flex p-5 text-xl text-center w-80 font-bold">{verseDetails.sanskrit_shlok}</p>
       </div>
       <div className="flex justify-center mb-4">
       
@@ -89,9 +91,9 @@ function VerseDetail() {
             </div>
           )}
 
-        </div>
+        </div> 
     </div>
-  
+  <Footer/>
   </>
   
   );
