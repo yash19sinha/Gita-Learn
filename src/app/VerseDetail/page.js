@@ -61,12 +61,24 @@ function VerseDetail() {
       <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
       <div className="flex justify-center mb-4">
         
-        <p className="flex p-5 text-xl text-center w-80 font-bold">{verseDetails.sanskrit_shlok}</p>
+        <p className="flex p-5 text-xl font-bold text-center w-80">{verseDetails.sanskrit_shlok}</p>
       </div>
       <div className="flex justify-center mb-4">
       
         <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
       </div>
+      <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
+          <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
+          {audioData.audioUrl && (
+            <div className="flex items-center justify-center p-5">
+              <audio controls className="w-96">
+                <source src={audioData.audioUrl} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          )}
+
+        </div>
       <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
         <h2 className="flex justify-center p-3 text-2xl font-bold">Synonyms</h2>
         <p className="flex justify-center p-3 text-lg ">{verseDetails.synonyms}</p>
@@ -80,18 +92,7 @@ function VerseDetail() {
         <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
       </div>
       {/* Display audio data */}
-      <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
-          <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
-          {audioData.audioUrl && (
-            <div className="flex items-center justify-center p-5">
-              <audio controls className="w-full">
-                <source src={audioData.audioUrl} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          )}
-
-        </div> 
+       
     </div>
   <Footer/>
   </>

@@ -90,7 +90,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <a href="login"className="text-white bg-blue-700 border-none btn">Login</a>
+        <a href="login"className="text-white bg-orange-300 border-none btn">Login</a>
       </div>
     </div>
   )
