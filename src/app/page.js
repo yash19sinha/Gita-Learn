@@ -13,23 +13,22 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen hero" style={{backgroundImage: 'url(https://png.pngtree.com/thumb_back/fh260/background/20230524/pngtree-the-hindu-god-lord-krishna-is-depicted-image_2682659.jpg)'}}>
-        
-        <div className="text-center hero-content text-neutral-content">
-          <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold text-white">Gita Learn</h1>
-
-            <p className="mb-5 text-xl font-semibold">"Embark on a spiritual journey like no other with 'Gita Learn' – your gateway to the profound wisdom of the Bhagavad Gita."</p>
-
-            <button className="btn btn-primary">Get Started</button>
-          </div>
-        </div>
-      </div>
-     <VerseDay/> 
+      {
+      <div className=" bg-gray-200">
+  <div className="hero-content flex-col lg:flex-row-reverse">
+    <img src="https://vedabase.io/static/img/vedabase-logo.svg" className="max-w-sm rounded-lg " />
+    <div>
+      <h1 className="text-3xl font-bold my-4 mx-20">Bhaktivedanta GitaLearn</h1>
+      <p className='mx-20 text-4xl'>The best source of spiritual knowledge.</p>
+      <p className="py-6 mx-20 text-2xl">This is an oline platform for Comprehensive Learning Bhagavad Gita </p>
+      <button className="btn btn-primary bg-blue-700 mx-20 text-white">Get Started</button>
+    </div>
+  </div>
+</div>}
      {/* <Carousel/> */}
      <BooksCard/>
       {/* <Chapters/> */}
-      <Quiz/>
+      {/* <Quiz/> */}
       
       
      
