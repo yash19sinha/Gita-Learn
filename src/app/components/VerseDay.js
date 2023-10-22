@@ -7,7 +7,7 @@ function VerseDay() {
   useEffect(() => {
     async function fetchVerseOfDay() {
       try {
-        const response = await fetch('http://localhost:4000/api/verse-of-the-day');
+        const response = await fetch('https://gita-learn-api.vercel.app/api/verse-of-the-day');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

@@ -14,7 +14,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const response = await fetch(`http://localhost:4000/api/verse/${chapterVerse}`);
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -30,7 +30,7 @@ function VerseDetail() {
 
     async function fetchAudioData() {
       try {
-        const response = await fetch(`http://localhost:4000/api/audio/${chapterVerse}`);
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -112,7 +112,7 @@ function VerseDetail() {
           <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
         </div>
         {/* Display audio data */}
-        {/* <div className="join grid grid-cols-2"> */}
+        {/* <div className="grid grid-cols-2 join"> */}
         <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10">
 
           <button onClick={previousPage} className="join-item btn btn-outline">Previous page</button>

@@ -19,7 +19,7 @@ function Chapters() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://localhost:4000/api/chapters');
+        const response = await fetch('https://gita-learn-api.vercel.app/api/chapters');
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -39,7 +39,7 @@ function Chapters() {
     async function fetchVerses() {
 
       try {
-        const response = await fetch(`http://localhost:4000/api/verses/${chapterNumber}`);
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/verses/${chapterNumber}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -73,7 +73,7 @@ function Chapters() {
       </h1>
       <div className="mb-4">
         <div className="items-start overflow-x-auto md:m-10 ">
-          <ul className='gap-10 p-3 m-5  sm:p-6 justify-items-center'>
+          <ul className='gap-10 p-3 m-5 sm:p-6 justify-items-center'>
             {chapters.map((chapter) => (
               <li key={chapter.chapter_number} className="justify-center w-full mb-4 ">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>

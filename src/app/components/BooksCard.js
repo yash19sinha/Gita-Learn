@@ -7,7 +7,7 @@ function BooksCard() {
   useEffect(() => {
     async function fetchBooks() {
       try {
-        const response = await fetch('http://localhost:4000/api/books'); // Adjust the API endpoint URL as needed
+        const response = await fetch('https://gita-learn-api.vercel.app/api/books'); // Adjust the API endpoint URL as needed
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
