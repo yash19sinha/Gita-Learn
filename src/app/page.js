@@ -16,7 +16,7 @@ export default function Home() {
       {
         <div className="flex justify-center bg-orange-200">
           <div className="flex-col mx-8 hero-content lg:flex-row-reverse ">
-            <Image src="https://vedabase.io/static/img/vedabase-logo.svg" className="max-w-sm rounded-lg md:w-3/5 md:h-4/5" width={100} height={100} />
+            <Image src="https://vedabase.io/static/img/vedabase-logo.svg" className="max-w-sm rounded-lg md:w-3/5 md:h-4/5" width={100} height={100} alt='cover-image'/>
             <div className='justify-start'>
               <h1 className="mx-20 my-4 text-3xl font-bold">Bhaktivedanta GitaLearn</h1>
               <p className='mx-20 text-4xl font-medium'>The Best Source of Spiritual Knowledge.</p>
