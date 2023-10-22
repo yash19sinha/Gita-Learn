@@ -71,12 +71,12 @@ function Chapters() {
       </h1>
       <div className="mb-4">
         <div className="flex justify-center pt-6 pb-6 bg-gray-50 ">
-          <ul className='grid w-full grid-cols-1 gap-10 p-10 m-5 justify-items-center xl:max-w-screen-xl lg:max-w-screen-lg md:grid-cols-3'>
+          <ul className='w-full gap-10 p-10 m-5 justify-items-center '>
             {chapters.map((chapter) => (
-              <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-2xl card-body card bg-gray-50 outline-5">
+              <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-2xl bg-gray-50 outline-5">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                  <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</h2>
-                  <p className="p-1 text-lg">{chapter.name}</p>
+                  <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number} {chapter.name}</h2>
+                 
                 
                 </Link>
 

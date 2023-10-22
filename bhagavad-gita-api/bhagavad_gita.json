@@ -21,56 +21,77 @@
       {
         "bookId": 1,
         "chapter_number": 4,
-        "name": "Transcendental Knowledge",
-        "description": "The fourth chapter of the Bhagavad Gita is 'Jnana Karma Sanyasa Yoga'. In this chapter, Krishna glorifies the Karma Yoga and imparts the Transcendental Knowledge (the knowledge of the soul and the Ultimate Truth) to Arjuna. He reveals the reason behind his appearance in this material world. He reveals that even though he is eternal, he reincarnates time after time to re-establish dharma and peace on this Earth. His births and activities are eternal and are never contaminated by material flaws. Those persons who know and understand this Truth engage in his devotion with full faith and eventually attain Him. They do not have to take birth in this world again."
+        "name": "Transcendental Knowledge"
       },
       {
         "bookId": 1,
         "chapter_number": 5,
-        "name": "Chapter 5",
-        "description": "Description of Chapter 1..."
+        "name": "Karma-yoga – Action in Kṛṣṇa Consciousness"
       },
       {
         "bookId": 1,
         "chapter_number": 6,
-        "name": "Chapter 6",
-        "description": "Description of Chapter 2..."
+        "name": "Dhyāna-yoga"
       },
       {
-        "bookId": 2,
-        "chapter_number": 7,
-        "name": "Chapter 7",
-        "description": "Description of Chapter 1..."
+        "bookId": 1,
+        "chapter_number": 7,     
+        "name": "Knowledge of the Absolute"
       },
       {
-        "bookId": 2,
-        "chapter_number": 8,
-        "name": "Chapter 8",
-        "description": "Description of Chapter 2..."
+        "bookId": 1,
+        "chapter_number": 8,     
+        "name": "Attaining the Supreme"
       },
       {
-        "bookId": 2,
-        "chapter_number": 9,
-        "name": "Chapter 9",
-        "description": "Description of Chapter 1..."
+        "bookId": 1,
+        "chapter_number": 9,      
+        "name": "The Most Confidential Knowledge"
       },
       {
-        "bookId": 2,
-        "chapter_number": 10,
-        "name": "Chapter 10",
-        "description": "Description of Chapter 2..."
+        "bookId": 1,
+        "chapter_number": 10,       
+        "name": "Opulence of the Absolute"
       },
       {
-        "bookId": 2,
-        "chapter_number": 11,
-        "name": "Chapter 11",
-        "description": "Description of Chapter 1..."
+        "bookId": 1,
+        "chapter_number": 11,       
+        "name": "The Universal Form"
       },
       {
-        "bookId": 2,
-        "chapter_number": 12,
-        "name": "Chapter 12",
-        "description": "Description of Chapter 2..."
+        "bookId": 1,
+        "chapter_number": 12, 
+        "name": "Devotional Service"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 13,      
+        "name": "Nature, the Enjoyer and Consciousness"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 14,   
+        "name": "The Three Modes of Material Nature"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 15,    
+        "name": "The Yoga of the Supreme Person"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 16,
+        "name": "The Divine and Demoniac Natures"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 17,
+        "name": "The Divisions of Faith"
+      },
+      {
+        "bookId": 1,
+        "chapter_number": 18,
+        "name": "Conclusion – The Perfection of Renunciation"
       }
      
     ]
