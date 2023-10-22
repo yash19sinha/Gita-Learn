@@ -1,14 +1,34 @@
 import Link from 'next/link';
 import React from 'react'
-
+import { useEffect, useState } from 'react';
 
 export const Navbar = () => {
+  const [chapters, setChapters] = useState([]);
   let links = [
     { name: "HOME", link: "/" },
     { name: 'Bhagvad Gita', link: '/' },
     { name: 'Chapters', link: '/' },
     { name: 'Quotes', link: '/' },
   ];
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:4000/api/chapters');
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setChapters(data.chapters);
+      } catch (error) {
+        console.error('Error fetching chapters with descriptions:', error);
+        // Handle error here
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     //     <div className="p-2 mt-2 mb-2 navbar bg-base-100">
     //   <div className="flex-1">
@@ -58,8 +78,17 @@ export const Navbar = () => {
             <li>
               <a>Chapters</a>
               <ul className="p-2">
-                <li><a>Chapter 1</a></li>
-                <li><a>Chapter 2</a></li>
+              {chapters.map((chapter) => (
+              <li key={chapter.chapter_number} className="justify-center ">
+                <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                  <p className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number}</p>
+                 
+                
+                </Link>
+
+             
+              </li>
+            ))}
               </ul>
             </li>
             <li><a>Quotes</a></li>
@@ -78,13 +107,19 @@ export const Navbar = () => {
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div> */}
           <li tabIndex={0}>
-            <details>
-              <summary className='text-lg font-semibold'>Chapters</summary>
-              <ul className="p-2">
-                <li><a>Chapter 1</a></li>
-                <li><a>Chapter 2</a></li>
-              </ul>
-            </details>
+          <details >
+            <summary className='text-lg font-semibold'>Chapters</summary>
+            <ul className="p-2 overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+              {chapters.map((chapter) => (
+                <li key={chapter.chapter_number} className="grid justify-center w-32 bg-white ">
+                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                    <p className="p-1 text-sm">Chapter {chapter.chapter_number}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+
           </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
         </ul>

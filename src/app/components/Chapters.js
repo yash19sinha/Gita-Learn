@@ -86,17 +86,6 @@ function Chapters() {
                   <p className="p-1 text-lg">{chapter.name}</p>
                   <p className="p-1 text-sm text-gray-600">{truncateText(chapter.description, 40)}</p>
                 </Link>
-
-             
-              
-                {chapter.verses && chapter.verses.length > 8 && (
-                  <button
-                    onClick={() => setShowAllChapters(true)}
-                    className="p-3 m-2 text-xl text-white bg-blue-500 rounded-md w-72 hover:bg-blue-600"
-                  >
-                    See All Verses
-                  </button>
-                )}
               </li>
             ))}
           </ul>
