@@ -6,10 +6,10 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 
 function VerseDetail() {
-    const searchParams = useSearchParams()
-    const chapterVerse = searchParams.get('chapterVerse');
-    const [verseDetails, setVerseDetails] = useState({});
-    const [audioData, setAudioData] = useState({});
+  const searchParams = useSearchParams()
+  const chapterVerse = searchParams.get('chapterVerse');
+  const [verseDetails, setVerseDetails] = useState({});
+  const [audioData, setAudioData] = useState({});
 
   useEffect(() => {
     async function fetchVerseDetails() {
@@ -27,7 +27,7 @@ function VerseDetail() {
         // Handle error here
       }
     }
-    
+
     async function fetchAudioData() {
       try {
         const response = await fetch(`http://localhost:4000/api/audio/${chapterVerse}`);
@@ -45,29 +45,49 @@ function VerseDetail() {
     if (chapterVerse) {
       fetchVerseDetails();
       fetchAudioData();
-      
+
     }
   }, [chapterVerse]);
 
+  const previousPage = () => {
+  const chapterVerseNumber = parseFloat(chapterVerse);
 
-  
+  if (!isNaN(chapterVerseNumber) && chapterVerseNumber > 0.1) {
+    const previousChapter = (chapterVerseNumber - 0.1).toFixed(1);
+    window.location.href = `http://localhost:3000/VerseDetail?chapterVerse=${previousChapter}`;
+  }
+    
+
+  }
+  const nextPage = () => {
+    const chapterVerseNumber = parseFloat(chapterVerse);
+    
+    // Navigate to the next chapter (add 1)
+    if (!isNaN(chapterVerseNumber)) {
+      const nextChapter = (chapterVerseNumber + 0.1).toFixed(1);
+      // Use next/navigation or your preferred method to navigate to the next chapter
+      // Replace 'your-route-here' with the actual route for VerseDetail
+      window.location.href = `http://localhost:3000/VerseDetail?chapterVerse=${nextChapter}`;
+    }
+  }
+
 
   return (
     <>
-    <Navbar/>
-  
-    
+      <Navbar />
+
+
       <div className="p-4 ">
-      <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
-      <div className="flex justify-center mb-4">
-        
-        <p className="flex p-5 text-xl font-bold text-center w-80">{verseDetails.sanskrit_shlok}</p>
-      </div>
-      <div className="flex justify-center mb-4">
-      
-        <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
-      </div>
-      <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
+        <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
+        <div className="flex justify-center mb-4">
+
+          <p className="flex p-5 text-xl font-bold text-center w-80">{verseDetails.sanskrit_shlok}</p>
+        </div>
+        <div className="flex justify-center mb-4">
+
+          <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
+        </div>
+        <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
           <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
           {audioData.audioUrl && (
             <div className="flex items-center justify-center p-5">
@@ -79,24 +99,30 @@ function VerseDetail() {
           )}
 
         </div>
-      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
-        <h2 className="flex justify-center p-3 text-2xl font-bold">Synonyms</h2>
-        <p className="flex justify-center p-3 text-lg ">{verseDetails.synonyms}</p>
+        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
+          <h2 className="flex justify-center p-3 text-2xl font-bold">Synonyms</h2>
+          <p className="flex justify-center p-3 text-lg ">{verseDetails.synonyms}</p>
+        </div>
+        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
+          <h2 className="flex justify-center p-3 text-2xl font-bold ">Translation</h2>
+          <p className="flex justify-center p-3 text-lg font-semibold">{verseDetails.translation}</p>
+        </div>
+        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
+          <h2 className="flex justify-center p-3 text-2xl font-bold">Purport</h2>
+          <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
+        </div>
+        {/* Display audio data */}
+        {/* <div className="join grid grid-cols-2"> */}
+        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10">
+
+          <button onClick={previousPage} className="join-item btn btn-outline">Previous page</button>
+          <button onClick={nextPage} className="join-item btn btn-outline">Next</button>
+        </div>
+
       </div>
-      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
-        <h2 className="flex justify-center p-3 text-2xl font-bold ">Translation</h2>
-        <p className="flex justify-center p-3 text-lg font-semibold">{verseDetails.translation}</p>
-      </div>
-      <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
-        <h2 className="flex justify-center p-3 text-2xl font-bold">Purport</h2>
-        <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
-      </div>
-      {/* Display audio data */}
-       
-    </div>
-  <Footer/>
-  </>
-  
+      <Footer />
+    </>
+
   );
 }
 
