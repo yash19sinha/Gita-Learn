@@ -87,7 +87,7 @@ function ChapterInfo() {
       <div className="items-center justify-center overflow-x-auto md:m-10">
 
       {verses.map((verse) => (
-        <p key={verse.verse_number} className="p-4 text-xl font-normal text-justify sm:mx-20 sm:px-10 hover:bg-gray-100">
+        <p key={verse.verse_number} className="p-4 text-xl font-normal text-justify sm:mx-20 sm:px-16 hover:bg-gray-100">
           
                   
           

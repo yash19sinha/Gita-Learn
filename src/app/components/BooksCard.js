@@ -23,13 +23,13 @@ function BooksCard() {
 
   return (
     <div>
-    <h2 className="p-4 my-8 text-3xl font-bold text-center text-white bg-orange-300 rounded ">
+    <h2 className="p-4 my-8 text-3xl font-bold text-center text-white bg-orange-500 rounded ">
         Books Section
     </h2>
     <div className="bg-white ">
       
       <div className="flex justify-center">
-        <div className="grid w-2/3 grid-cols-1 gap-16 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-3/5">
+        <div className="grid w-2/3 grid-cols-2 gap-16 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-3/5">
           {books.map((book, index) => (
             <div key={index} className="overflow-hidden bg-white rounded-lg shadow-md ">
              <Link href={`/Chapters?bookId=${book.id}`} passHref>

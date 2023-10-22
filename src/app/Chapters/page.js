@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
 import { Footer } from '../components/Footer';
+import { Navbar } from '../components/Navbar';
 
 
 function Chapters() {
@@ -64,18 +65,19 @@ function Chapters() {
   return (
     <>
 
-      
-      <h1 className="p-5 my-4 text-5xl font-semibold text-center text-white bg-orange-400">
+      <Navbar/>
+      <div className="p-4 mt-4 bg-white">
+      <h1 className="flex justify-center pt-5 mb-4 text-4xl font-bold">
       Bhagavad Gita as it is
 
       </h1>
       <div className="mb-4">
-        <div className="flex justify-center pt-6 pb-6 bg-gray-50 ">
-          <ul className='w-full gap-10 p-10 m-5 justify-items-center '>
+        <div className="items-start overflow-x-auto md:m-10 ">
+          <ul className='gap-10 p-3 m-5  sm:p-6 justify-items-center'>
             {chapters.map((chapter) => (
-              <li key={chapter.chapter_number} className="justify-center w-full mb-4 shadow-2xl bg-gray-50 outline-5">
+              <li key={chapter.chapter_number} className="justify-center w-full mb-4 ">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                  <h2 className="p-1 text-xl font-semibold">Chapter {chapter.chapter_number} {chapter.name}</h2>
+                  <h3 className="py-3 text-xl font-medium text-justify sm:mx-20 sm:px-10 hover:bg-gray-100">Chapter {chapter.chapter_number}: {chapter.name}</h3>
                  
                 
                 </Link>
@@ -86,6 +88,7 @@ function Chapters() {
           </ul>
         </div>
         
+      </div>
       </div>
       <Footer/>
     </>
