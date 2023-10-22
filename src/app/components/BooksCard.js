@@ -1,6 +1,7 @@
 // components/BooksCard.js
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 function BooksCard() {
   const [books, setBooks] = useState([]);
 
@@ -34,7 +35,7 @@ function BooksCard() {
             <div key={index} className="overflow-hidden bg-white rounded-lg shadow-md ">
              <Link href={`/Chapters?bookId=${book.id}`} passHref>
 
-                  <img className="object-cover object-center " src={book.image} alt={book.title} />
+                  <Image className="object-cover object-center"  src={book.image} alt={book.title} width={200} height={200}/>
                  
                 
               </Link>
