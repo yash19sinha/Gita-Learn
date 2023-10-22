@@ -1,12 +1,15 @@
 {
     "1.1": {
-      "audioUrl": "https://samplesongs.netlify.app/Faded.mp3"
+      "audioUrl": "https://www.gitasupersite.iitk.ac.in/sites/default/files/audio/CHAP1/1-1.MP3"
     },
     "1.2": {
-      "audioUrl": "https://samplesongs.netlify.app/Faded.mp3"
+      "audioUrl": "https://www.gitasupersite.iitk.ac.in/sites/default/files/audio/CHAP1/1-2.MP3"
     },
     "2.1": {
-      "audioUrl": "https://samplesongs.netlify.app/Faded.mp3"
+      "audioUrl": "https://www.gitasupersite.iitk.ac.in/sites/default/files/audio/CHAP2/2-1.MP3"
+    },
+    "2.2": {
+      "audioUrl": "https://www.gitasupersite.iitk.ac.in/sites/default/files/audio/CHAP2/2-2.MP3"
     }
     
   }

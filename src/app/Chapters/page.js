@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
+import { Footer } from '../components/Footer';
 
 
 function Chapters() {
@@ -62,8 +63,11 @@ function Chapters() {
 
   return (
     <>
+
+      
       <h1 className="p-5 my-4 text-5xl font-semibold text-center text-white bg-orange-400">
-        Dive Into The Bhagavad Gita
+      Bhagavad Gita as it is
+
       </h1>
       <div className="mb-4">
         <div className="flex justify-center pt-6 pb-6 bg-gray-50 ">
@@ -83,6 +87,7 @@ function Chapters() {
         </div>
         
       </div>
+      <Footer/>
     </>
   );
 

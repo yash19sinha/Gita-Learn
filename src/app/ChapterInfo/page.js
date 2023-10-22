@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 
 function ChapterInfo() {
@@ -109,6 +110,7 @@ function ChapterInfo() {
       
       
     </div>
+    <Footer/>
     </>
   );
 }
