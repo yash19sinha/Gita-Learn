@@ -30,12 +30,12 @@ function BooksCard() {
     <div className="bg-white ">
       
       <div className="flex justify-center">
-        <div className="grid w-2/3 grid-cols-2 gap-16 p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-3/5">
+        <div className="grid w-2/3 grid-cols-2 gap-16 pb-5 sm:p-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-3/5">
           {books.map((book, index) => (
             <div key={index} className="overflow-hidden bg-white rounded-lg shadow-md ">
              <Link href={`/Chapters?bookId=${book.id}`} passHref>
 
-                  <Image className="object-cover object-center"  src={book.image} alt={book.title} width={200} height={200}/>
+                  <Image className="object-cover object-center w-48 h-48 sm:h-full sm:w-full"  src={book.image} alt={book.title} width={200} height={200}/>
                  
                 
               </Link>

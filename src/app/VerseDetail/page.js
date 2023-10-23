@@ -54,7 +54,7 @@ function VerseDetail() {
 
   if (!isNaN(chapterVerseNumber) && chapterVerseNumber > 0.1) {
     const previousChapter = (chapterVerseNumber - 0.1).toFixed(1);
-    window.location.href = `http://localhost:3000/VerseDetail?chapterVerse=${previousChapter}`;
+    window.location.href = `/VerseDetail?chapterVerse=${previousChapter}`;
   }
     
 
@@ -67,7 +67,7 @@ function VerseDetail() {
       const nextChapter = (chapterVerseNumber + 0.1).toFixed(1);
       // Use next/navigation or your preferred method to navigate to the next chapter
       // Replace 'your-route-here' with the actual route for VerseDetail
-      window.location.href = `http://localhost:3000/VerseDetail?chapterVerse=${nextChapter}`;
+      window.location.href = `/VerseDetail?chapterVerse=${nextChapter}`;
     }
   }
 

@@ -59,11 +59,11 @@ export const Navbar = () => {
     // </div>
     <div className="bg-gray-100 navbar">
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className="bg-white dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 text-black">
             <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             
@@ -72,7 +72,7 @@ export const Navbar = () => {
               <a>Chapters</a>
               <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
               {chapters.map((chapter) => (
-              <li key={chapter.chapter_number} className="justify-center ">
+              <li key={chapter.chapter_number} className="justify-center text-black bg-white">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
                   <p className="p-1 text-sm font-normal">Chapter {chapter.chapter_number}</p>
                  
@@ -91,7 +91,7 @@ export const Navbar = () => {
 
         <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">GitaLearn</Link>
       </div>
-      <div className="hidden navbar-center lg:flex">
+      <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>

@@ -77,7 +77,7 @@ function Chapters() {
             {chapters.map((chapter) => (
               <li key={chapter.chapter_number} className="justify-center w-full mb-4 ">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                  <h3 className="py-3 text-xl font-medium text-justify sm:mx-20 sm:px-10 hover:bg-gray-100">Chapter {chapter.chapter_number}: {chapter.name}</h3>
+                  <h3 className="py-3 text-xl font-medium text-start sm:mx-20 sm:px-10 hover:bg-gray-100">Chapter {chapter.chapter_number}: {chapter.name}</h3>
                  
                 
                 </Link>
