@@ -21,7 +21,9 @@ export default function Home() {
               <h1 className="mx-20 my-4 text-3xl font-bold">Bhaktivedanta GitaLearn</h1>
               <p className='mx-20 text-2xl font-medium sm:text-4xl'>The Best Source of Spiritual Knowledge.</p>
               <p className="py-6 mx-20 text-xl sm:text-2xl">This is an online platform for Comprehensive Learning Bhagavad Gita </p>
-              <button className="mx-20 text-white bg-orange-500 btn hover:text-black"><Link href="Chapters">Get Started</Link></button>
+              <Link href="Chapters">
+              <button className="mx-20 text-white bg-orange-500 btn hover:text-black">Get Started</button>
+              </Link>
             </div>
           </div>
         </div>}
