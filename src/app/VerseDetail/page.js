@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import RenderPurport from '../components/RenderPurport'
 
 function VerseDetail() {
   const searchParams = useSearchParams()
@@ -107,16 +108,13 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold ">Translation</h2>
           <p className="flex justify-center p-3 text-lg font-semibold">{verseDetails.translation}</p>
         </div>
-        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
-          <h2 className="flex justify-center p-3 text-2xl font-bold">Purport</h2>
-          <p className="flex justify-center p-3 text-lg">{verseDetails.purport}</p>
-        </div>
+        {RenderPurport(verseDetails)} {/* Conditionally render the Purport section */}
         {/* Display audio data */}
         {/* <div className="grid grid-cols-2 join"> */}
-        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10">
+        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10 ">
 
-          <button onClick={previousPage} className="join-item btn btn-outline">Previous page</button>
-          <button onClick={nextPage} className="join-item btn btn-outline">Next</button>
+          <button onClick={previousPage} className=" join-item btn btn-outline">Previous page</button>
+          <button onClick={nextPage} className="join-item btn btn-outline ">Next</button>
         </div>
 
       </div>
