@@ -117,7 +117,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href="/"className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Login</Link>
+        <Link href="/login"className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Login</Link>
       </div>
     </div>
   )
