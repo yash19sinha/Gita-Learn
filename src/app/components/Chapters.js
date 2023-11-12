@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 function Chapters() {
   const searchParams = useSearchParams()
   const chapterNumber = searchParams.get('chapterNumber');
+  const bookId = searchParams.get('bookId');
   const [chapters, setChapters] = useState([]);
   const [showAllChapters, setShowAllChapters] = useState(false);
   const [verses, setVerses] = useState([]);
@@ -14,48 +15,39 @@ function Chapters() {
 
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('https://gita-learn-api.vercel.app/api/chapters');
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+    async function fetchChapters(bookId) {
+      if (bookId) {
+        try {
+          const response = await fetch(`http://localhost:4000/api/chapters/${bookId}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setChapters(data.chapters);
+        } catch (error) {
+          console.error('Error fetching chapters:', error);
         }
-        const data = await response.json();
-        setChapters(data.chapters);
-      } catch (error) {
-        console.error('Error fetching chapters with descriptions:', error);
-        // Handle error here
       }
     }
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    console.log('Chapter Number:', chapterNumber);
-    async function fetchVerses() {
-
-      try {
-        const response = await fetch(`https://gita-learn-api.vercel.app/api/verses/${chapterNumber}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+    async function fetchVerses(chapterNumber) {
+      if (chapterNumber) {
+        try {
+          const response = await fetch(`http://localhost:4000/api/api/verses/${chapterNumber}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setVerses(data.verses);
+        } catch (error) {
+          console.error('Error fetching verses:', error);
         }
-        const data = await response.json();
-        console.log('Chapter Number:', chapterNumber);
-        console.log('Verses Data:', data.verses);
-        setVerses(data.verses);
-      } catch (error) {
-        console.error('Error fetching verses:', error);
-        // Handle error here
       }
     }
-    if (chapterNumber) {
-      fetchVerses();
-    } else {
-      console.log('not working')
 
-    }
-  }, [chapterNumber]);
+    fetchChapters(bookId);
+    fetchVerses(chapterNumber);
+  }, [bookId, chapterNumber]);
 
 
 
