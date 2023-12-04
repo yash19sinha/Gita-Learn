@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import { Navbar } from './components/Navbar'
+
 import { Footer } from './components/Footer'
 // import Chapters from './components/Chapters'
 import VerseDay from './components/VerseDay'
@@ -12,7 +12,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <div>
-      <Navbar />
+  
       {
         <div className="flex justify-center bg-orange-200">
           <div className="flex-col mx-8 hero-content lg:flex-row-reverse ">

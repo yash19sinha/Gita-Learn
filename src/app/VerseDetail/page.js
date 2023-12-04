@@ -2,7 +2,6 @@
 "use client"
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
-import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import RenderPurport from '../components/RenderPurport'
 
@@ -75,7 +74,7 @@ function VerseDetail() {
 
   return (
     <>
-      <Navbar />
+      
 
 
       <div className="p-4 ">

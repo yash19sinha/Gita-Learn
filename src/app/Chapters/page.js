@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation'
 import { Footer } from '../components/Footer';
-import { Navbar } from '../components/Navbar';
+
 
 
 function Chapters() {
@@ -83,7 +83,7 @@ function Chapters() {
   return (
     <>
 
-      <Navbar/>
+      
       <div className="p-4 mt-4 bg-white">
       <h1 className="flex justify-center pt-5 mb-4 text-4xl font-bold">
       Bhagavad Gita as it is

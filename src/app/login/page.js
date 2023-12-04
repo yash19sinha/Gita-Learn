@@ -1,5 +1,30 @@
-import React from 'react'
-export default function Example() {
+'use client'
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/app/firebase/config';
+import { useRouter } from 'next/navigation'
+import Link from 'next/link';
+
+
+const Login = () => {
+  const router = useRouter()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // User has signed in successfully
+      setEmail('');
+      setPassword('');
+      router.push('/');
+      
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-white lg:px-8">
@@ -15,7 +40,7 @@ export default function Example() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" onSubmit={handleSignIn}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 bg-white">
                 Email address
@@ -27,6 +52,8 @@ export default function Example() {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 bg-white"
                 />
               </div>
@@ -50,18 +77,22 @@ export default function Example() {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 bg-white"
                 />
               </div>
             </div>
 
             <div>
+
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
               >
                 Sign in
               </button>
+          
             </div>
           </form>
 
@@ -74,5 +105,7 @@ export default function Example() {
         </div>
       </div>
     </>
-  )
+  );
 }
+
+export default Login;
