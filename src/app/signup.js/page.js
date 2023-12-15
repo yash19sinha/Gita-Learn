@@ -19,20 +19,23 @@ const SignUp = () => {
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       // Store additional user data in Firestore
       const userDocRef = doc(db, 'users', user.uid);
       await setDoc(userDocRef, {
         name: name,
         phoneNo: phoneNo,
+        score: 0, // Set initial score to 0
       });
-
+  
       // User has signed up successfully
       setEmail('');
       setName('');
       setPhoneNo('');
       setPassword('');
-      router.push('/login');
+  
+    
+      router.push('/');
     } catch (error) {
       console.error(error);
     }

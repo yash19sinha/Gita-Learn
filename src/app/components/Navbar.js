@@ -46,6 +46,8 @@ export const Navbar = () => {
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 text-black">
             <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
+            <li><Link href="QuizPage">Quiz</Link></li>
+            
             
 
             <li>
@@ -75,6 +77,7 @@ export const Navbar = () => {
         <ul className="gap-8 px-1 menu menu-horizontal">
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>
+          <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li>
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div> */}

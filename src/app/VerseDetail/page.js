@@ -4,8 +4,10 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 import { Footer } from '../components/Footer';
 import RenderPurport from '../components/RenderPurport'
+import { useRouter } from 'next/navigation';
 
 function VerseDetail() {
+  const router = useRouter();
   const searchParams = useSearchParams()
   const chapterVerse = searchParams.get('chapterVerse');
   const [verseDetails, setVerseDetails] = useState({});
@@ -70,6 +72,10 @@ function VerseDetail() {
       window.location.href = `/VerseDetail?chapterVerse=${nextChapter}`;
     }
   }
+  const redirectToQuiz = () => {
+    // Redirect to the quiz page with the current chapterVerse as a query parameter
+    router.push(`/Quiz?verseId=${chapterVerse}`);
+  };
 
 
   return (
@@ -115,6 +121,11 @@ function VerseDetail() {
           <button onClick={previousPage} className=" join-item btn btn-outline">Previous page</button>
           <button onClick={nextPage} className="join-item btn btn-outline ">Next</button>
         </div>
+            <div className="flex justify-center p-4">
+            <button onClick={redirectToQuiz} className="btn btn-primary">
+              Start Quiz
+            </button>
+            </div>
 
       </div>
       <Footer />

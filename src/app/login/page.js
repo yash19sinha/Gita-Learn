@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/app/firebase/config';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth, db } from '@/app/firebase/config';
+// import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 
@@ -10,6 +11,8 @@ const Login = () => {
   const router = useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -24,6 +27,30 @@ const Login = () => {
       console.error(e);
     }
   };
+
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const provider = new GoogleAuthProvider();
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     const uid = user.uid;
+  //     const displayName = user.displayName;
+
+  //     const userRef = doc(collection(db, 'users'), uid);
+  //     await setDoc(userRef, {
+  //       displayName: displayName,
+  //       // Other user profile data as needed
+  //     });
+
+  //     // Optionally, you can check if the user already exists in your database
+  //     // and perform additional actions.
+
+  //     // For example, you can redirect the user to another page after successful authentication
+  //     router.push('/');
+  //   } catch (error) {
+  //     console.error('Error signing in with Google:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -92,6 +119,13 @@ const Login = () => {
               >
                 Sign in
               </button>
+              {/* <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                >
+                  Sign In with Google
+                </button> */}
           
             </div>
           </form>
