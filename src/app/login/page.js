@@ -53,7 +53,7 @@ const Login = () => {
   // };
 
   return (
-    <>
+
       <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-white lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -138,7 +138,7 @@ const Login = () => {
           </p>
         </div>
       </div>
-    </>
+   
   );
 }
 

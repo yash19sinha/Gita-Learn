@@ -42,8 +42,8 @@ const SignUp = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 lg:px-8">
+  
+      <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-white lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="w-auto h-10 mx-auto"
@@ -70,7 +70,7 @@ const SignUp = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 bg-white"
                 />
               </div>
             </div>
@@ -88,13 +88,13 @@ const SignUp = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phoneno" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="phoneno" className="block text-sm font-medium leading-6 text-gray-900 bg-white">
                 Enter Your Phone Number
               </label>
               <div className="mt-2">
@@ -106,7 +106,7 @@ const SignUp = () => {
                   required
                   value={phoneNo}
                   onChange={(e) => setPhoneNo(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -126,7 +126,7 @@ const SignUp = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -150,7 +150,7 @@ const SignUp = () => {
           </p>
         </div>
       </div>
-    </>
+   
   );
 };
 
