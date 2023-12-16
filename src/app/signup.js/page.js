@@ -43,7 +43,7 @@ const SignUp = () => {
 
   return (
   
-      <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 bg-white lg:px-8">
+      <div className="flex flex-col justify-center flex-1 h-screen px-6 py-12 bg-white lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="w-auto h-10 mx-auto"

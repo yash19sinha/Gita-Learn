@@ -113,7 +113,8 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold ">Translation</h2>
           <p className="flex justify-center p-3 text-lg font-semibold">{verseDetails.translation}</p>
         </div>
-        {RenderPurport(verseDetails)} {/* Conditionally render the Purport section */}
+        {RenderPurport(verseDetails)} 
+        {/* Conditionally render the Purport section */}
         {/* Display audio data */}
         {/* <div className="grid grid-cols-2 join"> */}
         <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10 ">
