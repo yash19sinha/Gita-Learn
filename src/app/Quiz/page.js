@@ -106,7 +106,7 @@ function Quiz() {
     return (
       <div className='flex justify-center h-screen p-4 m-5 bg-white'>
       <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
-        <p className="p-5 m-4 text-3xl font-bold text-center">Your final score: {score}</p>
+        <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
         <button
           className="p-2 mt-4 text-xl text-white bg-blue-500 rounded cursor-pointer"
           onClick={navigateToLeaderboard}
@@ -121,10 +121,11 @@ function Quiz() {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen p-4 bg-white">
+   
+    <div className="flex flex-col items-center h-screen p-4 bg-white ">
       <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
-      <div key={currentQuestion.id} className="w-4/5 p-4 bg-gray-200 rounded shadow-md">
+      <div key={currentQuestion.id} className="w-4/5 pt-4 bg-gray-200 rounded shadow-md ">
         <p className="p-5 m-4 text-2xl font-semibold text-center">{currentQuestion.question}</p>
         {currentQuestion.options.map((option, index) => (
           <div
@@ -142,9 +143,11 @@ function Quiz() {
           </div>
         ))}
       </div>
+   
 
       <p className="mt-4 text-lg font-semibold">Current Score: {score}</p>
     </div>
+   
   );
 }
 
