@@ -121,7 +121,6 @@ function Quiz() {
   const currentQuestion = questions[currentQuestionIndex];
 
   return (
-   
     <div className="flex flex-col items-center h-screen p-4 bg-white ">
       <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
@@ -145,7 +144,7 @@ function Quiz() {
       </div>
    
 
-      <p className="mt-4 text-lg font-semibold">Current Score: {score}</p>
+      <p className="mt-4 text-lg font-semibold bg-white">Current Score: {score}</p>
     </div>
    
   );
