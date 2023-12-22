@@ -64,7 +64,7 @@ function Leaderboard() {
       <p className="text-center text-red-500">{error}</p>
     ) : (
       <div>
-        <h1 className="mb-4 text-3xl font-bold">Leaderboard for Verse: {verseId}</h1>
+        <h1 className="mb-4 text-2xl font-bold md:text-3xl">Leaderboard for Verse: {verseId}</h1>
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>

@@ -124,12 +124,12 @@ function Quiz() {
     <div className="flex flex-col items-center h-screen p-4 bg-white ">
       <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
-      <div key={currentQuestion.id} className="w-4/5 pt-4 bg-gray-200 rounded shadow-md ">
-        <p className="p-5 m-4 text-2xl font-semibold text-center">{currentQuestion.question}</p>
+      <div key={currentQuestion.id} className="pt-4 bg-gray-200 rounded shadow-md md:w-4/5 ">
+        <p className="p-5 m-4 text-xl font-semibold text-center md:text-2xl">{currentQuestion.question}</p>
         {currentQuestion.options.map((option, index) => (
           <div
             key={index}
-            className={`cursor-pointer p-4 m-2 rounded mb-2 font-medium ${
+            className={`cursor-pointer p-4 m-2 rounded mb-2 font-medium md:text-lg text-sm ${
               selectedOption === index
                 ? isAnswerCorrect
                   ? 'bg-green-500 text-white'
