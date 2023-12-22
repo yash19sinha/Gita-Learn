@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { Footer } from '../components/Footer';
 import RenderPurport from '../components/RenderPurport'
 import { useRouter } from 'next/navigation';
+import NotesSidebar from '../components/NotesSidebar';
+import { FaPenSquare } from "react-icons/fa";
 
 function VerseDetail() {
   const router = useRouter();
@@ -12,6 +14,11 @@ function VerseDetail() {
   const chapterVerse = searchParams.get('chapterVerse');
   const [verseDetails, setVerseDetails] = useState({});
   const [audioData, setAudioData] = useState({});
+  const [isNotesSidebarOpen, setIsNotesSidebarOpen] = useState(false);
+
+  const handleToggleNotesSidebar = () => {
+    setIsNotesSidebarOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     async function fetchVerseDetails() {
@@ -127,6 +134,17 @@ function VerseDetail() {
               Start Quiz
             </button>
             </div>
+            
+            <button
+              onClick={handleToggleNotesSidebar}
+              className="fixed px-4 py-2 text-3xl text-white bg-blue-500 rounded shadow bottom-4 right-4 hover:bg-blue-600"
+            >
+             <FaPenSquare />
+            </button>
+
+            {isNotesSidebarOpen && (
+              <NotesSidebar onClose={handleToggleNotesSidebar} />
+            )}
 
       </div>
       <Footer />
