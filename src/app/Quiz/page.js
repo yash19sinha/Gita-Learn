@@ -16,23 +16,28 @@ function Quiz() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(20); // Timer in seconds
+  const [timerId, setTimerId] = useState(null);
+
 
 
   useEffect(() => {
     const auth = getAuth(app);
 
     // Check if the user is authenticated
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (!user) {
         // Redirect to the login page if the user is not authenticated
-        
         router.push('/login');
         alert('Please login first.');
       }
     });
 
-    return () => unsubscribe();
-  }, [router]);
+    return () => {
+      unsubscribeAuth(); // Unsubscribe from onAuthStateChanged
+      clearInterval(timerId); // Clear any existing timers
+    };
+  }, [router, timerId]);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -57,40 +62,99 @@ function Quiz() {
   }, [verseId]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
+    const uid = auth.currentUser?.uid;
 
-        if (verseId && currentQuestionIndex >= questions.length - 1) {
-          console.log('Verse ID:', verseId); // Log the verseId for debugging
-          const saveUserScore = async () => {
-            const scoreRef = doc(collection(db, `scores/${verseId}/userScores`), uid);
-            await setDoc(scoreRef, { score });
-          };
-          saveUserScore();
-        }
-      }
-    });
-
-    return () => unsubscribe();
+    if (verseId && currentQuestionIndex >= questions.length - 1 && uid) {
+      console.log('Verse ID:', verseId);
+      console.log('Current Question Index:', currentQuestionIndex);
+      console.log('Questions Length:', questions.length);
+      const saveUserScore = async () => {
+        const scoreRef = doc(collection(db, `scores/${verseId}/userScores`), uid);
+        await setDoc(scoreRef, { score });
+        console.log('User score saved.');
+      };
+      saveUserScore();
+    }
   }, [verseId, currentQuestionIndex, questions.length, auth, db, score]);
 
+
+  const maxTimer = 20;
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimer((prevTimer) => {
+        // Check if the timer has reached 0, then move to the next question
+        if (prevTimer <= 0) {
+          handleOptionClick(null); // Move to the next question without selecting an option
+          return maxTimer; // Reset the timer to maxTimer value
+        }
+  
+        return prevTimer - 1;
+      });
+    }, 1000);
+  
+    // Save the timer ID to state for later cleanup
+    setTimerId(intervalId);
+  
+    // Clear the timer when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+      setTimerId(null); // Clear the timer ID on unmount
+    };
+  }, [currentQuestionIndex, maxTimer]);
+  
+
+  
+  useEffect(() => {
+    if (timer === 0) {
+      handleOptionClick(null);
+    }
+  }, [timer]);
+
   const handleOptionClick = (selectedOption) => {
-    setSelectedOption(selectedOption);
+    // Clear the timer
+    clearInterval(timerId);
+  
+    // Ensure that there are questions and currentQuestionIndex is within bounds
+    if (!questions || questions.length === 0 || currentQuestionIndex >= questions.length) {
+      console.log('Invalid question index or no questions found');
+      return;
+    }
+  
     const currentQuestion = questions[currentQuestionIndex];
+  
+    // Ensure that currentQuestion and its properties are defined
+    if (!currentQuestion || typeof currentQuestion.correctOption === 'undefined') {
+      console.log('Invalid current question or no correct option found');
+      return;
+    }
+  
+    setSelectedOption(selectedOption);
     const isCorrect = selectedOption === currentQuestion.correctOption;
     setIsAnswerCorrect(isCorrect);
-
+  
     if (isCorrect) {
       setScore((prevScore) => prevScore + 1);
     }
-
+  
+    // Reset the timer and delay before moving to the next question
+ // Reset the timer and delay before moving to the next question
     setTimeout(() => {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setTimer(maxTimer); // Reset the timer
+      clearInterval(timerId); // Clear the timer interval
+      setCurrentQuestionIndex((prevIndex) => {
+        console.log('Moving to the next question. Prev index:', prevIndex);
+        return prevIndex + 1;
+      });
       setSelectedOption(null);
       setIsAnswerCorrect(null);
     }, 1500);
+
   };
+  
+  
+
+  
 
   const navigateToLeaderboard = () => {
     // Use Next.js Link to navigate to the leaderboard page
@@ -124,8 +188,25 @@ function Quiz() {
     <div className="flex flex-col items-center h-screen p-4 bg-white ">
       <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
+         {/* Timer display */}
+         <div className="mb-2 text-lg font-semibold">{`Time Left: ${timer} seconds`}</div>
+      
+
+
+    
+
       <div key={currentQuestion.id} className="pt-4 bg-gray-200 rounded shadow-md md:w-4/5 ">
+        
         <p className="p-5 m-4 text-xl font-semibold text-center md:text-2xl">{currentQuestion.question}</p>
+
+         {/* Time slider */}
+      <div className="w-full mb-4 bg-gray-200 rounded">
+        <div
+          className="p-2 bg-green-300 " 
+          style={{ width: `${(timer / 20) * 100}%` }}
+        ></div>
+      </div>
+     
         {currentQuestion.options.map((option, index) => (
           <div
             key={index}
@@ -149,5 +230,4 @@ function Quiz() {
    
   );
 }
-
 export default Quiz;

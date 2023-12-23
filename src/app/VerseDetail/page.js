@@ -137,7 +137,7 @@ function VerseDetail() {
             
             <button
               onClick={handleToggleNotesSidebar}
-              className="fixed px-4 py-2 text-3xl text-white bg-blue-500 rounded shadow bottom-4 right-4 hover:bg-blue-600"
+              className="fixed px-4 py-2 text-3xl text-white bg-blue-500 shadow rounded-3xl bottom-4 right-4 hover:bg-blue-600"
             >
              <FaPenSquare />
             </button>

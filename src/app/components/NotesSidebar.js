@@ -58,7 +58,7 @@ function NotesSidebar({ onClose }) {
 
   return (
     user ? (
-      <div className="fixed top-0 right-0 p-4 m-2 mt-24 overflow-y-auto bg-gray-200 rounded h-3/4 md:w-1/4 notes-sidebar">
+      <div className="fixed top-0 right-0 p-4 m-4 mt-24 overflow-y-auto bg-gray-200 rounded h-3/4 md:w-1/4 notes-sidebar">
         <h1 className="mb-4 text-2xl font-semibold">Your Notes</h1>
         <ul className="max-w-full pl-4 list-disc">
           {notes.map((note) => (
