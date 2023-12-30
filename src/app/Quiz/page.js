@@ -128,13 +128,21 @@ function Quiz() {
       console.log('Invalid current question or no correct option found');
       return;
     }
+    const isCorrect = selectedOption === currentQuestion.correctOption;
   
     setSelectedOption(selectedOption);
-    const isCorrect = selectedOption === currentQuestion.correctOption;
+    const maxScore = 100;
+    const earnedScore = isCorrect ? Math.max(50, Math.floor((timer / maxTimer) * maxScore)) : 0;
+  
+    // Adjust the score for the first 5 seconds
+    // if (timer > maxTimer - 5) {
+    //   earnedScore = Math.max(earnedScore, 50); // Minimum score is 50
+    // }
+
     setIsAnswerCorrect(isCorrect);
   
     if (isCorrect) {
-      setScore((prevScore) => prevScore + 1);
+      setScore((prevScore) => prevScore + earnedScore);
     }
   
     // Reset the timer and delay before moving to the next question
@@ -199,13 +207,24 @@ function Quiz() {
         
         <p className="p-5 m-4 text-xl font-semibold text-center md:text-2xl">{currentQuestion.question}</p>
 
-         {/* Time slider */}
-      <div className="w-full mb-4 bg-gray-200 rounded">
-        <div
-          className="p-2 bg-green-300 " 
-          style={{ width: `${(timer / 20) * 100}%` }}
-        ></div>
-      </div>
+         
+          {/* Time slider */}
+          <div className='m-2'>
+            <div className="w-full mb-4 overflow-hidden bg-gray-200 rounded">
+              <div
+                className="p-2 transition-all ease-in-out bg-gradient-to-r from-green-300 to-green-500"
+                style={{
+                  width: `${(timer / 20) * 100}%`,
+                  transition: 'width 1s ease-in-out', // Adjust the duration and easing as needed
+                  borderRadius: '0.5rem', // Rounded corners
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Box shadow
+                  height: '100%', // Full height of the parent container
+                }}
+              ></div>
+            </div>
+          </div>
+
+
      
         {currentQuestion.options.map((option, index) => (
           <div

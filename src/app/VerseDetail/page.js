@@ -7,6 +7,7 @@ import RenderPurport from '../components/RenderPurport'
 import { useRouter } from 'next/navigation';
 import NotesSidebar from '../components/NotesSidebar';
 import { FaPenSquare } from "react-icons/fa";
+import PublicNotes from "../components/PublicNotes"
 
 function VerseDetail() {
   const router = useRouter();
@@ -145,7 +146,8 @@ function VerseDetail() {
             {isNotesSidebarOpen && (
               <NotesSidebar onClose={handleToggleNotesSidebar} />
             )}
-
+            <PublicNotes verseId={chapterVerse} />
+          
       </div>
       <Footer />
     </>
