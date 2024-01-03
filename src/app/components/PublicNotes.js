@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { auth, db } from '../firebase/config';
 import { doc, setDoc, collection, addDoc, getDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { MdDelete } from "react-icons/md";
 
 function PublicNotes({ verseId }) {
   const [publicNotes, setPublicNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
-  const [editNoteId, setEditNoteId] = useState(null);
+  const [showNotes, setShowNotes] = useState(false);
 
   useEffect(() => {
     const validateAndFetchNotes = async () => {
@@ -47,15 +48,15 @@ function PublicNotes({ verseId }) {
         const verseIdString = String(verseId);
         const notesCollectionRef = collection(db, 'publicNotes', verseIdString, 'Notes');
         const uid = user.uid;
-  
+
         // Fetch the user's display name
         const userDocRef = doc(db, 'users', uid);
         const userDoc = await getDoc(userDocRef);
         const username = userDoc.data().name;
-  
+
         // Add new note
         const newNoteRef = await addDoc(notesCollectionRef, { uid, username, note: newNote });
-  
+
         // Update the local state with the new note
         setPublicNotes([...publicNotes, { id: newNoteRef.id, uid, username, note: newNote }]);
         setNewNote('');
@@ -66,7 +67,6 @@ function PublicNotes({ verseId }) {
       console.error('Error adding note:', error);
     }
   };
-  
 
   const handleDeleteNote = async (id) => {
     try {
@@ -87,40 +87,45 @@ function PublicNotes({ verseId }) {
 
   return (
     <div className="container p-4 mx-auto font-normal text-justify">
-      <h2 className="mb-6 text-2xl font-bold text-center">Public Notes</h2>
-      <div className="mb-4">
-        <textarea
-          rows="4"
-          cols="50"
-          placeholder="Add your public note..."
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-          className="w-full p-3 border rounded-md"
-        />
-        <button
-          onClick={handleAddNote}
-          className="w-full mt-4 btn btn-primary"
-        >
-          {editNoteId ? 'Edit Note' : 'Add Note'}
-        </button>
-      </div>
-      <ul className="list-disc">
-        {publicNotes.map((note) => (
-          <li key={note.id} className="p-4 mb-4 border rounded-lg">
-            <strong>{note.username}:</strong> {note.note}
-            {note.uid === auth.currentUser?.uid && (
-              <div className="mt-2">
-                <button
+      <button
+        onClick={() => setShowNotes(!showNotes)}
+        className="mb-4 btn"
+      >
+        {showNotes ? 'Hide Public Notes' : 'Show Public Notes'}
+      </button>
+      {showNotes && (
+        <div>
+          <textarea
+            rows="4"
+            cols="50"
+            placeholder="Add your public note..."
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            className="w-full p-3 text-black bg-white border rounded-md"
+          />
+          <button
+            onClick={handleAddNote}
+            className="justify-center mt-4 btn btn-primary"
+          >
+            Add Note
+          </button>
+          <ul className="mt-4">
+            {publicNotes.map((note) => (
+              <li key={note.id} className="flex items-center justify-between p-4 mb-2 border rounded-lg">
+                <p><strong>{note.username}:</strong> {note.note}</p>
+                {note.uid === auth.currentUser?.uid && (
+                  <button
                   onClick={() => handleDeleteNote(note.id)}
-                  className="text-sm text-red-500"
+                  className="m-2 text-2xl text-red-500 hover:text-red-700"
                 >
-                  Delete
+                  <MdDelete />
                 </button>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

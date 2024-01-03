@@ -177,16 +177,17 @@ function Quiz() {
   if (currentQuestionIndex >= questions.length) {
     return (
       <div className='flex justify-center h-screen p-4 m-5 bg-white'>
-      <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
-        <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
-        <button
-          className="p-2 mt-4 text-xl text-white bg-blue-500 rounded cursor-pointer"
-          onClick={navigateToLeaderboard}
-        >
-          View Leaderboard
-        </button>
-      </div>
-      </div>
+  <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
+    <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
+    <button
+      className="p-2 mt-4 text-xl text-white bg-blue-500 rounded cursor-pointer hover:bg-blue-700"
+      onClick={navigateToLeaderboard}
+    >
+      View Leaderboard
+    </button>
+  </div>
+</div>
+
     );
   }
 
