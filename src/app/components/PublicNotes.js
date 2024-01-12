@@ -54,7 +54,7 @@ const handleAddNote = async () => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        const username = userDoc.data().name;
+        const username = userDoc.data().authMethod === 'google' ? userDoc.data().displayName : userDoc.data().name;
 
         // Add new note
         const verseIdString = String(verseId);
@@ -74,6 +74,7 @@ const handleAddNote = async () => {
     console.error('Error adding note:', error);
   }
 };
+
 
 // ...
 

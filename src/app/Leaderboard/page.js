@@ -21,30 +21,43 @@ function Leaderboard() {
           setError('Verse ID is not provided.');
           return;
         }
-
+  
         const scoresRef = collection(db, `scores/${verseId}/userScores`);
         const scoresQuery = query(scoresRef, orderBy('score', 'desc'), limit(10));
-        const snapshot = await getDocs(scoresQuery);
-        console.log('Verse ID:', verseId);
-        console.log('Number of documents:', snapshot.docs.length);
-
+        const snapshot = await getDocs(scoresQuery); // Declare snapshot here
+  
         const leaderboardData = [];
+  
         for (const docSnapshot of snapshot.docs) {
           const userData = docSnapshot.data();
           const userId = docSnapshot.id;
-
-          // Correct usage of doc function
+  
           const userDocRef = doc(db, 'users', userId);
           const userDoc = await getDoc(userDocRef);
-          const displayName = userDoc.data().name;
-
-          leaderboardData.push({
-            userId,
-            username: displayName,
-            ...userData,
-          });
+  
+          if (userDoc.exists()) {
+            const authMethod = userDoc.data().authMethod;
+            let displayName;
+  
+            if (authMethod === 'google') {
+              // For Google-authenticated users, use the display name
+              displayName = userDoc.data().displayName || 'Google User';
+            } else {
+              // For other authentication methods, use the name stored in Firestore
+              displayName = userDoc.data().name || 'Unknown User';
+            }
+  
+            leaderboardData.push({
+              userId,
+              username: displayName,
+              ...userData,
+            });
+          } else {
+            // Handle the case when the user document does not exist
+            console.error(`User document not found for user ID: ${userId}`);
+          }
         }
-
+  
         setLeaderboard(leaderboardData);
       } catch (error) {
         console.error('Error fetching leaderboard:', error);
@@ -58,6 +71,7 @@ function Leaderboard() {
       fetchLeaderboard();
     }
   }, [verseId]);
+  
     
   
 

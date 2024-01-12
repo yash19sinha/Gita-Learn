@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth, db } from '@/app/firebase/config';
-// import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation'
+import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
 
 
@@ -16,41 +17,73 @@ const Login = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+  
     try {
+      // Check if the password meets your strength criteria
+      if (password.length < 6) {
+        const errorMessage = 'Password is too short. Please enter a password with at least 6 characters.';
+        window.alert(errorMessage);
+        return;
+      }
+  
+      // Attempt to sign in
       await signInWithEmailAndPassword(auth, email, password);
       // User has signed in successfully
       setEmail('');
       setPassword('');
       router.push('/');
-      
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
+  
+      // Check for specific error codes indicating incorrect password
+      if (error.code === 'auth/wrong-password') {
+        const errorMessage = 'Incorrect password. Please try again.';
+        window.alert(errorMessage);
+      } else {
+        const errorMessage = 'Failed to sign in. Please try again.';
+        window.alert(errorMessage);
+      }
+    }
+  };
+  
+  const handleForgotPassword = async () => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      const successMessage = 'Password reset email sent. Check your email to reset your password.';
+      window.alert(successMessage);
+    } catch (error) {
+      console.error('Error sending password reset email:', error);
+      const errorMessage = 'Failed to send password reset email. Please try again.';
+      window.alert(errorMessage);
     }
   };
 
-  // const handleGoogleSignIn = async () => {
-  //   try {
-  //     const provider = new GoogleAuthProvider();
-  //     const result = await signInWithPopup(auth, provider);
-  //     const user = result.user;
-  //     const uid = user.uid;
-  //     const displayName = user.displayName;
-
-  //     const userRef = doc(collection(db, 'users'), uid);
-  //     await setDoc(userRef, {
-  //       displayName: displayName,
-  //       // Other user profile data as needed
-  //     });
-
-  //     // Optionally, you can check if the user already exists in your database
-  //     // and perform additional actions.
-
-  //     // For example, you can redirect the user to another page after successful authentication
-  //     router.push('/');
-  //   } catch (error) {
-  //     console.error('Error signing in with Google:', error);
-  //   }
-  // };
+  const handleGoogleSignIn = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const uid = user.uid;
+      const displayName = user.displayName;
+  
+      // Set or update the user's document in Firestore
+      const userRef = doc(collection(db, 'users'), uid);
+      await setDoc(userRef, {
+        displayName: displayName,
+        authMethod: 'google',  // Set the authMethod to 'google'
+        // Other user profile data as needed
+      });
+  
+      // Optionally, you can check if the user already exists in your database
+      // and perform additional actions.
+  
+      // For example, you can redirect the user to another page after successful authentication
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+    }
+  };
+  
 
   return (
 
@@ -92,7 +125,10 @@ const Login = () => {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="/forgetpassword" className="font-semibold text-orange-600 bg-white hover:text-orange-500">
+                  <a href="/forgetpassword" 
+                    className="font-semibold text-orange-600 bg-white hover:text-orange-500"
+                    onClick={handleForgotPassword}
+                  >
                     Forgot password?
                   </a>
                 </div>
@@ -115,17 +151,18 @@ const Login = () => {
 
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                className="m-2 flex w-full justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
               >
                 Sign in
               </button>
-              {/* <button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
-                >
-                  Sign In with Google
-                </button> */}
+              <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold leading-6 text-slate-700 shadow-sm hover:bg-slate-300 focus:outline-none m-2"
+            >
+              <FcGoogle className='text-2xl mx-4' /> Sign In with Google
+              
+            </button>
           
             </div>
           </form>
