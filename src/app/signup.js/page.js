@@ -12,6 +12,7 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -34,12 +35,23 @@ const SignUp = () => {
       setPhoneNo('');
       setPassword('');
   
-    
       router.push('/');
     } catch (error) {
       console.error(error);
+  
+      // Check for specific error code indicating that the user already exists
+      if (error.code === 'auth/email-already-in-use') {
+        const errorMessage = 'User with this email already exists. Please log in.';
+        setError(errorMessage);
+        window.alert(errorMessage);
+      } else {
+        const errorMessage = 'Failed to sign up. Please try again.';
+        setError(errorMessage);
+        window.alert(errorMessage);
+      }
     }
   };
+  
 
   return (
   

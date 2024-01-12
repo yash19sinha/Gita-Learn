@@ -3,13 +3,13 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBEAT2ltbmFKzHCV9d_bHX1mz-9PjNjdAA",
-  authDomain: "gita-quiz.firebaseapp.com",
-  projectId: "gita-quiz",
-  storageBucket: "gita-quiz.appspot.com",
-  messagingSenderId: "638949342722",
-  appId: "1:638949342722:web:e12cc42de7206dab38311b",
-  measurementId: "G-GZ2E9VW9KD"
+  apiKey: "AIzaSyDA7McfAHjmyEX1PU8hOTqm8wtKffbgS64",
+  authDomain: "gita-learn-97c13.firebaseapp.com",
+  projectId: "gita-learn-97c13",
+  storageBucket: "gita-learn-97c13.appspot.com",
+  messagingSenderId: "606672044284",
+  appId: "1:606672044284:web:8bca1bd468a45d88d41779",
+  measurementId: "G-1XK9SLCGF4"
 };
 
 // Initialize Firebase

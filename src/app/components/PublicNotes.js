@@ -41,32 +41,42 @@ function PublicNotes({ verseId }) {
     validateAndFetchNotes();
   }, [verseId]);
 
-  const handleAddNote = async () => {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const verseIdString = String(verseId);
-        const notesCollectionRef = collection(db, 'publicNotes', verseIdString, 'Notes');
-        const uid = user.uid;
+// ...
 
-        // Fetch the user's display name
-        const userDocRef = doc(db, 'users', uid);
-        const userDoc = await getDoc(userDocRef);
+const handleAddNote = async () => {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      const uid = user.uid;
+
+      // Fetch the user's display name
+      const userDocRef = doc(db, 'users', uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (userDoc.exists()) {
         const username = userDoc.data().name;
 
         // Add new note
+        const verseIdString = String(verseId);
+        const notesCollectionRef = collection(db, 'publicNotes', verseIdString, 'Notes');
         const newNoteRef = await addDoc(notesCollectionRef, { uid, username, note: newNote });
 
         // Update the local state with the new note
         setPublicNotes([...publicNotes, { id: newNoteRef.id, uid, username, note: newNote }]);
         setNewNote('');
       } else {
-        console.error('User is not signed in.');
+        console.error('User document not found for UID:', uid);
       }
-    } catch (error) {
-      console.error('Error adding note:', error);
+    } else {
+      console.error('User is not signed in.');
     }
-  };
+  } catch (error) {
+    console.error('Error adding note:', error);
+  }
+};
+
+// ...
+
 
   const handleDeleteNote = async (id) => {
     try {

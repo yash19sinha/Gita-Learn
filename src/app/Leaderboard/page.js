@@ -12,48 +12,54 @@ function Leaderboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+
   useEffect(() => {
     async function fetchLeaderboard() {
-        try {
-          if (!verseId) {
-            setError('Verse ID is not provided.');
-            return;
-          }
-      
-          const scoresRef = collection(db, `scores/${verseId}/userScores`);
-          const scoresQuery = query(scoresRef, orderBy('score', 'desc'), limit(10));
-          const snapshot = await getDocs(scoresQuery);
-      
-          const leaderboardData = [];
-          for (const docSnapshot of snapshot.docs) {
-            const userData = docSnapshot.data();
-            const userId = docSnapshot.id;
-      
-            // Correct usage of doc function
-            const userDocRef = doc(db, 'users', userId);
-            const userDoc = await getDoc(userDocRef);
-            const displayName = userDoc.data().name;
-      
-            leaderboardData.push({
-              userId,
-              username: displayName,
-              ...userData,
-            });
-          }
-      
-          setLeaderboard(leaderboardData);
-        } catch (error) {
-          console.error('Error fetching leaderboard:', error);
-          setError('Failed to fetch leaderboard. Please try again.');
-        } finally {
-          setLoading(false);
+      try {
+        if (!verseId) {
+          setError('Verse ID is not provided.');
+          return;
         }
+
+        const scoresRef = collection(db, `scores/${verseId}/userScores`);
+        const scoresQuery = query(scoresRef, orderBy('score', 'desc'), limit(10));
+        const snapshot = await getDocs(scoresQuery);
+        console.log('Verse ID:', verseId);
+        console.log('Number of documents:', snapshot.docs.length);
+
+        const leaderboardData = [];
+        for (const docSnapshot of snapshot.docs) {
+          const userData = docSnapshot.data();
+          const userId = docSnapshot.id;
+
+          // Correct usage of doc function
+          const userDocRef = doc(db, 'users', userId);
+          const userDoc = await getDoc(userDocRef);
+          const displayName = userDoc.data().name;
+
+          leaderboardData.push({
+            userId,
+            username: displayName,
+            ...userData,
+          });
+        }
+
+        setLeaderboard(leaderboardData);
+      } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        setError('Failed to fetch leaderboard. Please try again. Error: ' + error.message);
+      } finally {
+        setLoading(false);
       }
+    }
 
     if (verseId) {
       fetchLeaderboard();
     }
   }, [verseId]);
+    
+  
 
   return (
     <div className='h-screen bg-white'>
