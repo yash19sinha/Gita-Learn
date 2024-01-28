@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import NotesSidebar from '../components/NotesSidebar';
 import { FaPenSquare } from "react-icons/fa";
 import PublicNotes from "../components/PublicNotes"
+import { addDoc, collection as firestoreCollection, getDocs, query, where } from 'firebase/firestore';
+import { auth, db } from '../firebase/config';
 
 function VerseDetail() {
   const router = useRouter();
@@ -16,6 +18,47 @@ function VerseDetail() {
   const [verseDetails, setVerseDetails] = useState({});
   const [audioData, setAudioData] = useState({});
   const [isNotesSidebarOpen, setIsNotesSidebarOpen] = useState(false);
+  const verseId = searchParams.get('verseId');
+  // const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
+  // const [communityId, setCommunityId] = useState('');
+  // const [generatedCommunityId, setGeneratedCommunityId] = useState('');
+
+  // const handleCreateCommunityId = async () => {
+  //   try {
+  //     const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
+  //     setGeneratedCommunityId(newCommunityId.toString());
+
+  //     // Store the new community ID in Firebase Firestore
+  //     const communityRef = await addDoc(firestoreCollection(db, 'communities'), {
+  //       communityId: newCommunityId,
+  //       createdAt: new Date(),
+  //     });
+
+  //     setIsCreatingCommunityId(true);
+  //   } catch (error) {
+  //     console.error('Error creating community ID:', error);
+  //   }
+  // };
+
+  // const handleEnterCommunityId = async () => {
+  //   try {
+  //     // Add logic to verify the entered community ID against existing IDs in Firestore
+  //     const communitiesCollection = firestoreCollection(db, 'communities');
+  //     const communityQuery = query(communitiesCollection, where('communityId', '==', parseInt(communityId)));
+  //     const communitySnapshot = await getDocs(communityQuery);
+
+  //     if (!communitySnapshot.empty) {
+  //       setIsCreatingCommunityId(false);
+  //     } else {
+  //       console.error('Invalid community ID');
+  //       // Handle invalid ID
+  //     }
+  //   } catch (error) {
+  //     console.error('Error entering community ID:', error);
+  //   }
+  // };
+
+
 
   const handleToggleNotesSidebar = () => {
     setIsNotesSidebarOpen((prev) => !prev);
@@ -24,7 +67,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const response = await fetch(`https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`);
+        const response = await fetch(`http://localhost:4000/api/verse/${chapterVerse}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -135,6 +178,47 @@ function VerseDetail() {
               Start Quiz
             </button>
             </div>
+        {/* <div className="flex justify-center p-4">
+        <div>
+          <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+            Create a Community ID
+          </button>
+        </div>
+        <div>
+          <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
+            Enter Community ID
+          </button>
+        </div>
+      </div>
+
+     
+      {isCreatingCommunityId && (
+        <div className="flex justify-center p-4">
+          <div>
+            <p>Community ID: {generatedCommunityId}</p>
+          </div>
+        </div>
+      )}
+
+      {!isCreatingCommunityId && (
+        <div className="flex justify-center p-4">
+          <div>
+            <input
+              type="text"
+              placeholder="Enter Community ID"
+              value={communityId}
+              onChange={(e) => setCommunityId(e.target.value)}
+            />
+            <button onClick={handleEnterCommunityId} className="btn btn-secondary">
+              Enter
+            </button>
+          </div>
+        </div>
+      )} */}
+
+           
+      
+      
             
             <button
               onClick={handleToggleNotesSidebar}

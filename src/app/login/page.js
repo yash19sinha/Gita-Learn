@@ -6,6 +6,7 @@ import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestor
 import { useRouter } from 'next/navigation'
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 
 const Login = () => {
@@ -48,6 +49,11 @@ const Login = () => {
   
   const handleForgotPassword = async () => {
     try {
+      if (!email) {
+        window.alert('Please enter your email address.');
+        return;
+      }
+  
       await sendPasswordResetEmail(auth, email);
       const successMessage = 'Password reset email sent. Check your email to reset your password.';
       window.alert(successMessage);
@@ -125,7 +131,7 @@ const Login = () => {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a href="/forgetpassword" 
+                  <a href="/login" 
                     className="font-semibold text-orange-600 bg-white hover:text-orange-500"
                     onClick={handleForgotPassword}
                   >
@@ -158,9 +164,9 @@ const Login = () => {
               <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold leading-6 text-slate-700 shadow-sm hover:bg-slate-300 focus:outline-none m-2"
+              className="flex justify-center w-full px-3 py-2 m-2 text-sm font-semibold leading-6 bg-white rounded-md shadow-sm text-slate-700 hover:bg-slate-300 focus:outline-none"
             >
-              <FcGoogle className='text-2xl mx-4' /> Sign In with Google
+              <FcGoogle className='mx-4 text-2xl' /> Sign In with Google
               
             </button>
           
