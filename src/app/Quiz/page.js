@@ -41,7 +41,7 @@ function Quiz() {
   useEffect(() => {
     async function fetchQuestions() {
       try {
-        const response = await fetch(`http://localhost:4000/api/questions/${verseId}`);
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/questions/${verseId}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');

@@ -67,7 +67,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const response = await fetch(`http://localhost:4000/api/verse/${chapterVerse}`);
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
