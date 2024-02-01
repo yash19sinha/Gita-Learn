@@ -8,6 +8,7 @@ import VerseDay from './components/VerseDay'
 import Quiz from './components/Quiz'
 import BooksCard from './components/BooksCard'
 import Link from 'next/link'
+import ReviewCard from './components/ReviewCard'
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
       <BooksCard />
       {/* <Chapters/> */}
       {/* <Quiz/> */}
+      <ReviewCard />
 
 
 

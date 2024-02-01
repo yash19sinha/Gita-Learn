@@ -1,6 +1,6 @@
 "use client";
 // pages/Quiz.js
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -13,12 +13,15 @@ function Quiz() {
   const router = useRouter();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState([]);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [score, setScore] = useState(0);
   const [timer, setTimer] = useState(20); // Timer in seconds
   const [timerId, setTimerId] = useState(null);
-  const communityId = searchParams.get('communityId');
+  const [selectedFillUps, setSelectedFillUps] = useState(Array(0).fill(''));
+  const selectedFillUpsRef = useRef(Array(0).fill(''));
+
+ 
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -42,28 +45,43 @@ function Quiz() {
     async function fetchQuestions() {
       try {
         const response = await fetch(`https://gita-learn-api.vercel.app/api/questions/${verseId}`);
-
+    
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
+    
         const data = await response.json();
-        const mcqQuestions = data.questions.mcq || [];
-        const fillUpsQuestions = data.questions.fillUps || [];
-      
-        const allQuestions = [...mcqQuestions, ...fillUpsQuestions];
-
-    setQuestions(allQuestions);
+  
+        let allQuestions = [];
+  
+        // Check if mcq questions exist, and add them to the array
+        if (data.questions.mcq) {
+          allQuestions = [...data.questions.mcq];
+        }
+  
+        // Check if fillUps questions exist, and add them to the array
+        if (data.questions.fillUps) {
+          allQuestions = [...allQuestions, ...data.questions.fillUps];
+        }
+  
+        setQuestions(allQuestions);
+    
+        // Initialize selectedFillUpsRef based on the first question
+        if (allQuestions.length > 0 && allQuestions[0].type === 'fillUps') {
+          selectedFillUpsRef.current = Array(allQuestions[0].correctAnswers.length).fill('');
+        }
       } catch (error) {
         console.error('Error fetching quiz questions:', error);
         // Handle error here
       }
     }
-
+    
     if (verseId) {
       fetchQuestions();
     }
   }, [verseId]);
+  
+  
 
   useEffect(() => {
     const uid = auth.currentUser?.uid;
@@ -152,10 +170,9 @@ function Quiz() {
     }, 1500);
   };
 
+  // Handle fill-up questions
+
   const handleFillUpsSubmit = () => {
-    // Clear the timer
-    clearInterval(timerId);
-  
     // Ensure that there are questions and currentQuestionIndex is within bounds
     if (!questions || questions.length === 0 || currentQuestionIndex >= questions.length) {
       console.log('Invalid question index or no questions found');
@@ -165,15 +182,17 @@ function Quiz() {
     const currentQuestion = questions[currentQuestionIndex];
   
     // Ensure that currentQuestion and its properties are defined
-    if (!currentQuestion || currentQuestion.type !== 'fillUps' || typeof currentQuestion.correctAnswer === 'undefined') {
-      console.log('Invalid current question or no correct answer found');
+    if (!currentQuestion || currentQuestion.type !== 'fillUps' || !Array.isArray(currentQuestion.correctAnswers)) {
+      console.log('Invalid current question or no correct answers found');
       return;
     }
   
-    // Ensure selectedOption is not null before performing operations
-    const isCorrect = selectedOption && selectedOption.toLowerCase().trim() === currentQuestion.correctAnswer.toLowerCase().trim();
+    // Use selectedFillUpsRef.current instead of selectedFillUps
+    const isCorrect = currentQuestion.correctAnswers.every((correctAnswers, index) =>
+      selectedFillUpsRef.current[index].toLowerCase().trim() === correctAnswers.toLowerCase().trim()
+    );
   
-    setSelectedOption(selectedOption);
+    // Update the score based on correctness
     const maxScore = 100;
     const earnedScore = isCorrect ? Math.max(50, Math.floor((timer / maxTimer) * maxScore)) : 0;
   
@@ -183,28 +202,50 @@ function Quiz() {
       setScore((prevScore) => prevScore + earnedScore);
     }
   
-    // Reset the timer and delay before moving to the next question
+    // Reset the timer
+    setTimer(maxTimer);
+  
+    // Delay before moving to the next question
     setTimeout(() => {
-      setTimer(maxTimer); // Reset the timer
       setCurrentQuestionIndex((prevIndex) => {
         console.log('Moving to the next question. Prev index:', prevIndex);
         return prevIndex + 1;
       });
-      setSelectedOption(null);
+  
+      // Clear the input values
+      const newSelectedFillUps = Array(currentQuestion.correctAnswers.length).fill('');
+      selectedFillUpsRef.current = newSelectedFillUps;
+      setSelectedFillUps(newSelectedFillUps);
+  
       setIsAnswerCorrect(null);
+  
+      // Set a new timer after a short delay to allow the UI to update
+      const newTimerId = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer <= 0) {
+            handleOptionClick(null); // Move to the next question without selecting an option
+            return maxTimer; // Reset the timer to maxTimer value
+          }
+          return prevTimer - 1;
+        });
+      }, 1000);
+  
+      // Save the new timer ID to state
+      setTimerId(newTimerId);
     }, 1500);
   };
   
-  // ...
-  
-  useEffect(() => {
-    if (timer === 0) {
-      handleFillUpsSubmit();
-    }
-  }, [timer]);
   
   
   
+  
+  
+  const handleFillUpsInputChange = (e, index) => {
+    const newAnswers = [...selectedFillUpsRef.current];
+    newAnswers[index] = e.target.value;
+    selectedFillUpsRef.current = newAnswers;
+    setSelectedFillUps(newAnswers); // Update the state for re-render
+  };
   
   
   
@@ -237,10 +278,7 @@ function Quiz() {
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  console.log('Verse ID:', verseId);
-console.log('Questions:', questions);
-console.log('Current Question Index:', currentQuestionIndex);
-console.log('Current Question:', currentQuestion);
+  
   
   return (
     <div className="flex flex-col items-center h-screen p-4 bg-white ">
@@ -269,40 +307,48 @@ console.log('Current Question:', currentQuestion);
 
         {/* Render options or input based on question type */}
         {currentQuestion.type === 'mcq' ? (
-          currentQuestion.options.map((option, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer p-4 m-2 rounded mb-2 font-medium md:text-lg text-sm ${
-                selectedOption === index
-                  ? isAnswerCorrect
-                    ? 'bg-green-500 text-white'
-                    : 'bg-red-500 text-white'
-                  : 'bg-blue-400 text-white'
-              }`}
-              onClick={() => handleOptionClick(index)}
-            >
-              {option}
-            </div>
-          ))
-        ) : currentQuestion.type === 'fillUps' ? (
-          <div>
-            <input
+        // Render multiple-choice options
+        currentQuestion.options.map((option, index) => (
+          <div
+            key={index}
+            className={`cursor-pointer p-4 m-2 rounded mb-2 font-medium md:text-lg text-sm ${
+              selectedOption === index
+                ? isAnswerCorrect
+                  ? 'bg-green-500 text-white'
+                  : 'bg-red-500 text-white'
+                : 'bg-blue-400 text-white'
+            }`}
+            onClick={() => handleOptionClick(index)}
+          >
+            {option}
+          </div>
+        ))
+      ) : currentQuestion.type === 'fillUps' ? (
+        <div>
+          {currentQuestion.correctAnswers.map((_, index) => (
+            <div key={index}>
+              <input
               type="text"
-              placeholder="Your Answer"
-              value={selectedOption || ''}
-              onChange={(e) => setSelectedOption(e.target.value)}
+              placeholder={`Your Answer for Blank ${index + 1}`}
+              value={selectedFillUpsRef.current[index] || ''}
+              onChange={(e) => handleFillUpsInputChange(e, index)}
               className="p-4 m-2 mb-2 text-sm font-medium text-white bg-blue-400 rounded md:text-lg"
             />
-            <button
-              className="p-2 m-2 text-white bg-blue-400 rounded cursor-pointer hover:bg-blue-600"
-              onClick={handleFillUpsSubmit}
-            >
-              Submit
-            </button>
-          </div>
-        ) : (
-          <p>Unsupported question type</p>
-        )}
+            
+            </div>
+            
+          ))}
+          <button
+            className="p-2 m-2 text-white bg-blue-400 rounded cursor-pointer hover:bg-blue-600"
+            onClick={handleFillUpsSubmit}
+          >
+            Submit
+          </button>
+        </div>
+      ) : (
+        <p>Unsupported question type</p>
+      )}
+
       </div>
     )}
 
