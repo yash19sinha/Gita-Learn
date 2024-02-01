@@ -32,7 +32,7 @@ const ReviewCard = () => {
 
   return (
     <div className="flex items-center justify-center p-3 m-3">
-    <div className="grid grid-cols-2 gap-10 m-5 md:grid-cols-3 justify-items-center xl:grid-cols-4 xl:max-w-screen-xl lg:max-w-screen-lg">
+    <div className="grid grid-cols-1 gap-10 m-5 md:grid-cols-3 justify-items-center xl:grid-cols-4 xl:max-w-screen-xl lg:max-w-screen-lg">
       {reviews.map((review, index) => (
         <div key={index} className="max-w-xs p-6 transition-transform transform bg-white rounded-lg shadow-2xl hover:scale-105 hover:shadow-lg">
           <img
@@ -42,7 +42,7 @@ const ReviewCard = () => {
           />
           <h3 className="mb-2 text-xl font-semibold">{review.name}</h3>
           <p className="mb-2 font-medium text-gray-800">{review.title}</p>
-          <p className="text-gray-600">{review.comment}</p>
+          <p className="text-xs text-gray-600 md:text-base ">{review.comment}</p>
         </div>
       ))}
     </div>
