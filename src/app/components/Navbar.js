@@ -50,7 +50,7 @@ export const Navbar = () => {
             
             
 
-            <li>
+            {/* <li>
               <a>Chapters</a>
               <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
               {chapters.map((chapter) => (
@@ -65,7 +65,7 @@ export const Navbar = () => {
               </li>
             ))}
               </ul>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -89,7 +89,7 @@ export const Navbar = () => {
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div> */}
-          <li tabIndex={0}>
+          {/* <li tabIndex={0}>
           <details >
             <summary className='text-lg font-semibold'>Chapters</summary>
             <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
@@ -103,7 +103,7 @@ export const Navbar = () => {
             </ul>
           </details>
 
-          </li>
+          </li> */}
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
         </ul>
       </div>
