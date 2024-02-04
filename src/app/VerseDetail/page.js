@@ -8,8 +8,11 @@ import { useRouter } from 'next/navigation';
 import NotesSidebar from '../components/NotesSidebar';
 import { FaPenSquare } from "react-icons/fa";
 import PublicNotes from "../components/PublicNotes"
-import { addDoc, collection as firestoreCollection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
+import { getFirestore } from 'firebase/firestore';
+
+
 
 function VerseDetail() {
   const router = useRouter();
@@ -18,45 +21,12 @@ function VerseDetail() {
   const [verseDetails, setVerseDetails] = useState({});
   const [audioData, setAudioData] = useState({});
   const [isNotesSidebarOpen, setIsNotesSidebarOpen] = useState(false);
-  const verseId = searchParams.get('verseId');
-  // const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
   // const [communityId, setCommunityId] = useState('');
+  // const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
   // const [generatedCommunityId, setGeneratedCommunityId] = useState('');
 
-  // const handleCreateCommunityId = async () => {
-  //   try {
-  //     const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
-  //     setGeneratedCommunityId(newCommunityId.toString());
 
-  //     // Store the new community ID in Firebase Firestore
-  //     const communityRef = await addDoc(firestoreCollection(db, 'communities'), {
-  //       communityId: newCommunityId,
-  //       createdAt: new Date(),
-  //     });
 
-  //     setIsCreatingCommunityId(true);
-  //   } catch (error) {
-  //     console.error('Error creating community ID:', error);
-  //   }
-  // };
-
-  // const handleEnterCommunityId = async () => {
-  //   try {
-  //     // Add logic to verify the entered community ID against existing IDs in Firestore
-  //     const communitiesCollection = firestoreCollection(db, 'communities');
-  //     const communityQuery = query(communitiesCollection, where('communityId', '==', parseInt(communityId)));
-  //     const communitySnapshot = await getDocs(communityQuery);
-
-  //     if (!communitySnapshot.empty) {
-  //       setIsCreatingCommunityId(false);
-  //     } else {
-  //       console.error('Invalid community ID');
-  //       // Handle invalid ID
-  //     }
-  //   } catch (error) {
-  //     console.error('Error entering community ID:', error);
-  //   }
-  // };
 
 
 
@@ -128,6 +98,49 @@ function VerseDetail() {
     router.push(`/Quiz?verseId=${chapterVerse}`);
   };
 
+  // const handleCreateCommunityId = async () => {
+  //   const verseId = searchParams.get('verseId');
+  //   try {
+  //     const communityIdRef = doc(collection(getFirestore(), 'communityIds'));
+  //     const communityIdSnapshot = await getDoc(communityIdRef);
+  
+  //     if (communityIdSnapshot.exists()) {
+  //       alert('Community ID already exists. Try entering the existing ID.');
+  //     } else {
+  //       const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
+  //       setGeneratedCommunityId(newCommunityId);
+  //       setIsCreatingCommunityId(true);
+  
+  //       // Store the community ID along with the verseId
+  //       const communityData = {
+  //         communityId: newCommunityId,
+  //         verseId: chapterVerse,
+  //       };
+  
+  //       // Save the community data to your database
+  //       await addDoc(collection(getFirestore(), 'communityIds'), communityData);
+  
+  //       console.log('Community ID created:', communityData);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error creating community ID:', error);
+  //     // Handle error here
+  //   }
+  // };
+  
+  // const handleEnterCommunityId = () => {
+  //   // Check if the entered community ID is valid
+  //   // You can implement additional validation here
+  
+  //   // Redirect to the community quiz page with the entered community ID and verseId as query parameters
+  //   const currentVerseId = searchParams.get('verseId');
+
+  //   // Redirect to the community quiz page with the entered community ID and correct verseId
+  //   router.push(`/CommunityQuiz?verseId=${currentVerseId}&communityId=${communityId}`);
+  
+  // };
+  
+
 
   return (
     <>
@@ -178,43 +191,43 @@ function VerseDetail() {
               Start Quiz
             </button>
             </div>
-        {/* <div className="flex justify-center p-4">
-        <div>
-          <button onClick={handleCreateCommunityId} className="btn btn-secondary">
-            Create a Community ID
-          </button>
-        </div>
-        <div>
-          <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
-            Enter Community ID
-          </button>
-        </div>
-      </div>
+            {/* <div className="flex justify-center p-4">
+  <div>
+    <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+      Create a Community ID
+    </button>
+  </div>
+  <div>
+    <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
+      Enter Community ID
+    </button>
+  </div>
+</div>
 
-     
-      {isCreatingCommunityId && (
-        <div className="flex justify-center p-4">
-          <div>
-            <p>Community ID: {generatedCommunityId}</p>
-          </div>
-        </div>
-      )}
+{isCreatingCommunityId && (
+  <div className="flex justify-center p-4">
+    <div>
+      <p>Community ID: {generatedCommunityId}</p>
+    </div>
+  </div>
+)}
 
-      {!isCreatingCommunityId && (
-        <div className="flex justify-center p-4">
-          <div>
-            <input
-              type="text"
-              placeholder="Enter Community ID"
-              value={communityId}
-              onChange={(e) => setCommunityId(e.target.value)}
-            />
-            <button onClick={handleEnterCommunityId} className="btn btn-secondary">
-              Enter
-            </button>
-          </div>
-        </div>
-      )} */}
+{!isCreatingCommunityId && (
+  <div className="flex justify-center p-4">
+    <div>
+      <input
+        type="text"
+        placeholder="Enter Community ID"
+        value={communityId}
+        onChange={(e) => setCommunityId(e.target.value)}
+      />
+      <button onClick={handleEnterCommunityId} className="btn btn-secondary">
+        Enter
+      </button>
+    </div>
+  </div>
+)} */}
+
 
            
       

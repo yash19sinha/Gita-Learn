@@ -1,46 +1,97 @@
+// components/Chapters.js
 "use client"
-import Image from 'next/image'
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation'
+import { Footer } from './components/Footer';
 
-import { Footer } from './components/Footer'
-// import Chapters from './components/Chapters'
-import VerseDay from './components/VerseDay'
-// import Carousel from './components/Carousel'
-import Quiz from './components/Quiz'
-import BooksCard from './components/BooksCard'
-import Link from 'next/link'
-import ReviewCard from './components/ReviewCard'
 
-export default function Home() {
+
+function Chapters() {
+  const searchParams = useSearchParams()
+  const chapterNumber = searchParams.get('chapterNumber');
+  const [chapters, setChapters] = useState([]);
+  const [verses, setVerses] = useState([]);
+
+
+
+  useEffect(() => {
+    async function fetchChapters() {
+      try {
+        const response = await fetch('https://gita-learn-api.vercel.app/api/chapters');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setChapters(data.chapters);
+      } catch (error) {
+        console.error('Error fetching chapters:', error);
+      }
+    }
+
+    fetchChapters();
+  }, []);
+
+  useEffect(() => {
+    console.log('Chapter Number:', chapterNumber);
+    async function fetchVerses() {
+
+      try {
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/verses/${chapterNumber}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('Chapter Number:', chapterNumber);
+        console.log('Verses Data:', data.verses);
+        setVerses(data.verses);
+      } catch (error) {
+        console.error('Error fetching verses:', error);
+        // Handle error here
+      }
+    }
+    if (chapterNumber) {
+      fetchVerses();
+    } else {
+      console.log('not working')
+
+    }
+  }, [chapterNumber]);
+
+
+
   return (
-    <div>
-  
-      {
-        <div className="flex justify-center bg-orange-200">
-          <div className="flex-col mx-8 hero-content lg:flex-row-reverse ">
-            <Image src="https://vedabase.io/static/img/vedabase-logo.svg" className="w-2/3 max-w-sm rounded-lg h-2/3 sm:w-3/5 sm:h-4/5" width={100} height={100} alt='cover-image'/>
-            <div className='justify-start'>
-              <h1 className="mx-20 my-4 text-3xl font-bold">Bhaktivedanta GitaLearn</h1>
-              <p className='mx-20 text-2xl font-medium sm:text-4xl'>The Best Source of Spiritual Knowledge.</p>
-              <p className="py-6 mx-20 text-xl sm:text-2xl">This is an online platform for Comprehensive Learning Bhagavad Gita </p>
-              <Link href="Chapters">
-              <button className="mx-20 text-white bg-orange-500 btn hover:text-black">Get Started</button>
-              </Link>
-            </div>
-          </div>
-        </div>}
-      {/* <Carousel/> */}
-      <BooksCard />
-      {/* <Chapters/> */}
-      {/* <Quiz/> */}
-      <ReviewCard />
+    <>
 
+      
+      <div className="p-4 mt-4 bg-white">
+      <h1 className="flex justify-center pt-5 mb-4 text-4xl font-bold">
+      Bhagavad Gita as it is
 
+      </h1>
+      <div className="mb-4">
+        <div className="items-start overflow-x-auto md:m-10 ">
+          <ul className='gap-10 p-3 m-5 sm:p-6 justify-items-center'>
+            {chapters.map((chapter) => (
+              <li key={chapter.chapter_number} className="justify-center w-full mb-4 ">
+                <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                  <h3 className="py-3 text-xl font-medium text-start sm:mx-20 sm:px-10 hover:bg-gray-100">Chapter {chapter.chapter_number}: {chapter.name}</h3>
+                 
+                
+                </Link>
 
+             
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+      </div>
+      </div>
+      <Footer/>
+    </>
+  );
 
-      <Footer />
-    </div>
-
-
-
-  )
 }
+
+export default Chapters;
