@@ -94,12 +94,18 @@ function VerseDetail() {
     }
   }
   const redirectToQuiz = () => {
-    // Redirect to the quiz page with the current chapterVerse as a query parameter
-    router.push(`/Quiz?verseId=${chapterVerse}`);
+    // Check if chapterVerse is a valid value before redirecting
+    if (chapterVerse) {
+      // Redirect to the quiz page with the current chapterVerse as a query parameter
+      router.push(`/Quiz?verseId=${chapterVerse}`);
+    } else {
+      console.error('Invalid chapterVerse:', chapterVerse);
+      // Handle the case where chapterVerse is null or invalid
+    }
   };
 
   // const handleCreateCommunityId = async () => {
-  //   const verseId = searchParams.get('verseId');
+   
   //   try {
   //     const communityIdRef = doc(collection(getFirestore(), 'communityIds'));
   //     const communityIdSnapshot = await getDoc(communityIdRef);
@@ -136,7 +142,7 @@ function VerseDetail() {
   //   const currentVerseId = searchParams.get('verseId');
 
   //   // Redirect to the community quiz page with the entered community ID and correct verseId
-  //   router.push(`/CommunityQuiz?verseId=${currentVerseId}&communityId=${communityId}`);
+  //   router.push(`/Quiz?verseId=${currentVerseId}&communityId=${communityId}`);
   
   // };
   
@@ -192,41 +198,41 @@ function VerseDetail() {
             </button>
             </div>
             {/* <div className="flex justify-center p-4">
-  <div>
-    <button onClick={handleCreateCommunityId} className="btn btn-secondary">
-      Create a Community ID
-    </button>
-  </div>
-  <div>
-    <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
-      Enter Community ID
-    </button>
-  </div>
-</div>
+              <div>
+                <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+                  Create a Community ID
+                </button>
+              </div>
+              <div>
+                <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
+                  Enter Community ID
+                </button>
+              </div>
+            </div>
 
-{isCreatingCommunityId && (
-  <div className="flex justify-center p-4">
-    <div>
-      <p>Community ID: {generatedCommunityId}</p>
-    </div>
-  </div>
-)}
+            {isCreatingCommunityId && (
+              <div className="flex justify-center p-4">
+                <div>
+                  <p>Community ID: {generatedCommunityId}</p>
+                </div>
+              </div>
+            )}
 
-{!isCreatingCommunityId && (
-  <div className="flex justify-center p-4">
-    <div>
-      <input
-        type="text"
-        placeholder="Enter Community ID"
-        value={communityId}
-        onChange={(e) => setCommunityId(e.target.value)}
-      />
-      <button onClick={handleEnterCommunityId} className="btn btn-secondary">
-        Enter
-      </button>
-    </div>
-  </div>
-)} */}
+            {!isCreatingCommunityId && (
+              <div className="flex justify-center p-4">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Enter Community ID"
+                    value={communityId}
+                    onChange={(e) => setCommunityId(e.target.value)}
+                  />
+                  <button onClick={handleEnterCommunityId} className="btn btn-secondary">
+                    Enter
+                  </button>
+                </div>
+              </div>
+            )} */}
 
 
            
