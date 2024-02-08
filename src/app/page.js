@@ -9,6 +9,7 @@ import Quiz from './components/Quiz'
 import BooksCard from './components/BooksCard'
 import Link from 'next/link'
 import ReviewCard from './components/ReviewCard'
+import AboutAuthor from './components/AboutAuthor'
 
 export default function Home() {
   return (
@@ -33,6 +34,7 @@ export default function Home() {
       {/* <Chapters/> */}
       {/* <Quiz/> */}
       <ReviewCard />
+      <AboutAuthor/>
 
 
 

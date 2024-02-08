@@ -4,6 +4,7 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
+import FullScreenComponent from '../FullScreen/FullScreenComponent';
 export const Navbar = () => {
 
   const [user] = useAuthState(auth);
@@ -100,6 +101,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
+      <Link href="http://localhost:3000/Chapters?bookId=1" className="text-white bg-orange-500 border-none btn hover:bg-orange-300 mx-2"> <FullScreenComponent/> </Link>
         {user ? (
           // If user is authenticated, show Logout button
           <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>
