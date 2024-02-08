@@ -45,13 +45,13 @@ export const Navbar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 text-black">
-            <li className='text-2xl'><Link href="/">Home</Link></li>
+            {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
-            <li><Link href="QuizPage">Quiz</Link></li>
+            <li><Link href="QuizPage">Quiz</Link></li> */}
             
             
 
-            <li>
+            {/* <li>
               <a>Chapters</a>
               <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
               {chapters.map((chapter) => (
@@ -66,23 +66,31 @@ export const Navbar = () => {
               </li>
             ))}
               </ul>
-            </li>
+            </li> */}
           </ul>
         </div>
 
 
 
-        <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">GitaLearn</Link>
+        <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">
+        <img
+            className="w-auto h-10 mx-auto"
+            src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
+            alt="Your Company"
+          />
+          GitaLearn
+        </Link>
+        
       </div>
       <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
-          <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
+          {/* <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>
-          <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li>
+          <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li> */}
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div> */}
-          <li tabIndex={0}>
+          {/* <li tabIndex={0}>
           <details >
             <summary className='text-lg font-semibold'>Chapters</summary>
             <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
@@ -96,7 +104,7 @@ export const Navbar = () => {
             </ul>
           </details>
 
-          </li>
+          </li> */}
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
         </ul>
       </div>

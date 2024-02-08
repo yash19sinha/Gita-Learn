@@ -76,9 +76,10 @@ function Quiz() {
       }
     }
     
-    if (verseId) {
+    if (verseId && verseId !== 'null') {
       fetchQuestions();
     }
+    
   }, [verseId]);
   
   
