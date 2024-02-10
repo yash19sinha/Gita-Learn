@@ -10,6 +10,7 @@ import { app, auth, db } from '../firebase/config'; // Update the path to fireba
 function Quiz() {
   const searchParams = useSearchParams();
   const verseId = searchParams.get('verseId');
+  const communityId = searchParams.get('communityId');
   const router = useRouter();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -86,16 +87,32 @@ function Quiz() {
 
   useEffect(() => {
     const uid = auth.currentUser?.uid;
-
+  
     if (verseId && currentQuestionIndex >= questions.length - 1 && uid) {
       const saveUserScore = async () => {
-        const scoreRef = doc(collection(db, `scores/${verseId}/userScores`), uid);
-        await setDoc(scoreRef, { score });
-        console.log('User score saved.');
+        let collectionPath = '';
+    
+        if (communityId) {
+          collectionPath = `communityScores/${verseId}/${communityId}_userScores`;
+        } else {
+          collectionPath = `scores/${verseId}/userScores`;
+        }
+    
+        try {
+          const scoreRef = doc(collection(db, collectionPath), uid);
+          await setDoc(scoreRef, { score });
+          console.log('User score saved.');
+        } catch (error) {
+          console.error('Error saving user score:', error);
+          // Handle error if necessary
+        }
       };
       saveUserScore();
     }
-  }, [verseId, currentQuestionIndex, questions.length, auth, db, score]);
+    
+  }, [verseId, communityId, currentQuestionIndex, questions.length, auth, db, score]);
+  
+  
 
   const maxTimer = 20;
 
@@ -252,9 +269,14 @@ function Quiz() {
   
 
   const navigateToLeaderboard = () => {
-    // Use Next.js Link to navigate to the leaderboard page
-    window.location.href = `/Leaderboard?verseId=${verseId}`;
+    // Use Next.js router to navigate to the leaderboard page
+    if (communityId) {
+      window.location.href = `/Leaderboard?verseId=${verseId}&communityId=${communityId}`;
+    } else {
+      window.location.href = `/Leaderboard?verseId=${verseId}`;
+    }
   };
+  
 
   if (questions.length === 0) {
     return <p className="mt-4 text-center">Loading questions...</p>;

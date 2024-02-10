@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
+// import SearchBar from './SearchBar';
 export const Navbar = () => {
 
   const [user] = useAuthState(auth);
@@ -84,13 +85,13 @@ export const Navbar = () => {
       </div>
       <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
-          {/* <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
-          <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>
-          <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li> */}
+          <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
+          {/* <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li> */}
+          <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
-          </div> */}
-          {/* <li tabIndex={0}>
+          </div>  */}
+          <li tabIndex={0}>
           <details >
             <summary className='text-lg font-semibold'>Chapters</summary>
             <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
@@ -104,12 +105,13 @@ export const Navbar = () => {
             </ul>
           </details>
 
-          </li> */}
+          </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
+          
         </ul>
       </div>
       <div className="navbar-end">
-      <Link href="http://localhost:3000/Chapters?bookId=1" className="text-white bg-orange-500 border-none btn hover:bg-orange-300 mx-2"> <FullScreenComponent/> </Link>
+      {/* <Link href='/' className="mx-2 text-white bg-orange-500 border-none btn hover:bg-orange-300"> <FullScreenComponent/> </Link> */}
         {user ? (
           // If user is authenticated, show Logout button
           <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>

@@ -70,19 +70,19 @@ function PublicNotes({ verseId }) {
               ? userDoc.data().displayName
               : userDoc.data().name;
   
-          if (image) {
-            // Upload image to Firebase Storage
-            const storageRef = ref(
-              storage,
-              `publicNotes/${verseId}/images/${image.name}`
-            );
-            await uploadBytes(storageRef, image);
-  
-            // Get download URL of the uploaded image
-            const downloadURL = await getDownloadURL(storageRef);
-            setImageUrl(downloadURL);
-          }
-  
+              if (image) {
+                // Upload image to Firebase Storage
+                const storageRef = ref(
+                  storage,
+                  `publicNotes/${verseId}/images/${image.name}`
+                );
+                await uploadBytes(storageRef, image);
+              
+                // Get download URL of the uploaded image
+                const downloadURL = await getDownloadURL(storageRef);
+                setImageUrl(downloadURL); // Set imageUrl here
+              }
+              
           // Add new note only if the image upload is successful
           const verseIdString = String(verseId);
           const notesCollectionRef = collection(
@@ -171,23 +171,23 @@ function PublicNotes({ verseId }) {
           </button>
           <ul className="mt-4">
           {publicNotes.map((note) => (
-            <li key={note.id} className="flex items-center justify-between p-4 mb-2 border rounded-lg">
-              <div>
-                <p><strong>{note.username}:</strong> {note.note}</p>
-                {note.imageUrl && (
-                  <Image src={note.imageUrl} alt="Public Note Image" className="max-w-full mt-2" width="200" height="200" />
-                )}
-              </div>
-              {note.uid === auth.currentUser?.uid && (
-                <button
-                  onClick={() => handleDeleteNote(note.id)}
-                  className="m-2 text-2xl text-red-500 hover:text-red-700"
-                >
-                  <MdDelete />
-                </button>
+          <li key={note.id} className="flex items-center justify-between p-4 mb-2 border rounded-lg">
+            <div>
+              <p><strong>{note.username}:</strong> {note.note}</p>
+              {note.imageUrl && (
+                <img src={note.imageUrl} alt="Public Note Image" className="max-w-full mt-2" />
               )}
-            </li>
-          ))}
+            </div>
+            {note.uid === auth.currentUser?.uid && (
+              <button
+                onClick={() => handleDeleteNote(note.id)}
+                className="m-2 text-2xl text-red-500 hover:text-red-700"
+              >
+                <MdDelete />
+              </button>
+            )}
+          </li>
+        ))}
 
           </ul>
         </div>

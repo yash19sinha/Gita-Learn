@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import NotesSidebar from '../components/NotesSidebar';
 import { FaPenSquare } from "react-icons/fa";
 import PublicNotes from "../components/PublicNotes"
-import { addDoc, collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '../firebase/config';
 import { getFirestore } from 'firebase/firestore';
 
@@ -21,9 +21,9 @@ function VerseDetail() {
   const [verseDetails, setVerseDetails] = useState({});
   const [audioData, setAudioData] = useState({});
   const [isNotesSidebarOpen, setIsNotesSidebarOpen] = useState(false);
-  // const [communityId, setCommunityId] = useState('');
-  // const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
-  // const [generatedCommunityId, setGeneratedCommunityId] = useState('');
+  const [communityId, setCommunityId] = useState('');
+  const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
+  const [generatedCommunityId, setGeneratedCommunityId] = useState('');
 
 
 
@@ -104,47 +104,56 @@ function VerseDetail() {
     }
   };
 
-  // const handleCreateCommunityId = async () => {
-   
-  //   try {
-  //     const communityIdRef = doc(collection(getFirestore(), 'communityIds'));
-  //     const communityIdSnapshot = await getDoc(communityIdRef);
+  const handleCreateCommunityId = async () => {
+    try {
+      const communityIdRef = doc(collection(getFirestore(), 'communityIds'));
+      const communityIdSnapshot = await getDoc(communityIdRef);
   
-  //     if (communityIdSnapshot.exists()) {
-  //       alert('Community ID already exists. Try entering the existing ID.');
-  //     } else {
-  //       const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
-  //       setGeneratedCommunityId(newCommunityId);
-  //       setIsCreatingCommunityId(true);
+      if (communityIdSnapshot.exists()) {
+        alert('Community ID already exists. Try entering the existing ID.');
+      } else {
+        const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
+        setGeneratedCommunityId(newCommunityId);
   
-  //       // Store the community ID along with the verseId
-  //       const communityData = {
-  //         communityId: newCommunityId,
-  //         verseId: chapterVerse,
-  //       };
+        setIsCreatingCommunityId(true);
   
-  //       // Save the community data to your database
-  //       await addDoc(collection(getFirestore(), 'communityIds'), communityData);
+        const communityData = {
+          communityId: newCommunityId,
+          verseId: chapterVerse,
+        };
   
-  //       console.log('Community ID created:', communityData);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error creating community ID:', error);
-  //     // Handle error here
-  //   }
-  // };
+        await addDoc(collection(getFirestore(), 'communityIds'), communityData);
   
-  // const handleEnterCommunityId = () => {
-  //   // Check if the entered community ID is valid
-  //   // You can implement additional validation here
-  
-  //   // Redirect to the community quiz page with the entered community ID and verseId as query parameters
-  //   const currentVerseId = searchParams.get('verseId');
+        console.log('Community ID created:', communityData);
+      }
+    } catch (error) {
+      console.error('Error creating community ID:', error);
+      // Handle error here
+    }
+  };
 
-  //   // Redirect to the community quiz page with the entered community ID and correct verseId
-  //   router.push(`/Quiz?verseId=${currentVerseId}&communityId=${communityId}`);
   
-  // };
+  const handleEnterCommunityId = async () => {
+    if (!communityId) {
+      alert('Please enter a Community ID.');
+      return;
+    }
+  
+    // Check if the entered community ID exists in the collection
+    const communityPinRef = collection(db, 'communityIds');
+    const communityPinQuery = query(communityPinRef, where('communityId', '==', parseInt(communityId))); // Assuming 'communityId' is the field where the pin is stored
+    const communityPinSnapshot = await getDocs(communityPinQuery);
+  
+    if (!communityPinSnapshot.empty) {
+      // The entered community ID exists in the collection
+      const currentVerseId = chapterVerse;
+      setIsCreatingCommunityId(false);
+      router.push(`/Quiz?verseId=${currentVerseId}&communityId=${communityId}`);
+    } else {
+      // The entered community ID does not exist in the collection
+      alert('Community ID does not exist. Please enter a valid ID.');
+    }
+  };
   
 
 
@@ -188,56 +197,67 @@ function VerseDetail() {
         {/* Display audio data */}
         {/* <div className="grid grid-cols-2 join"> */}
         <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10 ">
-
           <button onClick={previousPage} className=" join-item btn btn-outline">Previous page</button>
           <button onClick={nextPage} className="join-item btn btn-outline ">Next</button>
         </div>
-            <div className="flex justify-center p-4">
+        
+        <div className="flex justify-center p-4">
             <button onClick={redirectToQuiz} className="btn btn-primary">
               Start Quiz
             </button>
-            </div>
-            {/* <div className="flex justify-center p-4">
-              <div>
-                <button onClick={handleCreateCommunityId} className="btn btn-secondary">
-                  Create a Community ID
-                </button>
-              </div>
-              <div>
-                <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
-                  Enter Community ID
-                </button>
-              </div>
-            </div>
+        </div>
 
-            {isCreatingCommunityId && (
-              <div className="flex justify-center p-4">
-                <div>
-                  <p>Community ID: {generatedCommunityId}</p>
-                </div>
-              </div>
-            )}
+      
+        <div className="flex justify-center p-4 space-x-4">
+        {!isCreatingCommunityId ? (
+          <div>
+            <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+              Create a Community ID
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button onClick={() => setIsCreatingCommunityId(false)} className="btn btn-secondary">
+              Back
+            </button>
+          </div>
+        )}
+        <div>
+          <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
+            Enter Community ID
+          </button>
+        </div>
+      </div>
 
-            {!isCreatingCommunityId && (
-              <div className="flex justify-center p-4">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Enter Community ID"
-                    value={communityId}
-                    onChange={(e) => setCommunityId(e.target.value)}
-                  />
-                  <button onClick={handleEnterCommunityId} className="btn btn-secondary">
-                    Enter
-                  </button>
-                </div>
-              </div>
-            )} */}
+      {isCreatingCommunityId ? (
+        <div className="flex justify-center p-4">
+          <div>
+            <p className="text-lg">Community ID: {generatedCommunityId}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center p-4">
+          <div className="flex items-center space-x-4">
+            <input
+              type="text"
+              placeholder="Enter Community ID"
+              value={communityId}
+              onChange={(e) => setCommunityId(e.target.value)}
+              className="w-64 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            />
+            <button onClick={handleEnterCommunityId} className="btn btn-secondary">
+              Enter
+            </button>
+          </div>
+        </div>
+      )}
+
+        
+
 
 
            
-      
-      
+
             
             <button
               onClick={handleToggleNotesSidebar}
