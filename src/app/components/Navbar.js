@@ -88,6 +88,7 @@ export const Navbar = () => {
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           {/* <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li> */}
           <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
+          <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div>  */}
@@ -111,7 +112,7 @@ export const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-      {/* <Link href='/' className="mx-2 text-white bg-orange-500 border-none btn hover:bg-orange-300"> <FullScreenComponent/> </Link> */}
+      <Link href='/' className="mx-2 text-white bg-orange-500 border-none btn hover:bg-orange-300"> <FullScreenComponent/> </Link>
         {user ? (
           // If user is authenticated, show Logout button
           <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>
