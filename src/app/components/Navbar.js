@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
+// import SearchBar from './SearchBar';
 export const Navbar = () => {
 
   const [user] = useAuthState(auth);
@@ -45,13 +46,13 @@ export const Navbar = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
           <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 text-black">
-            <li className='text-2xl'><Link href="/">Home</Link></li>
+            {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
-            <li><Link href="QuizPage">Quiz</Link></li>
+            <li><Link href="QuizPage">Quiz</Link></li> */}
             
             
 
-            <li>
+            {/* <li>
               <a>Chapters</a>
               <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
               {chapters.map((chapter) => (
@@ -66,23 +67,31 @@ export const Navbar = () => {
               </li>
             ))}
               </ul>
-            </li>
+            </li> */}
           </ul>
         </div>
 
 
 
-        <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">GitaLearn</Link>
+        <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">
+        <img
+            className="w-auto h-10 mx-auto"
+            src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
+            alt="Your Company"
+          />
+          GitaLearn
+        </Link>
+        
       </div>
       <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
-          <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>
-          <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li>
+          {/* <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li> */}
+          <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
           <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
-          </div> */}
+          </div>  */}
           <li tabIndex={0}>
           <details >
             <summary className='text-lg font-semibold'>Chapters</summary>
@@ -99,10 +108,11 @@ export const Navbar = () => {
 
           </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
+          
         </ul>
       </div>
       <div className="navbar-end">
-      <Link href="http://localhost:3000/Chapters?bookId=1" className="text-white bg-orange-500 border-none btn hover:bg-orange-300 mx-2"> <FullScreenComponent/> </Link>
+      <Link href='/' className="mx-2 text-white bg-orange-500 border-none btn hover:bg-orange-300"> <FullScreenComponent/> </Link>
         {user ? (
           // If user is authenticated, show Logout button
           <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>
