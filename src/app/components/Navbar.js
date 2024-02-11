@@ -49,7 +49,10 @@ export const Navbar = () => {
             {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
-            
+          <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
+          <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent/> </Link> </li>
+
+          
             
 
             {/* <li>
@@ -107,12 +110,12 @@ export const Navbar = () => {
           </details>
 
           </li>
+          <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent/> </Link> </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
           
         </ul>
       </div>
       <div className="navbar-end">
-      <Link href='/' className="mx-2 text-white bg-orange-500 border-none btn hover:bg-orange-300"> <FullScreenComponent/> </Link>
         {user ? (
           // If user is authenticated, show Logout button
           <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>
