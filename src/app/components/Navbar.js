@@ -79,6 +79,7 @@ export const Navbar = () => {
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li>
           <li className='text-lg font-semibold'><Link href="QuizPage">Quiz</Link></li>
+          <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
           {/* <div className="form-control">
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div> */}
