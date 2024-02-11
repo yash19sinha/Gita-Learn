@@ -37,7 +37,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const response = await fetch(`https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`);
+        const response = await fetch(`http://localhost:4000/api/verse/${chapterVerse}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -164,11 +164,11 @@ function VerseDetail() {
 
       <div className="p-4 ">
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4" style={{whiteSpace: 'pre-line'}}>
 
-          <p className="flex p-5 text-xl font-bold text-center w-80">{verseDetails.sanskrit_shlok}</p>
+          <p className="flex p-5 text-xl font-bold text-center w-100">{verseDetails.sanskrit_shlok}</p>
         </div>
-        <div className="flex justify-center mb-4">
+        <div className="flex justify-center mb-4" style={{whiteSpace: 'pre-line'}}>
 
           <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
         </div>
