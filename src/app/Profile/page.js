@@ -67,23 +67,33 @@ function Profile() {
   }, [user]);
 
   return (
-    <div className="container p-4 mx-auto">
-      <h1 className="mb-4 text-3xl font-bold">Your Profile</h1>
+    <div className="container p-4 mx-auto bg-gray-100">
+      <h1 className="mb-4 text-3xl font-bold text-black">Your Profile</h1>
 
       {userData && (
-        <div>
-          <p>Email: {userData.email}</p>
-          <p>Name: {userData.name}</p>
-          <p>Phone Number: {userData.phoneNo}</p>
+        <div className="bg-white p-4 rounded shadow">
+          <p className="text-lg">
+            <span className="font-semibold">Email:</span> {userData.email}
+          </p>
+          <p className="text-lg">
+            <span className="font-semibold">Name:</span> {userData.name}
+          </p>
+          <p className="text-lg">
+            <span className="font-semibold">Phone Number:</span> {userData.phoneNo}
+          </p>
         </div>
       )}
 
-      <h2 className="mt-4 mb-2 text-2xl font-bold">Quiz Statistics</h2>
-      <p>Average Score: {averageScore.toFixed(2)}</p>
-      <p>Quizzes Attempted: {quizzesAttempted}</p>
+      {/* <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Quiz Statistics</h2>
+      <p className="text-lg">
+        <span className="font-semibold">Average Score:</span> {averageScore.toFixed(2)}
+      </p>
+      <p className="text-lg">
+        <span className="font-semibold">Quizzes Attempted:</span> {quizzesAttempted}
+      </p> */}
 
-      <h2 className="mt-4 mb-2 text-2xl font-bold">Reading Streak</h2>
-      <table className="table-auto">
+      <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
+      <table className="table-auto w-full bg-white rounded shadow">
         <thead>
           <tr>
             <th className="px-4 py-2">Day and date</th>
