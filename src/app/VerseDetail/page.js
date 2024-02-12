@@ -37,7 +37,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const response = await fetch(`https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`);
+        const response = await fetch(`http://localhost:4000/api/verse/${chapterVerse}`);
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -164,13 +164,14 @@ function VerseDetail() {
 
       <div className="p-4 ">
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">Bg. {chapterVerse}</h1>
+        
         <div className="flex justify-center mb-4" style={{whiteSpace: 'pre-line'}}>
 
           <p className="flex p-5 text-xl font-bold text-center w-100">{verseDetails.sanskrit_shlok}</p>
         </div>
         <div className="flex justify-center mb-4" style={{whiteSpace: 'pre-line'}}>
 
-          <p className="flex p-3 text-xl italic text-center w-72">{verseDetails.english_shlok}</p>
+          <p className="flex p-3 text-xl italic text-center w-100">{verseDetails.english_shlok}</p>
         </div>
         <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
           <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
@@ -202,7 +203,7 @@ function VerseDetail() {
         </div>
         
         <div className="flex justify-center p-4">
-            <button onClick={redirectToQuiz} className="btn btn-primary">
+            <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
               Start Quiz
             </button>
         </div>
@@ -211,9 +212,9 @@ function VerseDetail() {
         <div className="flex justify-center p-4 space-x-4">
         {!isCreatingCommunityId ? (
           <div>
-            <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+            {/* <button onClick={handleCreateCommunityId} className="btn btn-secondary">
               Create a Community ID
-            </button>
+            </button> */}
           </div>
         ) : (
           <div>
@@ -222,11 +223,11 @@ function VerseDetail() {
             </button>
           </div>
         )}
-        <div>
+        {/* <div>
           <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
             Enter Community ID
           </button>
-        </div>
+        </div> */}
       </div>
 
       {isCreatingCommunityId ? (
@@ -245,7 +246,7 @@ function VerseDetail() {
               onChange={(e) => setCommunityId(e.target.value)}
               className="w-64 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
-            <button onClick={handleEnterCommunityId} className="btn btn-secondary">
+            <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
               Enter
             </button>
           </div>

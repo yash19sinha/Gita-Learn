@@ -8,6 +8,13 @@ function PublicNotes({ verseId }) {
   const [showNotes, setShowNotes] = useState(false);
   const [image, setImg] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [accordionNames] = useState(['Images']);
+  // const [accordionNames] = useState(['Images', 'Prabupadas Imaportant Lecture', 'Accordion Three']);
+
+  const handleClick = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -54,8 +61,36 @@ function PublicNotes({ verseId }) {
   };
 
   return (
+    
     <div className="container p-4 mx-auto font-normal text-justify">
-      <button
+    <div className="w-full">
+      {[1].map((index) => (
+        <div key={index} className="mb-2 border border-gray-300 rounded-md">
+          <button
+            onClick={() => handleClick(index)}
+            className="w-full px-4 py-2 text-2xl text-left bg-gray-200"
+          >
+            {accordionNames[index - 1]} {/* Use the corresponding name for each accordion */}
+          </button>
+          {activeIndex === index && (
+            <div className="p-4 bg-white">
+              {/* Content for Accordion {index} */}
+              {index === 1 && (
+                <div>
+                  {imageUrls.map((url, index) => (
+                    <img key={index} src={url} alt={`Uploaded Image ${index + 1}`} className="max-w-full mt-2 h-180 w-180" />
+                  ))}
+                </div>
+              )}
+              {/* {index === 2 && <p>This is content for Accordion 2</p>}
+              {index === 3 && <p>This is content for Accordion 3</p>} */}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  
+      {/* <button
         onClick={() => setShowNotes(!showNotes)}
         className="mb-4 btn"
       >
@@ -82,13 +117,13 @@ function PublicNotes({ verseId }) {
               <p>Uploaded Images:</p>
               <div>
                 {imageUrls.map((url, index) => (
-                  <Image key={index} src={url} alt={`Uploaded Image ${index + 1}`} className="max-w-full mt-2" width="200" height="200" />
+                  <img key={index} src={url} alt={`Uploaded Image ${index + 1}`} className="max-w-full mt-2 h-180 w-180"  />
                 ))}
               </div>
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 }
