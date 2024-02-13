@@ -1,15 +1,13 @@
 "use client"
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { doc, getDoc, collection, getDocs, query, orderBy, limit, where } from 'firebase/firestore';
 import { db } from '../firebase/config';
-import { comma } from 'postcss/lib/list';
 
 function Leaderboard() {
   const searchParams = useSearchParams();
   const verseId = searchParams.get('verseId');
   const communityId = searchParams.get('communityId');
-  console.log(communityId);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,14 +21,11 @@ function Leaderboard() {
         }
 
         let scoresRef;
-        console.log(communityId);
+
         if (communityId && isValidCommunityId(communityId)) {
-          // Construct collection reference with community ID
           scoresRef = collection(db, `communityScores/${verseId}/${communityId}_userScores`);
         } else {
-          // Handle invalid community ID or absence of community ID
-          setError('Invalid community ID');
-          return;
+          scoresRef = collection(db, `scores/${verseId}/userScores`);
         }
 
         const scoresQuery = query(scoresRef, orderBy('score', 'desc'), limit(10));
@@ -80,7 +75,6 @@ function Leaderboard() {
   }, [verseId, communityId]);
 
   function isValidCommunityId(communityId) {
-    // Check if the communityId is a non-empty string
     return typeof communityId === 'string' && communityId.trim() !== '';
   }
 
@@ -93,7 +87,9 @@ function Leaderboard() {
           <p className="text-center text-red-500">{error}</p>
         ) : (
           <div>
-            <h1 className="mb-4 text-2xl font-bold md:text-3xl">{communityId ? `Leaderboard for Community ${communityId}` : `Leaderboard for Verse: ${verseId}`}</h1>
+            <h1 className="mb-4 text-2xl font-bold md:text-3xl">
+              {communityId ? `Leaderboard for Community ${communityId}` : `Leaderboard for Verse: ${verseId}`}
+            </h1>
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

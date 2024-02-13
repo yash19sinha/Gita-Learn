@@ -24,6 +24,7 @@ function VerseDetail() {
   const [communityId, setCommunityId] = useState('');
   const [isCreatingCommunityId, setIsCreatingCommunityId] = useState(false);
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
+  const [questionsExist, setQuestionsExist] = useState(false);
 
 
 
@@ -183,6 +184,27 @@ function VerseDetail() {
   };
   
 
+  
+  useEffect(() => {
+    async function checkQuestionsExist() {
+      try {
+        const response = await fetch(`https://gita-learn-api.vercel.app/api/questions/${chapterVerse}`);
+        const data = await response.json();
+        if (data[chapterVerse] && data[chapterVerse].fillUps && data[chapterVerse].fillUps.length > 0) {
+          setQuestionsExist(true);
+        } else {
+          setQuestionsExist(false);
+        }
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+    }
+
+    if (chapterVerse) {
+      checkQuestionsExist();
+    }
+  }, [chapterVerse]);
+
 
   return (
     <>
@@ -230,22 +252,24 @@ function VerseDetail() {
         </div>
         
         <div className="flex justify-center p-4">
-            <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
-              Start Quiz
-            </button>
-        </div>
+        {/* {questionsExist && ( */}
+          <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
+            Start Quiz
+          </button>
+       {/* )} */}
+      </div>
 
       
         <div className="flex justify-center p-4 space-x-4">
         {!isCreatingCommunityId ? (
           <div>
-            {/* <button onClick={handleCreateCommunityId} className="btn btn-secondary">
+            <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
               Create a Community ID
-            </button> */}
+            </button>
           </div>
         ) : (
           <div>
-            <button onClick={() => setIsCreatingCommunityId(false)} className="btn btn-secondary">
+            <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
               Back
             </button>
           </div>
@@ -271,7 +295,7 @@ function VerseDetail() {
               placeholder="Enter Community ID"
               value={communityId}
               onChange={(e) => setCommunityId(e.target.value)}
-              className="w-64 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
             <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
               Enter

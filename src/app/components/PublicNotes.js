@@ -68,7 +68,7 @@ function PublicNotes({ verseId }) {
         <div key={index} className="mb-2 border border-gray-300 rounded-md">
           <button
             onClick={() => handleClick(index)}
-            className="w-full px-4 py-2 text-2xl text-left bg-gray-200"
+            className="w-full p-4 text-xl text-left bg-gray-200"
           >
             {accordionNames[index - 1]} {/* Use the corresponding name for each accordion */}
           </button>
