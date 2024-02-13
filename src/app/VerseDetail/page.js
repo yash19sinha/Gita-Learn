@@ -72,27 +72,54 @@ function VerseDetail() {
     }
   }, [chapterVerse]);
 
-  const previousPage = () => {
-  const chapterVerseNumber = parseFloat(chapterVerse);
-
-  if (!isNaN(chapterVerseNumber) && chapterVerseNumber > 0.1) {
-    const previousChapter = (chapterVerseNumber - 0.1).toFixed(1);
-    window.location.href = `/VerseDetail?chapterVerse=${previousChapter}`;
-  }
-    
-
-  }
-  const nextPage = () => {
-    const chapterVerseNumber = parseFloat(chapterVerse);
-    
-    // Navigate to the next chapter (add 1)
-    if (!isNaN(chapterVerseNumber)) {
-      const nextChapter = (chapterVerseNumber + 0.1).toFixed(1);
-      // Use next/navigation or your preferred method to navigate to the next chapter
-      // Replace 'your-route-here' with the actual route for VerseDetail
-      window.location.href = `/VerseDetail?chapterVerse=${nextChapter}`;
+  const fetchVerseNumbers = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/verseNumbers');
+      if (!response.ok) {
+        throw new Error('Failed to fetch verse numbers');
+      }
+      const data = await response.json();
+      return data.verseNumbers;
+    } catch (error) {
+      console.error('Error fetching verse numbers:', error);
+      return [];
     }
-  }
+  };
+
+  // Function to handle previous button click
+  const handlePreviousPage = async () => {
+    try {
+      const verseNumbers = await fetchVerseNumbers();
+      const currentIndex = verseNumbers.indexOf(chapterVerse);
+      if (currentIndex > 0) {
+        const previousChapterVerse = verseNumbers[currentIndex - 1];
+        router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
+      } else {
+        console.log('No previous verse available');
+      }
+    } catch (error) {
+      console.error('Error navigating to previous verse:', error);
+    }
+  };
+
+  // Function to handle next button click
+  const handleNextPage = async () => {
+    try {
+      const verseNumbers = await fetchVerseNumbers();
+      const currentIndex = verseNumbers.indexOf(chapterVerse);
+      if (currentIndex < verseNumbers.length - 1) {
+        const nextChapterVerse = verseNumbers[currentIndex + 1];
+        router.push(`/VerseDetail?chapterVerse=${nextChapterVerse}`);
+      } else {
+        console.log('No next verse available');
+      }
+    } catch (error) {
+      console.error('Error navigating to next verse:', error);
+    }
+  };
+  
+  
+  
   const redirectToQuiz = () => {
     // Check if chapterVerse is a valid value before redirecting
     if (chapterVerse) {
@@ -197,9 +224,9 @@ function VerseDetail() {
         {/* Conditionally render the Purport section */}
         {/* Display audio data */}
         {/* <div className="grid grid-cols-2 join"> */}
-        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10 ">
-          <button onClick={previousPage} className=" join-item btn btn-outline">Previous page</button>
-          <button onClick={nextPage} className="join-item btn btn-outline ">Next</button>
+        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10">
+          <button onClick={handlePreviousPage} className="join-item btn btn-outline">Previous page</button>
+          <button onClick={handleNextPage} className="join-item btn btn-outline">Next</button>
         </div>
         
         <div className="flex justify-center p-4">
