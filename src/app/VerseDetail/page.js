@@ -74,7 +74,7 @@ function VerseDetail() {
 
   const fetchVerseNumbers = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/verseNumbers');
+      const response = await fetch('https://gita-learn-api.vercel.app/api/verseNumbers');
       if (!response.ok) {
         throw new Error('Failed to fetch verse numbers');
       }
