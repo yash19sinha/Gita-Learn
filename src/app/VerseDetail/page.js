@@ -184,26 +184,45 @@ function VerseDetail() {
   };
   
 
+  async function fetchQuestions(chapterVerse) {
+    try {
+      const response = await fetch(`https://gita-learn-api.vercel.app/api/questions/${chapterVerse}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch questions');
+      }
+      const data = await response.json();
+      return data.questions;
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+      return null;
+    }
+  }
+
   
+  
+  // Define a function to check if questions exist for a given chapterVerse
+// Define a function to check if any type of questions exist for a given chapterVerse
+async function checkQuestionsExist(chapterVerse) {
+  const questions = await fetchQuestions(chapterVerse);
+  return questions && questions.fillUps && questions.fillUps.length > 0;
+
+}
+  
+  
+  // Use the useEffect hook to fetch questions and update questionsExist state
   useEffect(() => {
-    async function checkQuestionsExist() {
-      try {
-        const response = await fetch(`https://gita-learn-api.vercel.app/api/questions/${chapterVerse}`);
-        const data = await response.json();
-        if (data[chapterVerse] && data[chapterVerse].fillUps && data[chapterVerse].fillUps.length > 0) {
-          setQuestionsExist(true);
-        } else {
-          setQuestionsExist(false);
-        }
-      } catch (error) {
-        console.error('Error fetching questions:', error);
+    async function updateQuestionsExist() {
+      if (chapterVerse) {
+        console.log('Fetching questions for chapter verse:', chapterVerse);
+        const exist = await checkQuestionsExist(chapterVerse);
+        setQuestionsExist(exist);
       }
     }
-
-    if (chapterVerse) {
-      checkQuestionsExist();
-    }
+    updateQuestionsExist();
   }, [chapterVerse]);
+
+  
+
 
 
   return (
@@ -252,57 +271,57 @@ function VerseDetail() {
         </div>
         
         <div className="flex justify-center p-4">
-        {/* {questionsExist && ( */}
-          <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
-            Start Quiz
-          </button>
-       {/* )} */}
+  {questionsExist && (
+    <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
+      Start Quiz
+    </button>
+  )}
+</div>
+
+{questionsExist && (
+  <div className="flex justify-center p-4 space-x-4">
+    {!isCreatingCommunityId ? (
+      <div>
+        <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
+          Create a Community ID
+        </button>
       </div>
+    ) : (
+      <div>
+        <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
+          Back
+        </button>
+      </div>
+    )}
+  </div>
+)}
+
+{isCreatingCommunityId && (
+  <div className="flex justify-center p-4">
+    <div>
+      <p className="text-lg">Community ID: {generatedCommunityId}</p>
+    </div>
+  </div>
+)}
+
+{questionsExist && !isCreatingCommunityId && (
+  <div className="flex justify-center p-4">
+    <div className="flex items-center space-x-4">
+      <input
+        type="text"
+        placeholder="Enter Community ID"
+        value={communityId}
+        onChange={(e) => setCommunityId(e.target.value)}
+        className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+      />
+      <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
+        Enter
+      </button>
+    </div>
+  </div>
+)}
 
       
-        <div className="flex justify-center p-4 space-x-4">
-        {!isCreatingCommunityId ? (
-          <div>
-            <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
-              Create a Community ID
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
-              Back
-            </button>
-          </div>
-        )}
-        {/* <div>
-          <button onClick={() => setIsCreatingCommunityId(true)} className="btn btn-secondary">
-            Enter Community ID
-          </button>
-        </div> */}
-      </div>
-
-      {isCreatingCommunityId ? (
-        <div className="flex justify-center p-4">
-          <div>
-            <p className="text-lg">Community ID: {generatedCommunityId}</p>
-          </div>
-        </div>
-      ) : (
-        <div className="flex justify-center p-4">
-          <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Enter Community ID"
-              value={communityId}
-              onChange={(e) => setCommunityId(e.target.value)}
-              className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            />
-            <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
-              Enter
-            </button>
-          </div>
-        </div>
-      )}
 
         
 
