@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/auth';
 import { collection, doc, getDoc, getDocs, query, where, updateDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../firebase/config';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+
 
 function Profile() {
   const { user } = useAuth();
@@ -16,6 +20,7 @@ function Profile() {
   const [phoneno, setPhoneno] = useState('');
   const [newPhoneNo, setNewPhoneNo] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -30,9 +35,16 @@ function Profile() {
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
 
+
+
           if (userDoc.exists()) {
             const userDataFromFirestore = userDoc.data();
             setUserData(userDataFromFirestore);
+
+            if (user.photoURL) {
+              console.log('User Photo URL:', user.photoURL);
+              setImageURL(user.photoURL);
+            }
 
             const scoresRef = collection(db, 'scores');
             const userScoresQuery = query(scoresRef, where('userId', '==', user.uid));
@@ -56,11 +68,16 @@ function Profile() {
                 timer: (timerData.timer / 60).toFixed(2),
                 timestamp: timerData.timestamp.toDate(),
               }));
-
+              console.log(timersArray)
               setTimersData(timersArray);
             } else {
               console.error('Timers data not found in user document.');
             }
+
+            // forEach(map arr : timersArray){
+
+            // }
+
           } else {
             console.error('User document not found in Firestore.');
           }
@@ -72,6 +89,9 @@ function Profile() {
 
     fetchUserProfile();
   }, [user]);
+
+  const readingStreakData = userData?.timers?.map((timerData) => timerData.timestamp.toDate()) || [];
+
 
   const updatePhoneNumber = async () => {
     try {
@@ -92,10 +112,43 @@ function Profile() {
     }
   };
 
-  return (
-    <div className="container p-4 mx-auto bg-gray-100">
-      <h1 className="mb-4 text-3xl font-bold text-black">Your Profile</h1>
 
+  const hasUserDataForDate = (date) => {
+    // Convert the date to a string in the format 'YYYY-MM-DD' for comparison
+    const dateString = date.toISOString().split('T')[0];
+  
+    // Check if the timersData array contains an entry for the given date
+    return timersData.some((timer) => {
+      const timerDateString = timer.timestamp.toISOString().split('T')[0];
+      return dateString === timerDateString;
+    });
+  };
+
+
+  const customTileContent = ({ date, view }) => {
+    if (view === 'month') {
+      const isDateHighlighted = hasUserDataForDate(date);
+  
+      return (
+        <div className={`custom-tile ${isDateHighlighted ? 'highlighted' : ''}`}>
+          {date.getDate()}
+        </div>
+      );
+    }
+  
+    return null;
+  };
+
+  return (
+    <div className="container p-4 mx-auto mt-4 bg-gray-100">
+      <h1 className="text-3xl font-bold text-black flex my-2">
+        {imageURL && (
+          <img
+            src={imageURL}
+            alt="User Profile"
+            className="w-12 h-12 rounded-full mr-4"
+          />
+        )} Your Profile</h1>
       {userData && (
         <div className="bg-white p-4 rounded shadow">
           <p className="text-lg">
@@ -138,7 +191,13 @@ function Profile() {
       )}
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
-      <table className="table-auto w-full bg-white rounded shadow">
+      <Calendar
+        startDate={new Date('2024-01-01')} // Adjust the start date as needed
+        endDate={new Date()} // Adjust the end date as needed
+        values={customTileContent}
+        className="custom-calendar mx-auto"
+      />
+      <table className="table-auto w-full bg-white rounded shadow my-4">
         <thead>
           <tr>
             <th className="px-4 py-2">Day and date</th>
@@ -148,7 +207,7 @@ function Profile() {
         <tbody>
           {timersData.map((timer, index) => (
             <tr key={index}>
-              <td className="border px-4 py-2">{timer.timestamp.toISOString()}</td>
+              <td className="border px-4 py-2">{timer.timestamp.toDateString()}</td>
               <td className="border px-4 py-2">{timer.timer} Minutes</td>
             </tr>
           ))}
