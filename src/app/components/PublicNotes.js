@@ -20,7 +20,7 @@ function PublicNotes({ verseId }) {
   const [accordionNames] = useState([
     "Mindmap",
     "Prabupada Lecture",
-    "Senior Devotees",
+    "Senior Devotees LecturesS",
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
@@ -198,8 +198,8 @@ function PublicNotes({ verseId }) {
 
 export default PublicNotes;
 
-
-      {/* <button
+{
+  /* <button
         onClick={() => setShowNotes(!showNotes)}
         className="mb-4 btn"
       >
@@ -232,4 +232,5 @@ export default PublicNotes;
             </div>
           )}
         </div>
-      )} */}
+      )} */
+}
