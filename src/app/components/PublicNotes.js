@@ -20,7 +20,7 @@ function PublicNotes({ verseId }) {
   const [accordionNames] = useState([
     "Mindmap",
     "Prabupada Lecture",
-    "Senior Devotees LecturesS",
+    "Senior Devotees Lectures",
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
