@@ -279,12 +279,12 @@ function Quiz() {
   
 
   if (questions.length === 0) {
-    return <p className="mt-4 text-center">Loading questions...</p>;
+    return <p className="h-full mt-4 text-center bg-white">Loading questions...</p>;
   }
 
   if (currentQuestionIndex >= questions.length) {
     return (
-      <div className='flex justify-center h-screen p-4 m-5 bg-white'>
+      <div className='flex justify-center h-full p-4 m-5 bg-white'>
         <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
           <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
           <button
@@ -304,7 +304,7 @@ function Quiz() {
   
   
   return (
-    <div className="flex flex-col items-center h-screen p-4 bg-white ">
+    <div className="flex flex-col items-center h-full p-4 bg-white ">
     <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
     {/* Render questions based on type */}
@@ -355,7 +355,8 @@ function Quiz() {
               placeholder={`Your Answer for Blank ${index + 1}`}
               value={selectedFillUpsRef.current[index] || ''}
               onChange={(e) => handleFillUpsInputChange(e, index)}
-              className="p-4 m-2 mb-2 text-sm font-medium text-white bg-blue-400 rounded md:text-lg"
+              className="p-4 m-2 mb-2 text-sm font-medium text-white bg-blue-400 rounded placeholder-slate-300 md:text-lg"
+
             />
             
             </div>
@@ -376,7 +377,7 @@ function Quiz() {
     )}
 
     {/* Current Score */}
-    <p className="mt-4 text-lg font-semibold bg-white">Current Score: {score}</p>
+    <p className="h-full mt-4 text-lg font-semibold bg-white">Current Score: {score}</p>
   </div>
   );
 }
