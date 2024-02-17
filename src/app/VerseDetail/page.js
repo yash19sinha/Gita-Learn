@@ -325,9 +325,7 @@ async function checkQuestionsExist(chapterVerse) {
 
         
 
-
-
-           
+    
 
             
             <button
