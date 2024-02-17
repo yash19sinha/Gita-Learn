@@ -13,7 +13,7 @@ const SearchBar = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/search', { user_query: searchQuery });
+      const response = await axios.post('https://gita-ml-search.onrender.com/search', { user_query: searchQuery });
       setSearchResults([response.data]); // Ensure searchResults is an array with the response data as its single element
       setError(null);
     } catch (error) {
