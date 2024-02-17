@@ -11,14 +11,24 @@ function Profile() {
   const [averageScore, setAverageScore] = useState(0);
   const [quizzesAttempted, setQuizzesAttempted] = useState(0);
   const [timersData, setTimersData] = useState([]);
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [phoneno, setPhoneno] = useState('')
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         if (user) {
           // Fetch user data from Firestore
+          const email = user.email;
+          const name = user.displayName;
+          const phoneno = user.phoneNumber;
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
+
+          setEmail(email);
+          setName(name);
+          setPhoneno(phoneno);
     
           if (userDoc.exists()) {
             const userDataFromFirestore = userDoc.data();
@@ -73,13 +83,13 @@ function Profile() {
       {userData && (
         <div className="bg-white p-4 rounded shadow">
           <p className="text-lg">
-            <span className="font-semibold">Email:</span> {userData.email}
+            <span className="font-semibold">Email:</span> {email}
           </p>
           <p className="text-lg">
-            <span className="font-semibold">Name:</span> {userData.name}
+            <span className="font-semibold">Name:</span> {name || userData.name}
           </p>
           <p className="text-lg">
-            <span className="font-semibold">Phone Number:</span> {userData.phoneNo}
+            <span className="font-semibold">Phone Number:</span> {phoneno || userData.phoneNo}
           </p>
         </div>
       )}
