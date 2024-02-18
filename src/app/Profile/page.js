@@ -3,10 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/auth';
 import { collection, doc, getDoc, getDocs, query, where, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../firebase/config';
-import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css';
+import { Tooltip } from 'react-tooltip';
+
+
 
 
 function Profile() {
@@ -90,7 +93,6 @@ function Profile() {
     fetchUserProfile();
   }, [user]);
 
-  const readingStreakData = userData?.timers?.map((timerData) => timerData.timestamp.toDate()) || [];
 
 
   const updatePhoneNumber = async () => {
@@ -112,32 +114,29 @@ function Profile() {
     }
   };
 
-
   const hasUserDataForDate = (date) => {
+    // Ensure date is defined
+    if (!date) {
+      return false;
+    }
+  
     // Convert the date to a string in the format 'YYYY-MM-DD' for comparison
     const dateString = date.toISOString().split('T')[0];
   
     // Check if the timersData array contains an entry for the given date
     return timersData.some((timer) => {
-      const timerDateString = timer.timestamp.toISOString().split('T')[0];
+      // Ensure timer and timestamp are defined
+      if (!timer || !timer.timestamp) {
+        return false;
+      }
+  
+      const timerDateString = timer.timestamp.toDate().split('T')[0];
+      console.log(timerDateString);
       return dateString === timerDateString;
     });
   };
 
 
-  const customTileContent = ({ date, view }) => {
-    if (view === 'month') {
-      const isDateHighlighted = hasUserDataForDate(date);
-  
-      return (
-        <div className={`custom-tile ${isDateHighlighted ? 'highlighted' : ''}`}>
-          {date.getDate()}
-        </div>
-      );
-    }
-  
-    return null;
-  };
 
   return (
     <div className="container p-4 mx-auto mt-4 bg-gray-100">
@@ -191,12 +190,39 @@ function Profile() {
       )}
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
-      <Calendar
+      <CalendarHeatmap
         startDate={new Date('2024-01-01')} // Adjust the start date as needed
-        endDate={new Date()} // Adjust the end date as needed
-        values={customTileContent}
-        className="custom-calendar mx-auto"
+        endDate={new Date('2024-12-31')} // Adjust the end date as needed
+        values={
+          timersData.map((timer) => ({
+            date: timer.timestamp.toISOString().split('T')[0],
+            count: 2, // Assuming each entry in the array represents 1 minute
+          }))
+        }
+        // values={[
+        //   { date: '2024-01-01', count: 1 },
+        //   { date: '2024-01-06', count: 2 },
+        //   { date: '2024-01-06', count: 2 },
+        //   // ...and so on
+        // ]}
+        classForValue={(value) => {
+          if (!value) {
+            return 'color-empty';
+          }
+          // return `color-scale-${Math.min(5, Math.ceil(value))}`;
+          // return hasUserDataForDate(value.date) ? 'highlighted' : 'color-empty';
+          return `color-scale-${value.count}`;
+        }}
+        showWeekdayLabels
+        titleForValue={(value) => value && `${value.date}: ${value.count} minutes`}
+        tooltipDataAttrs={(value) => {
+          return {
+            'data-tip': `${value.date}: ${value.count} hours`,
+          };
+        }}
+        className="w-full max-w-screen-md mx-auto px-4" 
       />
+      <Tooltip/>
       <table className="table-auto w-full bg-white rounded shadow my-4">
         <thead>
           <tr>
