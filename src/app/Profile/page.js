@@ -71,8 +71,30 @@ function Profile() {
                 timer: (timerData.timer / 60).toFixed(2),
                 timestamp: timerData.timestamp.toDate(),
               }));
-              console.log(timersArray)
-              setTimersData(timersArray);
+              // Create a Map to store unique dates and sum of timers
+              const uniqueDatesMap = new Map();
+
+              // Populate the Map with unique dates and sum the timers
+              timersArray.forEach((timerData) => {
+                const dateKey = timerData.timestamp.toISOString().split('T')[0];
+
+                if (uniqueDatesMap.has(dateKey)) {
+                  // If the date is already in the Map, add the timer to the existing sum
+                  uniqueDatesMap.set(dateKey, uniqueDatesMap.get(dateKey) + parseFloat(timerData.timer));
+                } else {
+                  // If the date is not in the Map, initialize it with the timer value
+                  uniqueDatesMap.set(dateKey, parseFloat(timerData.timer));
+                }
+              });
+
+              // Convert the Map back to an array of objects
+              const uniqueTimersArray = Array.from(uniqueDatesMap, ([date, timer]) => ({
+                timestamp: new Date(date),
+                timer: timer.toFixed(2),
+              }));
+
+              console.log(uniqueTimersArray);
+              setTimersData(uniqueTimersArray);
             } else {
               console.error('Timers data not found in user document.');
             }
@@ -198,9 +220,9 @@ function Profile() {
             'data-tip': `${value.date}: ${value.count}`,
           };
         }}
-        className="w-full max-w-screen-md mx-auto px-4" 
+        className="w-full max-w-screen-md mx-auto px-4"
       />
-      <Tooltip/>
+      <Tooltip />
       <table className="table-auto w-full bg-white rounded shadow my-4">
         <thead>
           <tr>
