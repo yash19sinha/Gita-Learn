@@ -114,29 +114,6 @@ function Profile() {
     }
   };
 
-  const hasUserDataForDate = (date) => {
-    // Ensure date is defined
-    if (!date) {
-      return false;
-    }
-  
-    // Convert the date to a string in the format 'YYYY-MM-DD' for comparison
-    const dateString = date.toISOString().split('T')[0];
-  
-    // Check if the timersData array contains an entry for the given date
-    return timersData.some((timer) => {
-      // Ensure timer and timestamp are defined
-      if (!timer || !timer.timestamp) {
-        return false;
-      }
-  
-      const timerDateString = timer.timestamp.toDate().split('T')[0];
-      console.log(timerDateString);
-      return dateString === timerDateString;
-    });
-  };
-
-
 
   return (
     <div className="container p-4 mx-auto mt-4 bg-gray-100">
@@ -197,6 +174,7 @@ function Profile() {
           timersData.map((timer) => ({
             date: timer.timestamp.toISOString().split('T')[0],
             count: 2, // Assuming each entry in the array represents 1 minute
+            // count: Math.round(timer.timer), // Assuming each entry in the array represents 1 minute
           }))
         }
         // values={[
@@ -214,10 +192,10 @@ function Profile() {
           return `color-scale-${value.count}`;
         }}
         showWeekdayLabels
-        titleForValue={(value) => value && `${value.date}: ${value.count} minutes`}
+        titleForValue={(value) => value && `${value.date}`}
         tooltipDataAttrs={(value) => {
           return {
-            'data-tip': `${value.date}: ${value.count} hours`,
+            'data-tip': `${value.date}: ${value.count}`,
           };
         }}
         className="w-full max-w-screen-md mx-auto px-4" 
