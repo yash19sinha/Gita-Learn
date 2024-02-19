@@ -71,8 +71,30 @@ function Profile() {
                 timer: (timerData.timer / 60).toFixed(2),
                 timestamp: timerData.timestamp.toDate(),
               }));
-              console.log(timersArray)
-              setTimersData(timersArray);
+              // Create a Map to store unique dates and sum of timers
+              const uniqueDatesMap = new Map();
+
+              // Populate the Map with unique dates and sum the timers
+              timersArray.forEach((timerData) => {
+                const dateKey = timerData.timestamp.toISOString().split('T')[0];
+
+                if (uniqueDatesMap.has(dateKey)) {
+                  // If the date is already in the Map, add the timer to the existing sum
+                  uniqueDatesMap.set(dateKey, uniqueDatesMap.get(dateKey) + parseFloat(timerData.timer));
+                } else {
+                  // If the date is not in the Map, initialize it with the timer value
+                  uniqueDatesMap.set(dateKey, parseFloat(timerData.timer));
+                }
+              });
+
+              // Convert the Map back to an array of objects
+              const uniqueTimersArray = Array.from(uniqueDatesMap, ([date, timer]) => ({
+                timestamp: new Date(date),
+                timer: timer.toFixed(2),
+              }));
+
+              console.log(uniqueTimersArray);
+              setTimersData(uniqueTimersArray);
             } else {
               console.error('Timers data not found in user document.');
             }
@@ -113,29 +135,6 @@ function Profile() {
       console.error('Error updating phone number:', error);
     }
   };
-
-  const hasUserDataForDate = (date) => {
-    // Ensure date is defined
-    if (!date) {
-      return false;
-    }
-  
-    // Convert the date to a string in the format 'YYYY-MM-DD' for comparison
-    const dateString = date.toISOString().split('T')[0];
-  
-    // Check if the timersData array contains an entry for the given date
-    return timersData.some((timer) => {
-      // Ensure timer and timestamp are defined
-      if (!timer || !timer.timestamp) {
-        return false;
-      }
-  
-      const timerDateString = timer.timestamp.toDate().split('T')[0];
-      console.log(timerDateString);
-      return dateString === timerDateString;
-    });
-  };
-
 
 
   return (
@@ -197,6 +196,7 @@ function Profile() {
           timersData.map((timer) => ({
             date: timer.timestamp.toISOString().split('T')[0],
             count: 2, // Assuming each entry in the array represents 1 minute
+            // count: Math.round(timer.timer), // Assuming each entry in the array represents 1 minute
           }))
         }
         // values={[
@@ -214,15 +214,15 @@ function Profile() {
           return `color-scale-${value.count}`;
         }}
         showWeekdayLabels
-        titleForValue={(value) => value && `${value.date}: ${value.count} minutes`}
+        titleForValue={(value) => value && `${value.date}`}
         tooltipDataAttrs={(value) => {
           return {
-            'data-tip': `${value.date}: ${value.count} hours`,
+            'data-tip': `${value.date}: ${value.count}`,
           };
         }}
-        className="w-full max-w-screen-md mx-auto px-4" 
+        className="w-full max-w-screen-md mx-auto px-4"
       />
-      <Tooltip/>
+      <Tooltip />
       <table className="table-auto w-full bg-white rounded shadow my-4">
         <thead>
           <tr>
