@@ -62,6 +62,7 @@ const FullScreenComponent = () => {
   };
   
   useEffect(() => {
+    let timerInterval;
     const handleFullScreenChange = () => {
       const fullscreenElement = document.fullscreenElement;
 
@@ -77,13 +78,20 @@ const FullScreenComponent = () => {
         }, 1000);
 
         // Stop the timer when exiting fullscreen
-        document.addEventListener('fullscreenchange', () => {
+        const handleExitFullScreen = () => {
           clearInterval(timerInterval);
 
           // Add the timer to the list when exiting fullscreen
           exitFullScreen();
-        });
+        };
+
+        // Listen for 'fullscreenchange' only once
+        document.addEventListener('fullscreenchange', handleExitFullScreen, { once: true });
+
       } else {
+        // Clear the interval even if not in fullscreen mode
+        clearInterval(timerInterval);
+
         // Add the timer to the list when exiting fullscreen
         exitFullScreen();
       }
@@ -98,18 +106,20 @@ const FullScreenComponent = () => {
   }, [timerSeconds, user]);
 
   return (
+    <>
     <div>
       {isFullScreen && (
         <div>
           <p>Timer: {timerSeconds} seconds</p>
         </div>
       )}
+    </div>
       {isFullScreen ? (
         <button onClick={exitFullScreen}>Exit Read</button>
       ) : (
         <button onClick={enterFullScreen}>Read</button>
       )}
-    </div>
+    </>
   );
 };
 
