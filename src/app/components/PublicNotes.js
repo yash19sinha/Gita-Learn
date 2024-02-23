@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { auth, storage } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { v4 } from "uuid";
@@ -24,6 +24,28 @@ function PublicNotes({ verseId }) {
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
+  const accordionRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutsideAccordion = (event) => {
+      // Check if the click occurred outside the accordion
+      if (
+        accordionRef.current &&
+        !accordionRef.current.contains(event.target)
+      ) {
+        setActiveIndex(null); // Close the accordion
+      }
+    };
+
+    // Add event listener to handle clicks outside the accordion
+    document.body.addEventListener("click", handleClickOutsideAccordion);
+
+    // Cleanup function to remove event listener when component unmounts
+    return () => {
+      document.body.removeEventListener("click", handleClickOutsideAccordion);
+    };
+  }, [activeIndex]); // Re-run effect when activeIndex changes
+
   //to fetch links
   async function fetchLink() {
     try {
@@ -31,8 +53,9 @@ function PublicNotes({ verseId }) {
       const response = await axios.get(
         `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
       );
+
       setLink(response.data.links);
-      setPodbean(response.data.podbean);
+      // setPodbean(response.data.podbean);
     } catch (error) {
       setError("Error fetching link");
     } finally {
@@ -45,8 +68,9 @@ function PublicNotes({ verseId }) {
       fetchLink();
     }
   }, [chapterVerse]);
+
   const handleClick = (index) => {
-    setActiveIndex(activeIndex === index ? null : index);
+    setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   useEffect(() => {
@@ -126,16 +150,19 @@ function PublicNotes({ verseId }) {
 
               const hasContent =
                 (index === 1 && imageUrls.length > 0) ||
-                (index === 2 && link && link.link1) ||
-                (index === 3 && link && link.podbean);
+                (index === 2 && link && link.link1.link) ||
+                (index === 3 && link && link.podbean.link);
 
               return hasContent ? (
                 <div
                   key={index}
-                  className={`mb-2 border rounded-md ${accordionClass}`}
+                  ref={accordionRef}
+                  className={`mb-2 border rounded-md ${accordionClass} `}
                 >
                   <button
-                    onClick={() => handleClick(index)}
+                    onClick={(event) => {
+                      handleClick(index);
+                    }}
                     className={buttonClass}
                   >
                     {accordionNames[index - 1]}
@@ -158,11 +185,12 @@ function PublicNotes({ verseId }) {
                         <div>
                           {link ? (
                             <a
-                              href={link.link1}
+                              href={link.link1.link}
                               target="_blank"
                               rel="noopener noreferrer"
+                              class="text-blue-500 hover:text-blue-700"
                             >
-                              {link.link1}
+                              {link.link1.title}
                             </a>
                           ) : (
                             <p>No link found</p>
@@ -176,8 +204,9 @@ function PublicNotes({ verseId }) {
                               href={link.podbean}
                               target="_blank"
                               rel="noopener noreferrer"
+                              class="text-blue-500 hover:text-blue-700"
                             >
-                              {link.podbean}
+                              {link.podbean.slice(34, link.podbean.length - 1)}
                             </a>
                           ) : (
                             <p>No link found</p>
