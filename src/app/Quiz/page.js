@@ -17,7 +17,7 @@ function Quiz() {
   const [selectedOption, setSelectedOption] = useState([]);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(20); // Timer in seconds
+  const [timer, setTimer] = useState(60); // Timer in seconds
   const [timerId, setTimerId] = useState(null);
   const [selectedFillUps, setSelectedFillUps] = useState(Array(0).fill(''));
   const selectedFillUpsRef = useRef(Array(0).fill(''));
@@ -114,37 +114,35 @@ function Quiz() {
   
   
 
-  const maxTimer = 20;
+  const maxTimer = 60;
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer((prevTimer) => {
         // Check if the timer has reached 0, then move to the next question
-        if (prevTimer <= 0) {
-          handleOptionClick(null); // Move to the next question without selecting an option
+        if (prevTimer <= 0 && currentQuestion) {
+          if (currentQuestion.type === 'fillUps') {
+            handleFillUpsSubmit(); // Submit the fill-up answers
+          } else {
+            handleOptionClick(null); // Move to the next question without selecting an option
+          }
           return maxTimer; // Reset the timer to maxTimer value
         }
-
+  
         return prevTimer - 1;
       });
     }, 1000);
-
+  
     // Save the timer ID to state for later cleanup
     setTimerId(intervalId);
-
+  
     // Clear the timer when the component unmounts
     return () => {
       clearInterval(intervalId);
       setTimerId(null); // Clear the timer ID on unmount
     };
   }, [currentQuestionIndex, maxTimer]);
-
-  useEffect(() => {
-    if (timer === 0) {
-      handleOptionClick(null);
-    }
-  }, [timer]);
-
+  
   const handleOptionClick = (selectedOption) => {
     // Clear the timer
     clearInterval(timerId);
@@ -318,7 +316,7 @@ function Quiz() {
             <div
               className="p-2 transition-all ease-in-out bg-gradient-to-r from-green-300 to-green-500"
               style={{
-                width: `${(timer / 20) * 100}%`,
+                width: `${(timer / 60) * 100}%`,
                 transition: 'width 1s ease-in-out',
                 borderRadius: '0.5rem',
                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',

@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/auth';
 import { collection, doc, getDoc, getDocs, query, where, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/config';
+import 'react-calendar/dist/Calendar.css';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import 'react-calendar-heatmap/dist/styles.css';
+import { Tooltip } from 'react-tooltip';
+
+
+
 
 function Profile() {
   const { user } = useAuth();
@@ -16,6 +23,7 @@ function Profile() {
   const [phoneno, setPhoneno] = useState('');
   const [newPhoneNo, setNewPhoneNo] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -30,9 +38,16 @@ function Profile() {
           const userDocRef = doc(db, 'users', user.uid);
           const userDoc = await getDoc(userDocRef);
 
+
+
           if (userDoc.exists()) {
             const userDataFromFirestore = userDoc.data();
             setUserData(userDataFromFirestore);
+
+            if (user.photoURL) {
+              console.log('User Photo URL:', user.photoURL);
+              setImageURL(user.photoURL);
+            }
 
             const scoresRef = collection(db, 'scores');
             const userScoresQuery = query(scoresRef, where('userId', '==', user.uid));
@@ -56,11 +71,38 @@ function Profile() {
                 timer: (timerData.timer / 60).toFixed(2),
                 timestamp: timerData.timestamp.toDate(),
               }));
+              // Create a Map to store unique dates and sum of timers
+              const uniqueDatesMap = new Map();
 
-              setTimersData(timersArray);
+              // Populate the Map with unique dates and sum the timers
+              timersArray.forEach((timerData) => {
+                const dateKey = timerData.timestamp.toISOString().split('T')[0];
+
+                if (uniqueDatesMap.has(dateKey)) {
+                  // If the date is already in the Map, add the timer to the existing sum
+                  uniqueDatesMap.set(dateKey, uniqueDatesMap.get(dateKey) + parseFloat(timerData.timer));
+                } else {
+                  // If the date is not in the Map, initialize it with the timer value
+                  uniqueDatesMap.set(dateKey, parseFloat(timerData.timer));
+                }
+              });
+
+              // Convert the Map back to an array of objects
+              const uniqueTimersArray = Array.from(uniqueDatesMap, ([date, timer]) => ({
+                timestamp: new Date(date),
+                timer: timer.toFixed(2),
+              }));
+
+              console.log(uniqueTimersArray);
+              setTimersData(uniqueTimersArray);
             } else {
               console.error('Timers data not found in user document.');
             }
+
+            // forEach(map arr : timersArray){
+
+            // }
+
           } else {
             console.error('User document not found in Firestore.');
           }
@@ -72,6 +114,8 @@ function Profile() {
 
     fetchUserProfile();
   }, [user]);
+
+
 
   const updatePhoneNumber = async () => {
     try {
@@ -92,10 +136,17 @@ function Profile() {
     }
   };
 
-  return (
-    <div className="container p-4 mx-auto bg-gray-100">
-      <h1 className="mb-4 text-3xl font-bold text-black">Your Profile</h1>
 
+  return (
+    <div className="container p-4 mx-auto mt-4 bg-gray-100">
+      <h1 className="text-3xl font-bold text-black flex my-2">
+        {imageURL && (
+          <img
+            src={imageURL}
+            alt="User Profile"
+            className="w-12 h-12 rounded-full mr-4"
+          />
+        )} Your Profile</h1>
       {userData && (
         <div className="bg-white p-4 rounded shadow">
           <p className="text-lg">
@@ -138,7 +189,41 @@ function Profile() {
       )}
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
-      <table className="table-auto w-full bg-white rounded shadow">
+      <CalendarHeatmap
+        startDate={new Date('2024-01-01')} // Adjust the start date as needed
+        endDate={new Date('2024-12-31')} // Adjust the end date as needed
+        values={
+          timersData.map((timer) => ({
+            date: timer.timestamp.toISOString().split('T')[0],
+            count: 2, // Assuming each entry in the array represents 1 minute
+            // count: Math.round(timer.timer), // Assuming each entry in the array represents 1 minute
+          }))
+        }
+        // values={[
+        //   { date: '2024-01-01', count: 1 },
+        //   { date: '2024-01-06', count: 2 },
+        //   { date: '2024-01-06', count: 2 },
+        //   // ...and so on
+        // ]}
+        classForValue={(value) => {
+          if (!value) {
+            return 'color-empty';
+          }
+          // return `color-scale-${Math.min(5, Math.ceil(value))}`;
+          // return hasUserDataForDate(value.date) ? 'highlighted' : 'color-empty';
+          return `color-scale-${value.count}`;
+        }}
+        showWeekdayLabels
+        titleForValue={(value) => value && `${value.date}`}
+        tooltipDataAttrs={(value) => {
+          return {
+            'data-tip': `${value.date}: ${value.count}`,
+          };
+        }}
+        className="w-full max-w-screen-md mx-auto px-4"
+      />
+      <Tooltip />
+      <table className="table-auto w-full bg-white rounded shadow my-4">
         <thead>
           <tr>
             <th className="px-4 py-2">Day and date</th>
@@ -148,7 +233,7 @@ function Profile() {
         <tbody>
           {timersData.map((timer, index) => (
             <tr key={index}>
-              <td className="border px-4 py-2">{timer.timestamp.toISOString()}</td>
+              <td className="border px-4 py-2">{timer.timestamp.toDateString()}</td>
               <td className="border px-4 py-2">{timer.timer} Minutes</td>
             </tr>
           ))}
