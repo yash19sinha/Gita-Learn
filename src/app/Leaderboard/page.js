@@ -23,7 +23,7 @@ function Leaderboard() {
         let scoresRef;
 
         if (communityId && isValidCommunityId(communityId)) {
-          scoresRef = collection(db, `communityScores/${verseId}/${communityId}_userScores`);
+          scoresRef = collection(db, `communityScores/${communityId}/${verseId}/uid/userScores`);
         } else {
           scoresRef = collection(db, `scores/${verseId}/userScores`);
         }

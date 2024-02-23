@@ -270,39 +270,39 @@ async function checkQuestionsExist(chapterVerse) {
           <button onClick={handleNextPage} className="join-item btn btn-outline">Next</button>
         </div>
         
-        <div className="flex justify-center p-4">
-  {questionsExist && (
-    <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
-      Start Quiz
-    </button>
-  )}
-</div>
+        {/* <div className="flex justify-center p-4">
+          {questionsExist && (
+            <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
+              Start Quiz
+            </button>
+          )}
+        </div>
 
-{questionsExist && (
-  <div className="flex justify-center p-4 space-x-4">
-    {!isCreatingCommunityId ? (
-      <div>
-        <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
-          Create a Community ID
-        </button>
-      </div>
-    ) : (
-      <div>
-        <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
-          Back
-        </button>
-      </div>
-    )}
-  </div>
-)}
+        {questionsExist && (
+          <div className="flex justify-center p-4 space-x-4">
+            {!isCreatingCommunityId ? (
+              <div>
+                <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
+                  Create a Community ID
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
+                  Back
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
-{isCreatingCommunityId && (
-  <div className="flex justify-center p-4">
-    <div>
-      <p className="text-lg">Community ID: {generatedCommunityId}</p>
-    </div>
-  </div>
-)}
+        {isCreatingCommunityId && (
+          <div className="flex justify-center p-4">
+            <div>
+              <p className="text-lg">Community ID: {generatedCommunityId}</p>
+            </div>
+          </div>
+        )} */}
 
 {questionsExist && !isCreatingCommunityId && (
   <div className="flex justify-center p-4">
