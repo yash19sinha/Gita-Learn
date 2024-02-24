@@ -352,7 +352,7 @@ function VerseDetail() {
           {showTextBox && selectedText && (
             <div
               ref={boxRef}
-              className="absolute bg-orange-200 text-white p-4 border border-gray-500 rounded-lg"
+              className="absolute p-4 text-white bg-orange-200 border border-gray-500 rounded-lg"
               style={{
                 top: textBoxPosition.top,
                 left: textBoxPosition.left,
@@ -362,7 +362,7 @@ function VerseDetail() {
 
               <div className="flex flex-col">
                 <textarea
-                  className="bg-white text-black p-2 mt-2 border border-gray-500 rounded-lg"
+                  className="p-2 mt-2 text-black bg-white border border-gray-500 rounded-lg"
                   value={Notes}
                   onChange={handleTextBoxChange}
                   rows={5}
@@ -370,14 +370,14 @@ function VerseDetail() {
                 />
                 <div className="flex justify-center mt-2">
                   <button
-                    className="bg-blue-500 text-white px-4 py-2 border border-white rounded-lg"
+                    className="px-4 py-2 text-white bg-blue-500 border border-white rounded-lg"
                     onClick={handleSaveText}
                   >
                     Save
                   </button>
                   <div className="w-4" />
                   <button
-                    className="bg-gray-500 px-4 py-2 border border-white rounded-lg"
+                    className="px-4 py-2 bg-gray-500 border border-white rounded-lg"
                     onClick={handleClearAll}
                   >
                     Clear All
@@ -451,12 +451,10 @@ function VerseDetail() {
           </button>
         </div>
 
-        <div className="flex justify-center p-4">
+        
+        {/* <div className="flex justify-center p-4">
           {questionsExist && (
-            <button
-              onClick={redirectToQuiz}
-              className="text-white bg-orange-400 btn"
-            >
+            <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
               Start Quiz
             </button>
           )}
@@ -466,19 +464,13 @@ function VerseDetail() {
           <div className="flex justify-center p-4 space-x-4">
             {!isCreatingCommunityId ? (
               <div>
-                <button
-                  onClick={handleCreateCommunityId}
-                  className="text-white bg-orange-400 btn"
-                >
+                <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
                   Create a Community ID
                 </button>
               </div>
             ) : (
               <div>
-                <button
-                  onClick={() => setIsCreatingCommunityId(false)}
-                  className="text-white bg-orange-400 btn"
-                >
+                <button onClick={() => setIsCreatingCommunityId(false)} className="text-white bg-orange-400 btn">
                   Back
                 </button>
               </div>
@@ -492,27 +484,32 @@ function VerseDetail() {
               <p className="text-lg">Community ID: {generatedCommunityId}</p>
             </div>
           </div>
-        )}
+        )} */}
 
-        {questionsExist && !isCreatingCommunityId && (
-          <div className="flex justify-center p-4">
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Enter Community ID"
-                value={communityId}
-                onChange={(e) => setCommunityId(e.target.value)}
-                className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              />
-              <button
-                onClick={handleEnterCommunityId}
-                className="text-white bg-orange-400 btn"
-              >
-                Enter
-              </button>
-            </div>
-          </div>
-        )}
+{questionsExist && !isCreatingCommunityId && (
+  <div className="flex justify-center p-4">
+    <div className="flex items-center space-x-4">
+      <input
+        type="text"
+        placeholder="Enter Community ID"
+        value={communityId}
+        onChange={(e) => setCommunityId(e.target.value)}
+        className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+      />
+      <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
+        Enter
+      </button>
+    </div>
+  </div>
+)}
+
+      
+
+        
+
+    
+
+
 
         <button
           onClick={handleToggleNotesSidebar}

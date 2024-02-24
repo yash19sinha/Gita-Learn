@@ -8,6 +8,7 @@ import 'react-calendar/dist/Calendar.css';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { Tooltip } from 'react-tooltip';
+import CreateCommunityIdForm from '../components/CreateCommunityId';
 
 
 
@@ -24,6 +25,9 @@ function Profile() {
   const [newPhoneNo, setNewPhoneNo] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [imageURL, setImageURL] = useState(null);
+  const imgUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+
+  const [generatedCommunityId, setGeneratedCommunityId] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -47,6 +51,9 @@ function Profile() {
             if (user.photoURL) {
               console.log('User Photo URL:', user.photoURL);
               setImageURL(user.photoURL);
+            }
+            else{
+              setImageURL(imgUrl)
             }
 
             const scoresRef = collection(db, 'scores');
@@ -137,56 +144,74 @@ function Profile() {
   };
 
 
+
+  const handleCommunityIdCreated = (newCommunityId) => {
+    setGeneratedCommunityId(newCommunityId);
+  };
+
+
   return (
     <div className="container p-4 mx-auto mt-4 bg-gray-100">
-      <h1 className="text-3xl font-bold text-black flex my-2">
-        {imageURL && (
-          <img
-            src={imageURL}
-            alt="User Profile"
-            className="w-12 h-12 rounded-full mr-4"
-          />
-        )} Your Profile</h1>
-      {userData && (
-        <div className="bg-white p-4 rounded shadow">
-          <p className="text-lg">
-            <span className="font-semibold">Email:</span> {email}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Name:</span> {name || userData.name}
-          </p>
-          <div className="flex items-center">
-            <p className="text-lg">
-              <span className="font-semibold">Phone Number:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  className="border ml-2 p-1"
-                  value={newPhoneNo}
-                  onChange={(e) => setNewPhoneNo(e.target.value)}
-                />
-              ) : (
-                <span className="ml-2">{phoneno || userData.phoneNo}</span>
-              )}
-            </p>
-            {isEditing ? (
-              <button
-                className="ml-2 bg-green-500 text-white p-1 rounded"
-                onClick={updatePhoneNumber}
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                className="ml-2 bg-blue-500 text-white p-1 rounded"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit
-              </button>
-            )}
+      <div className='flex'>
+        <div className='bg-white rounded shadow p-4'>
+          {imageURL && (
+            <img
+              src={imageURL}
+              alt="User Profile"
+              className="w-56 h-56 mr-4 rounded-full mx-auto"
+            />
+          )}
+          <div>
+            {userData && (
+              <h1 className="flex my-2 text-3xl font-bold text-black text-center">
+                {name || userData.name}
+              </h1>
+            )
+            }
           </div>
         </div>
-      )}
+        {userData && (
+          <div className="p-4 bg-white rounded shadow w-full ml-4">
+            <p className="text-lg">
+              <span className="font-semibold">Email:</span> {email}
+            </p>
+            <p className="text-lg">
+              <span className="font-semibold">Name:</span> {name || userData.name}
+            </p>
+            <div className="flex items-center">
+              <p className="text-lg">
+                <span className="font-semibold">Phone Number:</span>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="p-1 ml-2 border"
+                    value={newPhoneNo}
+                    onChange={(e) => setNewPhoneNo(e.target.value)}
+                  />
+                ) : (
+                  <span className="ml-2">{phoneno || userData.phoneNo}</span>
+                )}
+              </p>
+              {isEditing ? (
+                <button
+                  className="p-1 ml-2 text-white bg-green-500 rounded"
+                  onClick={updatePhoneNumber}
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  className="p-1 ml-2 text-white bg-blue-500 rounded"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
       <CalendarHeatmap
@@ -220,10 +245,10 @@ function Profile() {
             'data-tip': `${value.date}: ${value.count}`,
           };
         }}
-        className="w-full max-w-screen-md mx-auto px-4"
+        className="w-full max-w-screen-md px-4 mx-auto"
       />
       <Tooltip />
-      <table className="table-auto w-full bg-white rounded shadow my-4">
+      <table className="w-full my-4 bg-white rounded shadow table-auto">
         <thead>
           <tr>
             <th className="px-4 py-2">Day and date</th>
@@ -233,8 +258,8 @@ function Profile() {
         <tbody>
           {timersData.map((timer, index) => (
             <tr key={index}>
-              <td className="border px-4 py-2">{timer.timestamp.toDateString()}</td>
-              <td className="border px-4 py-2">{timer.timer} Minutes</td>
+              <td className="px-4 py-2 border">{timer.timestamp.toDateString()}</td>
+              <td className="px-4 py-2 border">{timer.timer} Minutes</td>
             </tr>
           ))}
         </tbody>

@@ -93,7 +93,7 @@ function Quiz() {
         let collectionPath = '';
     
         if (communityId) {
-          collectionPath = `communityScores/${verseId}/${communityId}_userScores`;
+          collectionPath = `communityScores/${communityId}/${verseId}/uid/userScores`;
         } else {
           collectionPath = `scores/${verseId}/userScores`;
         }

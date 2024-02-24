@@ -40,7 +40,7 @@ const SearchBar = () => {
         </button>
       </div>
       {error && <p className="mt-2 text-red-500">{error}</p>}
-      {searchResults.length > 0 && <SearchResults searchResults={searchResults} />}
+      {searchResults.length > 0 && <SearchResults searchResults={searchResults}  />}
     </div>
   );
 };
