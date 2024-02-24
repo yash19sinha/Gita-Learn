@@ -39,30 +39,68 @@ function VerseDetail() {
   const [Notes, setNotes] = useState("");
   const boxRef = useRef(null);
 
-  const handleTextSelection = () => {
+  function handleTextSelection() {
     const text = window.getSelection().toString();
     const selection = window.getSelection();
-    if (text) {
+
+    if (text && !showTextBox) {
+      // Check if text is selected and menu is not already open
       setSelectedText(text);
-      setShowTextBox(true);
-      console.log(selectedText);
+      setShowTextBox(false); // Close the text box initially
+
+      let menu = document.querySelector("#selectionMenu"); // Check if a menu already exists
+
+      if (!menu) {
+        // Create the menu only if it doesn't exist
+        menu = document.createElement("div");
+        menu.id = "selectionMenu";
+        menu.innerHTML = `
+        <div>
+        <button id="openNotesBtn" style="background-color: rgb(255, 204, 153); padding: 5px; border: 1px solid black; margin-right: 5px;">Open Notes</button>
+        
+        <button id="closeNotesBtn" style="background-color: rgb(255, 204, 153); padding: 5px; border: 1px solid black;">CLose</button>
+      </div>
+        `;
+        menu.style.position = "absolute";
+        menu.style.backgroundColor = "rgb(255, 204, 153)";
+        menu.style.border = "1px solid black";
+        menu.style.padding = "5px";
+        menu.style.zIndex = "9999";
+
+        // Handle click on the "Open Notes" button
+        const openNotesBtn = menu.querySelector("#openNotesBtn");
+        openNotesBtn.addEventListener("click", () => {
+          setShowTextBox(true); // Show the text box
+          menu.remove(); // Remove the menu immediately
+        });
+
+        // Handle click on the "Close" button
+        const closeNotesBtn = menu.querySelector("#closeNotesBtn");
+        closeNotesBtn.addEventListener("click", () => {
+          menu.remove(); // Remove the menu immediately
+          window.getSelection().empty();
+        });
+
+        document.body.appendChild(menu);
+      }
+
+      // Calculate position based on the selection
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft =
+        window.pageXOffset || document.documentElement.scrollLeft;
+      const top = rect.top + scrollTop + 30;
+      const left = rect.left + scrollLeft + rect.width / 2; // Adjusted left position
+      setTextBoxPosition({ top, left });
+      // Update menu position
+      menu.style.top = `${top}px`;
+      menu.style.left = `${left}px`;
     } else {
       setSelectedText("");
       setShowTextBox(false);
     }
-
-    const range = selection.getRangeAt(0);
-    const rect = range.getBoundingClientRect();
-
-    // Calculate position relative to the viewport
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft =
-      window.pageXOffset || document.documentElement.scrollLeft;
-    const top = rect.top + scrollTop + 30;
-    const left = rect.left + scrollLeft + 30;
-
-    setTextBoxPosition({ top, left });
-  };
+  }
 
   const handleTextBoxChange = (e) => {
     setNotes(e.target.value);
@@ -71,9 +109,8 @@ function VerseDetail() {
   const handleSaveText = async () => {
     if (user) {
       try {
-        const ref = collection(db, "users", user.uid, "notes");
+        const ref = collection(db, "users", user.uid, chapterVerse); // Reference the collection with chapterVerse name
         const docRef = await addDoc(ref, {
-          chapterVerse: chapterVerse,
           content: selectedText,
           notes: Notes,
         });
@@ -376,7 +413,10 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold">
             Synonyms
           </h2>
-          <p className="flex justify-center p-3 text-lg ">
+          <p
+            className="flex justify-center p-3 text-lg "
+            onMouseUp={handleTextSelection}
+          >
             {verseDetails.synonyms}
           </p>
         </div>
@@ -384,7 +424,10 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold ">
             Translation
           </h2>
-          <p className="flex justify-center p-3 text-lg font-semibold">
+          <p
+            className="flex justify-center p-3 text-lg font-semibold"
+            onMouseUp={handleTextSelection}
+          >
             {verseDetails.translation}
           </p>
         </div>
