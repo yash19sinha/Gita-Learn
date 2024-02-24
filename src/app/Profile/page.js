@@ -25,6 +25,7 @@ function Profile() {
   const [newPhoneNo, setNewPhoneNo] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [imageURL, setImageURL] = useState(null);
+  const imgUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
 
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
 
@@ -50,6 +51,9 @@ function Profile() {
             if (user.photoURL) {
               console.log('User Photo URL:', user.photoURL);
               setImageURL(user.photoURL);
+            }
+            else{
+              setImageURL(imgUrl)
             }
 
             const scoresRef = collection(db, 'scores');
@@ -139,7 +143,7 @@ function Profile() {
     }
   };
 
- 
+
 
   const handleCommunityIdCreated = (newCommunityId) => {
     setGeneratedCommunityId(newCommunityId);
@@ -148,56 +152,66 @@ function Profile() {
 
   return (
     <div className="container p-4 mx-auto mt-4 bg-gray-100">
-      <h1 className="flex my-2 text-3xl font-bold text-black">
-        {imageURL && (
-          <img
-            src={imageURL}
-            alt="User Profile"
-            className="w-12 h-12 mr-4 rounded-full"
-          />
-        )} Your Profile</h1>
-      {userData && (
-        <div className="p-4 bg-white rounded shadow">
-          <p className="text-lg">
-            <span className="font-semibold">Email:</span> {email}
-          </p>
-          <p className="text-lg">
-            <span className="font-semibold">Name:</span> {name || userData.name}
-          </p>
-          <div className="flex items-center">
-            <p className="text-lg">
-              <span className="font-semibold">Phone Number:</span>
-              {isEditing ? (
-                <input
-                  type="text"
-                  className="p-1 ml-2 border"
-                  value={newPhoneNo}
-                  onChange={(e) => setNewPhoneNo(e.target.value)}
-                />
-              ) : (
-                <span className="ml-2">{phoneno || userData.phoneNo}</span>
-              )}
-            </p>
-            {isEditing ? (
-              <button
-                className="p-1 ml-2 text-white bg-green-500 rounded"
-                onClick={updatePhoneNumber}
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                className="p-1 ml-2 text-white bg-blue-500 rounded"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit
-              </button>
-            )}
+      <div className='flex'>
+        <div className='bg-white rounded shadow p-4'>
+          {imageURL && (
+            <img
+              src={imageURL}
+              alt="User Profile"
+              className="w-56 h-56 mr-4 rounded-full mx-auto"
+            />
+          )}
+          <div>
+            {userData && (
+              <h1 className="flex my-2 text-3xl font-bold text-black text-center">
+                {name || userData.name}
+              </h1>
+            )
+            }
           </div>
         </div>
-      )}
-
-    <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
+        {userData && (
+          <div className="p-4 bg-white rounded shadow w-full ml-4">
+            <p className="text-lg">
+              <span className="font-semibold">Email:</span> {email}
+            </p>
+            <p className="text-lg">
+              <span className="font-semibold">Name:</span> {name || userData.name}
+            </p>
+            <div className="flex items-center">
+              <p className="text-lg">
+                <span className="font-semibold">Phone Number:</span>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    className="p-1 ml-2 border"
+                    value={newPhoneNo}
+                    onChange={(e) => setNewPhoneNo(e.target.value)}
+                  />
+                ) : (
+                  <span className="ml-2">{phoneno || userData.phoneNo}</span>
+                )}
+              </p>
+              {isEditing ? (
+                <button
+                  className="p-1 ml-2 text-white bg-green-500 rounded"
+                  onClick={updatePhoneNumber}
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  className="p-1 ml-2 text-white bg-blue-500 rounded"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
       <CalendarHeatmap
