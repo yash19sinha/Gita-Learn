@@ -2,9 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+body {
     color: black;
     background-color: white;
+}
+
+/* styles/globals.css */
+:root {
+    --color-bg: #ffffff;
+    /* Light theme background */
+    --color-text: #000000;
+    /* Light theme text */
+}
+
+/* Default light theme styles */
+[data-theme='light'] {
+    --background-color: #ffffff;
+    --text-color: #000000;
+}
+
+/* Dark theme styles */
+[data-theme='dark'] {
+    --text-color-normal: hsl(210, 10%, 62%);
+    --text-color-light: hsl(210, 15%, 35%);
+    --text-color-richer: hsl(210, 50%, 72%);
+    --text-color-highlight: hsl(25, 70%, 45%);
+}
+
+[data-theme='dark'] .dark-theme:hover {
+    background-color: hsl(210, 10%, 62%);
+    /* Example: A green background on hover */
+    color: #fff;
+    /* White text color on hover */
+    transform: scale(1.05);
+    /* Slightly scale up the element */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+[data-theme='dark'] .them {
+    color: white;
+}
+
+[data-theme='dark'] .them:hover {
+    color: black;
+}
+
+[data-theme='dark'] .Quiz-theme {
+    --text-color-normal: hsl(210, 10%, 62%);
+    --text-color-light: hsl(210, 15%, 35%);
+    --text-color-richer: hsl(210, 50%, 72%);
+    --text-color-highlight: hsl(25, 70%, 45%);
+}
+
+/* Ivy theme styles */
+[data-theme='Ivy'] {
+    --background-color: #2F3E46;
+    /* Custom background color */
+    --text-color: #517970;
+    /* Custom text color */
+}
+
+[data-theme='Ivy'] .dark-theme:hover {
+    background-color: #374F54;
+    /* Example: A green background on hover */
+    color: #C8D1C6;
+    /* White text color on hover */
+    transform: scale(1.05);
+    /* Slightly scale up the element */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+[data-theme='Ivy'] .them {
+    background-color: #374F54;
+    color: white;
+}
+
+[data-theme='Ivy'] .Quiz-theme {
+    --background-color: #2F3E46;
+    /* Custom background color */
+    --text-color: #517970;
+    /* Custom text color */
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 ::-webkit-scrollbar {display:none;}
@@ -12,3 +100,4 @@ body{
 .react-calendar-heatmap .color-scale-2 { fill: #8cc665; }
 .react-calendar-heatmap .color-scale-3 { fill: #44a340; }
 .react-calendar-heatmap .color-scale-4 { fill: #1e6823; }
+

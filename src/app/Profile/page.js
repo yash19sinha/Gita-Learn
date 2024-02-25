@@ -151,9 +151,9 @@ function Profile() {
 
 
   return (
-    <div className="container p-4 mx-auto mt-4 bg-gray-100">
+    <div className="container p-4 mx-auto mt-4 ">
       <div className='flex'>
-        <div className='bg-white rounded shadow p-4'>
+        <div className=' rounded shadow p-4'>
           {imageURL && (
             <img
               src={imageURL}
