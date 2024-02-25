@@ -20,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase/config";
 import { getFirestore } from "firebase/firestore";
+import ScrollDepth from "../components/ScrollDepth";
 
 function VerseDetail() {
   const { user } = useAuth();
@@ -38,6 +39,8 @@ function VerseDetail() {
   const [textBoxPosition, setTextBoxPosition] = useState({ top: 0, left: 0 });
   const [Notes, setNotes] = useState("");
   const boxRef = useRef(null);
+  const chapter = 0
+  const verse = 0
 
   const handleTextSelection = () => {
     const text = window.getSelection().toString();
@@ -77,6 +80,8 @@ function VerseDetail() {
           content: selectedText,
           notes: Notes,
         });
+        arr[2] = chapterVerse.split('.')
+        console.log(arr)
         console.log("Document written with ID: ", docRef.id);
         setSelectedText("");
         setNotes("");
@@ -296,7 +301,7 @@ function VerseDetail() {
 
   return (
     <>
-      <div className="p-4 ">
+      <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
           Bg. {chapterVerse}
         </h1>
@@ -408,7 +413,7 @@ function VerseDetail() {
           </button>
         </div>
 
-        
+
         {/* <div className="flex justify-center p-4">
           {questionsExist && (
             <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
@@ -443,28 +448,28 @@ function VerseDetail() {
           </div>
         )} */}
 
-{questionsExist && !isCreatingCommunityId && (
-  <div className="flex justify-center p-4">
-    <div className="flex items-center space-x-4">
-      <input
-        type="text"
-        placeholder="Enter Community ID"
-        value={communityId}
-        onChange={(e) => setCommunityId(e.target.value)}
-        className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-      />
-      <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
-        Enter
-      </button>
-    </div>
-  </div>
-)}
+        {questionsExist && !isCreatingCommunityId && (
+          <div className="flex justify-center p-4">
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="Enter Community ID"
+                value={communityId}
+                onChange={(e) => setCommunityId(e.target.value)}
+                className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              />
+              <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
+                Enter
+              </button>
+            </div>
+          </div>
+        )}
 
-      
 
-        
 
-    
+
+
+
 
 
 
@@ -481,6 +486,7 @@ function VerseDetail() {
         <PublicNotes verseId={chapterVerse} />
       </div>
       <Footer />
+      <ScrollDepth chapter={chapter} verse={chapterVerse}/>
     </>
   );
 }
