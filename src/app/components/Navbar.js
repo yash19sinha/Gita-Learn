@@ -5,20 +5,25 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
+
+import { useTheme } from '../context/ThemeContext';
 // import SearchBar from './SearchBar';
 export const Navbar = () => {
 
   const [user] = useAuthState(auth);
-  
+
   const [chapters, setChapters] = useState([]);
-  
+
+  const { theme, toggleTheme } = useTheme();
+
+
   let links = [
     { name: "HOME", link: "/" },
     { name: 'Bhagvad Gita', link: '/' },
     { name: 'Chapters', link: '/' },
     { name: 'Quotes', link: '/' },
   ];
-  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -41,19 +46,19 @@ export const Navbar = () => {
 
     <div className="bg-gray-100 navbar">
       <div className="navbar-start">
-        <div className="bg-white dropdown">
+        <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52 text-black">
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow  rounded-box w-52 text-black">
             {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
-          <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
-          <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent/> </Link> </li>
+            <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
+            <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
 
-          
-            
+
+
 
             {/* <li>
               <a>Chapters</a>
@@ -77,14 +82,14 @@ export const Navbar = () => {
 
 
         <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">
-        <img
+          <img
             className="w-auto h-10 mx-auto"
             src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
             alt="Your Company"
           />
           GitaLearn
         </Link>
-        
+
       </div>
       <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
@@ -96,23 +101,36 @@ export const Navbar = () => {
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div>  */}
           <li tabIndex={0}>
-          <details >
-            <summary className='text-lg font-semibold'>Chapters</summary>
-            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-              {chapters.map((chapter) => (
-                <li key={chapter.chapter_number} className="grid justify-center w-32 bg-white ">
-                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                    <p className="p-1 text-sm">Chapter {chapter.chapter_number}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </details>
+            <details >
+              <summary className='text-lg font-semibold'>Chapters</summary>
+              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+                {chapters.map((chapter) => (
+                  <li key={chapter.chapter_number} className="grid justify-center w-32 ">
+                    <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                      <p className="p-1 text-sm">Chapter {chapter.chapter_number}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </details>
 
           </li>
-          <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent/> </Link> </li>
+          <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
-          
+
+          <li tabIndex={0}>
+            <details >
+              <summary className='text-lg font-semibold'>Theme</summary>
+              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+                <li><div className="themes flex flex-col">
+                  <button className="mr-2 p-2 " onClick={() => toggleTheme('light')}>Light</button>
+                  <button className="mr-2 p-2 " onClick={() => toggleTheme('dark')}>Dark</button>
+                  <button className="p-2 " onClick={() => toggleTheme('Ivy')}>Ivy</button>
+                </div></li>
+              </ul>
+            </details>
+
+          </li>
         </ul>
       </div>
       <div className="navbar-end">
