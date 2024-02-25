@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
 import { MdDelete } from "react-icons/md";
 import {
   collection,
@@ -89,30 +92,30 @@ function NotesSidebar({ onClose }) {
   };
 
   return user ? (
-    <div className="fixed top-0 right-0 p-4 m-4 mt-24 overflow-y-auto bg-yellow-200 rounded-lg border-black border h-3/4 md:w-2/6 notes-sidebar">
+    <div
+      className="fixed top-0 right-0 p-4 m-4 mt-24 overflow-y-auto bg-white rounded-lg  h-3/4 md:w-2/6 notes-sidebar"
+      style={{
+        boxShadow: "4px 8px 10px rgba(128, 128, 128, 0.5)",
+        backgroundColor: "rgba(245, 247, 246)",
+        borderLeft: "1px solid black",
+        borderTop: "1px solid black",
+      }}
+    >
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold flex-grow text-center">
           Notes of Bg: {chapterVerse}
         </h1>
-        <button
-          onClick={onClose}
-          className="text-white bg-white rounded px-4 py-2 rounded-lg border-black border"
-        >
-          <svg
-            class="w-[16px] h-[16px] text-gray-800 dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="1.5"
-              d="M6 18 18 6m0 12L6 6"
-            />
-          </svg>
+        <button onClick={onClose}>
+          <FontAwesomeIcon
+            icon={faTimes}
+            style={{ fontSize: "24px", color: "black" }}
+            onMouseEnter={(e) => {
+              e.target.style.color = "red";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.color = "black";
+            }}
+          />
         </button>
       </div>
       <ul className="max-w-full pl-4 list-disc">

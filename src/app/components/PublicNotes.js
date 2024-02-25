@@ -51,7 +51,7 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
+        `http://localhost:4000/api/links/${chapterVerse}`
       );
 
       setLink(response.data.links);
