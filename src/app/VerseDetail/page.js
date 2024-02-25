@@ -38,7 +38,6 @@ function VerseDetail() {
   const [textBoxPosition, setTextBoxPosition] = useState({ top: 0, left: 0 });
   const [Notes, setNotes] = useState("");
   const boxRef = useRef(null);
-
   function handleTextSelection() {
     const text = window.getSelection().toString();
     const selection = window.getSelection();
@@ -55,17 +54,18 @@ function VerseDetail() {
         menu = document.createElement("div");
         menu.id = "selectionMenu";
         menu.innerHTML = `
-        <div>
-        <button id="openNotesBtn" style="background-color: rgb(255, 204, 153); padding: 5px; border: 1px solid black; margin-right: 5px;">Open Notes</button>
-        
-        <button id="closeNotesBtn" style="background-color: rgb(255, 204, 153); padding: 5px; border: 1px solid black;">CLose</button>
-      </div>
+          <div class="menu-content">
+            <button id="openNotesBtn">Open Notes</button>
+            
+          </div>
         `;
+        menu.className = "menu-container"; // Add a class for styling
         menu.style.position = "absolute";
         menu.style.backgroundColor = "rgb(255, 204, 153)";
         menu.style.border = "1px solid black";
         menu.style.padding = "5px";
         menu.style.zIndex = "9999";
+        menu.style.borderRadius = "5px"; // Rounded corners
 
         // Handle click on the "Open Notes" button
         const openNotesBtn = menu.querySelector("#openNotesBtn");
@@ -75,13 +75,22 @@ function VerseDetail() {
         });
 
         // Handle click on the "Close" button
-        const closeNotesBtn = menu.querySelector("#closeNotesBtn");
-        closeNotesBtn.addEventListener("click", () => {
-          menu.remove(); // Remove the menu immediately
-          window.getSelection().empty();
-        });
+
+        // Create arrow element
+        const arrow = document.createElement("div");
+        arrow.className = "arrow";
+        arrow.style.position = "absolute";
+        arrow.style.bottom = "-10px"; // Adjust to position the arrow correctly
+        arrow.style.left = "calc(50% - 10px)"; // Adjust to position the arrow correctly
+        arrow.style.borderLeft = "10px solid transparent";
+        arrow.style.borderRight = "10px solid transparent";
+        arrow.style.borderTop = "10px solid black";
+        menu.appendChild(arrow);
 
         document.body.appendChild(menu);
+
+        // Add event listener to remove the menu when clicking outside of it
+        document.addEventListener("mousedown", handleOutsideClick(menu));
       }
 
       // Calculate position based on the selection
@@ -94,12 +103,23 @@ function VerseDetail() {
       const left = rect.left + scrollLeft + rect.width / 2; // Adjusted left position
       setTextBoxPosition({ top, left });
       // Update menu position
-      menu.style.top = `${top}px`;
-      menu.style.left = `${left}px`;
+      menu.style.top = `${top - 70}px`;
+      menu.style.left = `${left - 50}px`;
     } else {
       setSelectedText("");
       setShowTextBox(false);
     }
+  }
+
+  // Function to handle clicks outside of the menu
+  function handleOutsideClick(menu) {
+    return function (event) {
+      if (!menu.contains(event.target)) {
+        // Click is outside of the menu
+        menu.remove(); // Remove the menu
+        document.removeEventListener("mousedown", handleOutsideClick); // Remove the event listener
+      }
+    };
   }
 
   const handleTextBoxChange = (e) => {
@@ -451,7 +471,6 @@ function VerseDetail() {
           </button>
         </div>
 
-        
         {/* <div className="flex justify-center p-4">
           {questionsExist && (
             <button onClick={redirectToQuiz} className="text-white bg-orange-400 btn">
@@ -486,30 +505,25 @@ function VerseDetail() {
           </div>
         )} */}
 
-{questionsExist && !isCreatingCommunityId && (
-  <div className="flex justify-center p-4">
-    <div className="flex items-center space-x-4">
-      <input
-        type="text"
-        placeholder="Enter Community ID"
-        value={communityId}
-        onChange={(e) => setCommunityId(e.target.value)}
-        className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-      />
-      <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
-        Enter
-      </button>
-    </div>
-  </div>
-)}
-
-      
-
-        
-
-    
-
-
+        {questionsExist && !isCreatingCommunityId && (
+          <div className="flex justify-center p-4">
+            <div className="flex items-center space-x-4">
+              <input
+                type="text"
+                placeholder="Enter Community ID"
+                value={communityId}
+                onChange={(e) => setCommunityId(e.target.value)}
+                className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              />
+              <button
+                onClick={handleEnterCommunityId}
+                className="text-white bg-orange-400 btn"
+              >
+                Enter
+              </button>
+            </div>
+          </div>
+        )}
 
         <button
           onClick={handleToggleNotesSidebar}
