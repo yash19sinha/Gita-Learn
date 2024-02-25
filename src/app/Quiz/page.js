@@ -277,12 +277,12 @@ function Quiz() {
   
 
   if (questions.length === 0) {
-    return <p className="h-full mt-4 text-center bg-white">Loading questions...</p>;
+    return <p className="h-full mt-4 text-center ">Loading questions...</p>;
   }
 
   if (currentQuestionIndex >= questions.length) {
     return (
-      <div className='flex justify-center h-full p-4 m-5 bg-white'>
+      <div className='flex justify-center h-full p-4 m-5 '>
         <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
           <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
           <button
@@ -302,12 +302,12 @@ function Quiz() {
   
   
   return (
-    <div className="flex flex-col items-center h-full p-4 bg-white ">
+    <div className="flex flex-col items-center h-full p-4   ">
     <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
     {/* Render questions based on type */}
     {currentQuestion && (
-      <div key={currentQuestion.id} className="pt-4 bg-gray-200 rounded shadow-md md:w-4/5">
+      <div key={currentQuestion.id} className="pt-4 bg-gray-300 rounded shadow-md md:w-4/5  dark:text-black">
         <p className="p-5 m-4 text-xl font-semibold text-center md:text-2xl">{currentQuestion.question}</p>
 
         {/* Time slider */}
@@ -375,7 +375,7 @@ function Quiz() {
     )}
 
     {/* Current Score */}
-    <p className="h-full mt-4 text-lg font-semibold bg-white">Current Score: {score}</p>
+    <p className="h-full mt-4 text-lg font-semibold ">Current Score: {score}</p>
   </div>
   );
 }
