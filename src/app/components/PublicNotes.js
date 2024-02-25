@@ -135,7 +135,7 @@ function PublicNotes({ verseId }) {
     <div>
       {hasContent && (
         <div className="w-full mb-2 border border-gray-300 rounded-lg">
-          <div className="p-4 bg-white">
+          <div className="p-4 ">
             {[1, 2, 3].map((index) => {
               const isActive = activeIndex === index;
               const accordionClass = isActive

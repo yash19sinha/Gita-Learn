@@ -41,31 +41,89 @@ function VerseDetail() {
   const boxRef = useRef(null);
   const chapter = 0
   const verse = 0
-
-  const handleTextSelection = () => {
+  function handleTextSelection() {
     const text = window.getSelection().toString();
     const selection = window.getSelection();
-    if (text) {
+
+    if (text && !showTextBox) {
+      // Check if text is selected and menu is not already open
       setSelectedText(text);
-      setShowTextBox(true);
-      console.log(selectedText);
+      setShowTextBox(false); // Close the text box initially
+
+      let menu = document.querySelector("#selectionMenu"); // Check if a menu already exists
+
+      if (!menu) {
+        // Create the menu only if it doesn't exist
+        menu = document.createElement("div");
+        menu.id = "selectionMenu";
+        menu.innerHTML = `
+          <div class="menu-content">
+            <button id="openNotesBtn">Open Notes</button>
+            
+          </div>
+        `;
+        menu.className = "menu-container"; // Add a class for styling
+        menu.style.position = "absolute";
+        menu.style.backgroundColor = "rgb(255, 204, 153)";
+        menu.style.border = "1px solid black";
+        menu.style.padding = "5px";
+        menu.style.zIndex = "9999";
+        menu.style.borderRadius = "5px"; // Rounded corners
+
+        // Handle click on the "Open Notes" button
+        const openNotesBtn = menu.querySelector("#openNotesBtn");
+        openNotesBtn.addEventListener("click", () => {
+          setShowTextBox(true); // Show the text box
+          menu.remove(); // Remove the menu immediately
+        });
+
+        // Handle click on the "Close" button
+
+        // Create arrow element
+        const arrow = document.createElement("div");
+        arrow.className = "arrow";
+        arrow.style.position = "absolute";
+        arrow.style.bottom = "-10px"; // Adjust to position the arrow correctly
+        arrow.style.left = "calc(50% - 10px)"; // Adjust to position the arrow correctly
+        arrow.style.borderLeft = "10px solid transparent";
+        arrow.style.borderRight = "10px solid transparent";
+        arrow.style.borderTop = "10px solid black";
+        menu.appendChild(arrow);
+
+        document.body.appendChild(menu);
+
+        // Add event listener to remove the menu when clicking outside of it
+        document.addEventListener("mousedown", handleOutsideClick(menu));
+      }
+
+      // Calculate position based on the selection
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollLeft =
+        window.pageXOffset || document.documentElement.scrollLeft;
+      const top = rect.top + scrollTop + 30;
+      const left = rect.left + scrollLeft + rect.width / 2; // Adjusted left position
+      setTextBoxPosition({ top, left });
+      // Update menu position
+      menu.style.top = `${top - 70}px`;
+      menu.style.left = `${left - 50}px`;
     } else {
       setSelectedText("");
       setShowTextBox(false);
     }
+  }
 
-    const range = selection.getRangeAt(0);
-    const rect = range.getBoundingClientRect();
-
-    // Calculate position relative to the viewport
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    const scrollLeft =
-      window.pageXOffset || document.documentElement.scrollLeft;
-    const top = rect.top + scrollTop + 30;
-    const left = rect.left + scrollLeft + 30;
-
-    setTextBoxPosition({ top, left });
-  };
+  // Function to handle clicks outside of the menu
+  function handleOutsideClick(menu) {
+    return function (event) {
+      if (!menu.contains(event.target)) {
+        // Click is outside of the menu
+        menu.remove(); // Remove the menu
+        document.removeEventListener("mousedown", handleOutsideClick); // Remove the event listener
+      }
+    };
+  }
 
   const handleTextBoxChange = (e) => {
     setNotes(e.target.value);
@@ -74,9 +132,8 @@ function VerseDetail() {
   const handleSaveText = async () => {
     if (user) {
       try {
-        const ref = collection(db, "users", user.uid, "notes");
+        const ref = collection(db, "users", user.uid, chapterVerse); // Reference the collection with chapterVerse name
         const docRef = await addDoc(ref, {
-          chapterVerse: chapterVerse,
           content: selectedText,
           notes: Notes,
         });
@@ -381,7 +438,10 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold">
             Synonyms
           </h2>
-          <p className="flex justify-center p-3 text-lg ">
+          <p
+            className="flex justify-center p-3 text-lg "
+            onMouseUp={handleTextSelection}
+          >
             {verseDetails.synonyms}
           </p>
         </div>
@@ -389,7 +449,10 @@ function VerseDetail() {
           <h2 className="flex justify-center p-3 text-2xl font-bold ">
             Translation
           </h2>
-          <p className="flex justify-center p-3 text-lg font-semibold">
+          <p
+            className="flex justify-center p-3 text-lg font-semibold"
+            onMouseUp={handleTextSelection}
+          >
             {verseDetails.translation}
           </p>
         </div>
@@ -412,7 +475,6 @@ function VerseDetail() {
             Next
           </button>
         </div>
-
 
         {/* <div className="flex justify-center p-4">
           {questionsExist && (
@@ -464,13 +526,6 @@ function VerseDetail() {
             </div>
           </div>
         )}
-
-
-
-
-
-
-
 
 
         <button
