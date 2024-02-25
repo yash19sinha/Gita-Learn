@@ -52,7 +52,7 @@ function Profile() {
               console.log('User Photo URL:', user.photoURL);
               setImageURL(user.photoURL);
             }
-            else{
+            else {
               setImageURL(imgUrl)
             }
 
@@ -163,7 +163,7 @@ function Profile() {
           )}
           <div>
             {userData && (
-              <h1 className="flex my-2 text-3xl font-bold text-black text-center">
+              <h1 className="flex my-2 text-3xl font-bold text-center">
                 {name || userData.name}
               </h1>
             )
@@ -171,7 +171,7 @@ function Profile() {
           </div>
         </div>
         {userData && (
-          <div className="p-4 bg-white rounded shadow w-full ml-4">
+          <div className="p-4 rounded shadow w-full ml-4">
             <p className="text-lg">
               <span className="font-semibold">Email:</span> {email}
             </p>
@@ -213,7 +213,7 @@ function Profile() {
       </div>
       <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
 
-      <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
+      <h2 className="mt-4 mb-2 text-2xl font-bold">Reading Streak</h2>
       <CalendarHeatmap
         startDate={new Date('2024-01-01')} // Adjust the start date as needed
         endDate={new Date('2024-12-31')} // Adjust the end date as needed
