@@ -58,7 +58,7 @@ body {
 [data-theme='Ivy'] {
     --background-color: #2F3E46;
     /* Custom background color */
-    --text-color: #517970;
+    --text-color: #d5f2ec;
     /* Custom text color */
 }
 
@@ -80,8 +80,25 @@ body {
 [data-theme='Ivy'] .Quiz-theme {
     --background-color: #2F3E46;
     /* Custom background color */
-    --text-color: #517970;
+    --text-color: #d5f2ec;
     /* Custom text color */
+}
+
+[data-theme='Ivy'] .navbar {
+    background-color: #233b40;
+}
+
+[data-theme='Ivy'] .leaderboard {
+    background-color: #1c353b;
+}
+
+[data-theme='Ivy'] .table-auto {
+    background-color: #1c353b;
+}
+
+[data-theme='Ivy'] .footer {
+    background-color: #1c353b;
+    border: #1c353b;
 }
 
 body {
@@ -95,9 +112,22 @@ body {
     display: none;
 }
 
-::-webkit-scrollbar {display:none;}
-.react-calendar-heatmap .color-scale-1 { fill: #d6e685; }
-.react-calendar-heatmap .color-scale-2 { fill: #8cc665; }
-.react-calendar-heatmap .color-scale-3 { fill: #44a340; }
-.react-calendar-heatmap .color-scale-4 { fill: #1e6823; }
+::-webkit-scrollbar {
+    display: none;
+}
 
+.react-calendar-heatmap .color-scale-1 {
+    fill: #d6e685;
+}
+
+.react-calendar-heatmap .color-scale-2 {
+    fill: #8cc665;
+}
+
+.react-calendar-heatmap .color-scale-3 {
+    fill: #44a340;
+}
+
+.react-calendar-heatmap .color-scale-4 {
+    fill: #1e6823;
+}
