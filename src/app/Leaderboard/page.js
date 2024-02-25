@@ -79,7 +79,7 @@ function Leaderboard() {
   }
 
   return (
-    <div className='h-screen bg-white'>
+    <div className='h-screen '>
       <div className="container p-8 mx-auto my-8 bg-gray-100">
         {loading ? (
           <p className="text-xl font-semibold text-center">Loading...</p>

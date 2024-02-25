@@ -1,6 +1,5 @@
 // CreateCommunityIdForm.js
 "use client"
-// CreateCommunityIdForm.js
 import { useState } from 'react';
 import { addDoc, collection, getFirestore, doc, setDoc, getDoc} from 'firebase/firestore';
 import { db } from '../firebase/config';
@@ -35,20 +34,21 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
       // Handle error here
     }
   };
-  
 
   return (
-    <div className="flex flex-col items-center justify-center p-4">
-      <button onClick={handleCreateCommunityId} className="text-white bg-orange-400 btn">
-        Create a Community ID
-      </button>
-      {generatedCommunityId && (
-        <p className="mt-2">Generated Community ID: {generatedCommunityId}</p>
-      )}
-    </div>
+    <div className="flex p-5">
+ 
+        <div className="flex flex-col items-center justify-center">
+          <button onClick={handleCreateCommunityId} className="w-full text-white bg-orange-400 btn">
+            Create a Community ID
+          </button>
+          {generatedCommunityId && (
+            <p className="mt-2">Generated Community ID: {generatedCommunityId}</p>
+          )}
+        </div>
+      </div>
+
   );
 }
 
 export default CreateCommunityIdForm;
-
-
