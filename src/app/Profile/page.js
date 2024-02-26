@@ -52,7 +52,7 @@ function Profile() {
               console.log('User Photo URL:', user.photoURL);
               setImageURL(user.photoURL);
             }
-            else {
+            else{
               setImageURL(imgUrl)
             }
 
@@ -165,7 +165,7 @@ function Profile() {
           )}
           <div>
             {userData && (
-              <h1 className="flex my-2 text-3xl font-bold text-center justify-center items-center ">
+              <h1 className="flex items-center justify-center my-2 text-3xl font-bold text-center text-black">
                 {name || userData.name}
               </h1>
             )
@@ -173,8 +173,7 @@ function Profile() {
           </div>
         </div>
         {userData && (
-
-  <div className="w-4/5 p-4 ml-4  border border-gray-200 rounded-lg shadow-md">
+  <div className="w-4/5 p-4 ml-4 bg-white border border-gray-200 rounded-lg shadow-md">
     <div className="mb-2">
     <span className="text-xl font-semibold">Name: {name || userData.name}</span> 
     </div>
@@ -182,7 +181,7 @@ function Profile() {
     <span className="text-xl font-semibold">Email: {email}</span> 
     </div>
     <div className="flex items-center mb-2">
-      <label className="text-xl font-semibold ">Phone Number:</label>
+      <label className="text-xl font-semibold text-gray-600">Phone Number:</label>
       {isEditing ? (
         <input
           type="text"
@@ -218,8 +217,6 @@ function Profile() {
       
       <div className='flex justify-center p-5'>
       <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
-
-
       </div>
       <div className="drawer">
   <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -237,8 +234,7 @@ function Profile() {
     </ul>
   </div>
 </div>
-      <h2 className="mt-4 mb-2 text-2xl font-bold ">Reading Streak</h2>
-
+      <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
       <CalendarHeatmap
         startDate={new Date('2024-01-01')} // Adjust the start date as needed
         endDate={new Date('2024-12-31')} // Adjust the end date as needed
