@@ -16,6 +16,8 @@ import { db } from "../firebase/config";
 import { useAuth } from "../hooks/auth";
 
 function NotesSidebar({ onClose }) {
+  const [boldMode, setBoldMode] = useState(false);
+  const [showFullNote, setShowFullNote] = useState({});
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
   const [note, setNote] = useState("");
@@ -31,6 +33,7 @@ function NotesSidebar({ onClose }) {
         const userNotes = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
+          showFull: false, // Add 'showFull' property to each note object
         }));
         setNotes(userNotes);
       });
@@ -39,6 +42,12 @@ function NotesSidebar({ onClose }) {
     }
   }, [user]);
 
+  const handleToggleFullNote = (noteId) => {
+    setShowFullNote((prevShowFullNote) => ({
+      ...prevShowFullNote,
+      [noteId]: !prevShowFullNote[noteId], // Toggle 'showFull' for the specific note
+    }));
+  };
   const deleteNote = async (noteId) => {
     try {
       if (user && chapterVerse) {
@@ -102,10 +111,15 @@ function NotesSidebar({ onClose }) {
       }}
     >
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold flex-grow text-center">
-          Notes of Bg: {chapterVerse}
+        <h1 className="top-1100pt-5 text-2xl font-semibold flex-grow text-center">
+          Notes of Bg: {chapterVerse} ({notes.length})
         </h1>
-        <button onClick={onClose}>
+
+        <button
+          className="fixed top-1000 right-10 bg-white p-1 pl-2 pr-2 border-black-1px border rounded-lg"
+          onClick={onClose}
+          style={{ alignSelf: "flex-start" }}
+        >
           <FontAwesomeIcon
             icon={faTimes}
             style={{ fontSize: "24px", color: "black" }}
@@ -118,83 +132,87 @@ function NotesSidebar({ onClose }) {
           />
         </button>
       </div>
+
       <ul className="max-w-full pl-4 list-disc">
         {notes.map((note) => (
           <div
             key={note.id}
-            className="mb-4 p-2 border border-black rounded-lg bg-white"
+            className="mb-4 p-2 rounded-lg bg-white-300 shadow-lg opacity-400 border-gray-200 border"
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex-grow overflow-hidden">
-                <p className="mb-1 bg-gray-100 p-1 rounded">
-                  <span className=" font-bold">Text:</span> {note.content}{" "}
+                <p className="mb-1 bg-gray-100 p-3 rounded border border-black-5px text-center ">
+                  <span className="font-bold bg-green-200 font-semibold">
+                    {note.content}
+                  </span>
                 </p>
               </div>
             </div>
-            <div className="flex items-center justify-start">
+            <div className="flex items-center justify-between">
               <div className="flex-grow overflow-hidden">
                 {editingNoteId === note.id ? (
                   <textarea
-                    className="w-full bg-gray-100 p-1 rounded"
-                    value={editedNote} // Use editedNote for value
-                    onChange={(e) => setEditedNote(e.target.value)} // Update editedNote state
+                    className="w-full h-32 bg-gray-100 p-1 rounded border-none" // Increase height
+                    value={editedNote}
+                    onChange={(e) => setEditedNote(e.target.value)}
+                    placeholder="Enter your notes here..."
                   />
                 ) : (
-                  <p className=" bg-gray-100 p-1 rounded">
-                    <span className="font-bold">Notes:</span> {note.notes}
-                  </p>
+                  <div>
+                    {showFullNote[note.id] ? (
+                      <p className="bg-gray-100 p-1 rounded">{note.notes}</p>
+                    ) : (
+                      <p className="bg-gray-100 p-1 rounded h-20 text-ellipsis overflow-hidden ... ">
+                        {note.notes}
+                      </p>
+                    )}
+                    {note.notes.length > 50 && (
+                      <button
+                        onClick={() => handleToggleFullNote(note.id)}
+                        className="text-blue-500 hover:underline"
+                      >
+                        {showFullNote[note.id] ? "Read Less" : "Read More"}
+                      </button>
+                    )}
+                  </div>
                 )}
               </div>
-              <div>
-                {editingNoteId === note.id ? (
+            </div>
+            <div className="flex justify-end mt-2">
+              {editingNoteId === note.id ? (
+                <>
                   <button
                     onClick={updateNote}
-                    className="m-1 text-xl text-gray-500 hover:text-black-700"
+                    className="m-1 text-xl text-gray-100 hover:text-black bg-blue-300 rounded px-3 py-1"
                   >
-                    <svg
-                      class="h-6 w-6 text-gray-500"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      {" "}
-                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />{" "}
-                      <polyline points="17 21 17 13 7 13 7 21" />{" "}
-                      <polyline points="7 3 7 8 15 8" />
-                    </svg>
+                    Save
                   </button>
-                ) : (
                   <button
-                    onClick={() => handleEditNote(note.id, note.notes)}
-                    className="m-1 text-xl text-gray-500 hover:text-black-700"
+                    onClick={() => setEditingNoteId(null)}
+                    className="m-1 text-xl text-gray-100 hover:text-black bg-gray-400 rounded px-3 py-1"
                   >
-                    <svg
-                      class="h-6 w-6 text-gray-500"
-                      viewBox="0 0 24 24"
-                      stroke-width="2"
-                      stroke="currentColor"
-                      fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      {" "}
-                      <path stroke="none" d="M0 0h24v24H0z" />{" "}
-                      <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />{" "}
-                      <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />{" "}
-                      <line x1="16" y1="5" x2="19" y2="8" />
-                    </svg>
+                    Cancel
                   </button>
-                )}
-                <button
-                  onClick={() => deleteNote(note.id)}
-                  className="m-1 text-xl text-gray-500 hover:text-red-700"
-                >
-                  <MdDelete />
-                </button>
-              </div>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      setEditedNote(note.notes); // Preserves the previous notes
+                      setEditingNoteId(note.id);
+                    }}
+                    className="m-1 text-xl text-gray-100 hover:text-black bg-blue-300 rounded px-3 py-1"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteNote(note.id)}
+                    className="m-1 text-xl text-gray-100 hover:text-white bg-red-300 rounded px-3 py-1"
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ))}
