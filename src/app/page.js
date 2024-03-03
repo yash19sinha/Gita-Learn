@@ -66,7 +66,7 @@ function Chapters() {
       
       <div className="p-4 mt-4 ">
       <h1 className="flex justify-center pt-5 mb-4 text-4xl font-bold">
-      Bhagavad Gita as it is
+      Bhagavad-gītā As It Is
 
       </h1>
       <div className="mb-4">

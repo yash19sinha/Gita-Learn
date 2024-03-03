@@ -51,7 +51,7 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:4000/api/links/${chapterVerse}`
+        `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
       );
 
       setLink(response.data.links);
@@ -139,7 +139,7 @@ function PublicNotes({ verseId }) {
             {[1, 2, 3].map((index) => {
               const isActive = activeIndex === index;
               const accordionClass = isActive
-                ? "bg-orange-200 border-orange-500"
+                ? "bg-orange-200 border-orange-500 dark:bg-coolGray-700"
                 : "bg-orange-100 hover:bg-orange-200 border-orange-300 hover:border-orange-500";
               const contentClass = isActive
                 ? "p-4 bg-orange-50 border border-orange-500 flex justify-center items-center"
@@ -157,7 +157,7 @@ function PublicNotes({ verseId }) {
                 <div
                   key={index}
                   ref={accordionRef}
-                  className={`mb-2 border rounded-md ${accordionClass} `}
+                  className={`mb-2 border rounded-md dark:text-black ${accordionClass} `}
                 >
                   <button
                     onClick={(event) => {

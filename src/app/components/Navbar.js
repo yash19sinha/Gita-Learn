@@ -1,20 +1,49 @@
 "use client"
 import Link from 'next/link';
 import React from 'react'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
 
 import { useTheme } from '../context/ThemeContext';
 // import SearchBar from './SearchBar';
+
+
+
 export const Navbar = () => {
 
   const [user] = useAuthState(auth);
 
   const [chapters, setChapters] = useState([]);
 
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const detailsRef = useRef(null);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      // Check if running in a browser environment
+      const savedTheme = window.localStorage.getItem('theme');
+      console.log('Theme retrieved from localStorage:', savedTheme);
+      return savedTheme || 'light';
+    } else {
+      // Fallback for non-browser environments
+      return 'light';
+    }
+  });
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Check if running in a browser environment
+      document.documentElement.setAttribute('data-theme', theme);
+      // Save the theme to localStorage
+      window.localStorage.setItem('theme', theme);
+      console.log('Theme saved to localStorage:', theme);
+    }
+  }, [theme]);
+  
+
 
 
   let links = [
@@ -42,40 +71,71 @@ export const Navbar = () => {
     fetchData();
   }, []);
 
+  const handleThemeChange = (selectedTheme) => {
+    console.log('Selected theme:', selectedTheme);
+    setTheme(selectedTheme);
+    setIsOpen(false); // Close the dropdown after theme selection
+  };
+  
+  const closeDropdown = () => {
+    const detailsElement = document.querySelector('details');
+    if (detailsElement) {
+      detailsElement.removeAttribute('open');
+    }
+  };
+
+  
+
   return (
 
     <div className="bg-gray-100 navbar">
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className=" dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow  rounded-box w-52 text-black">
+          <ul tabIndex={0} className="p-2 mt-3 text-black bg-white shadow menu menu-sm dropdown-content rounded-box w-52 ">
             {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
-            <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
-            <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
-
-
-
-
-            {/* <li>
-              <a>Chapters</a>
-              <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
+            <li className='text-base font-semibold'><Link href="Profile">Profile</Link></li>
+            <li className='text-base font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
+            <li tabIndex={0}>
+          <details>
+            <summary className='text-base font-semibold'>Chapters</summary>
+            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
               {chapters.map((chapter) => (
-              <li key={chapter.chapter_number} className="justify-center text-black bg-white">
-                <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                  <p className="p-1 text-sm font-normal">Chapter {chapter.chapter_number}</p>
-                 
-                
-                </Link>
+                <li key={chapter.chapter_number} className="grid justify-center w-32 ">
+                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                    <p className="p-1 text-sm" onClick={() => {
+                      const detailsElement = document.querySelector('details');
+                      if (detailsElement) {
+                        detailsElement.removeAttribute('open');
+                      }
+                    }}>
+                      Chapter {chapter.chapter_number}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
 
-             
-              </li>
-            ))}
-              </ul>
-            </li> */}
+        <li tabIndex={0}>
+      <details open={isOpen} ref={detailsRef}>
+        <summary className='text-lg font-semibold'>Theme</summary>
+        <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+          <li className='flex flex-col themes'>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Light</button>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
+            <button className="p-2 " onClick={() => { handleThemeChange('Ivy'); detailsRef.current.removeAttribute('open'); }}>Ivy</button>
+          </li>
+        </ul>
+      </details>
+    </li>
+        
+
           </ul>
         </div>
 
@@ -101,36 +161,44 @@ export const Navbar = () => {
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div>  */}
           <li tabIndex={0}>
-            <details >
-              <summary className='text-lg font-semibold'>Chapters</summary>
-              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-                {chapters.map((chapter) => (
-                  <li key={chapter.chapter_number} className="grid justify-center w-32 ">
-                    <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                      <p className="p-1 text-sm">Chapter {chapter.chapter_number}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </details>
+          <details>
+            <summary className='text-lg font-semibold'>Chapters</summary>
+            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+              {chapters.map((chapter) => (
+                <li key={chapter.chapter_number} className="grid justify-center w-32 ">
+                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                    <p className="p-1 text-sm" onClick={() => {
+                      const detailsElement = document.querySelector('details');
+                      if (detailsElement) {
+                        detailsElement.removeAttribute('open');
+                      }
+                    }}>
+                      Chapter {chapter.chapter_number}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
 
-          </li>
           <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
 
           <li tabIndex={0}>
-            <details >
-              <summary className='text-lg font-semibold'>Theme</summary>
-              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-                <li><div className="themes flex flex-col">
-                  <button className="mr-2 p-2 " onClick={() => toggleTheme('light')}>Light</button>
-                  <button className="mr-2 p-2 " onClick={() => toggleTheme('dark')}>Dark</button>
-                  <button className="p-2 " onClick={() => toggleTheme('Ivy')}>Ivy</button>
-                </div></li>
-              </ul>
-            </details>
-
+      <details open={isOpen} ref={detailsRef}>
+        <summary className='text-lg font-semibold'>Theme</summary>
+        <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+          <li className='flex flex-col themes'>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Light</button>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
+            <button className="p-2 " onClick={() => { handleThemeChange('Ivy'); detailsRef.current.removeAttribute('open'); }}>Ivy</button>
           </li>
+        </ul>
+      </details>
+    </li>
+
+
         </ul>
       </div>
       <div className="navbar-end">
