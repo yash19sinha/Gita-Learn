@@ -90,36 +90,52 @@ export const Navbar = () => {
 
     <div className="bg-gray-100 navbar">
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className=" dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
           </label>
-          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow  rounded-box w-52 text-black">
+          <ul tabIndex={0} className="p-2 mt-3 text-black bg-white shadow menu menu-sm dropdown-content rounded-box w-52 ">
             {/* <li className='text-2xl'><Link href="/">Home</Link></li>
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
-            <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
-            <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
-
-
-
-
-            {/* <li>
-              <a>Chapters</a>
-              <ul className="p-2 overflow-hidden overflow-y-auto max-h-32">
+            <li className='text-base font-semibold'><Link href="Profile">Profile</Link></li>
+            <li className='text-base font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
+            <li tabIndex={0}>
+          <details>
+            <summary className='text-base font-semibold'>Chapters</summary>
+            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
               {chapters.map((chapter) => (
-              <li key={chapter.chapter_number} className="justify-center text-black bg-white">
-                <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                  <p className="p-1 text-sm font-normal">Chapter {chapter.chapter_number}</p>
-                 
-                
-                </Link>
+                <li key={chapter.chapter_number} className="grid justify-center w-32 ">
+                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                    <p className="p-1 text-sm" onClick={() => {
+                      const detailsElement = document.querySelector('details');
+                      if (detailsElement) {
+                        detailsElement.removeAttribute('open');
+                      }
+                    }}>
+                      Chapter {chapter.chapter_number}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
 
-             
-              </li>
-            ))}
-              </ul>
-            </li> */}
+        <li tabIndex={0}>
+      <details open={isOpen} ref={detailsRef}>
+        <summary className='text-lg font-semibold'>Theme</summary>
+        <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+          <li className='flex flex-col themes'>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Light</button>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
+            <button className="p-2 " onClick={() => { handleThemeChange('Ivy'); detailsRef.current.removeAttribute('open'); }}>Ivy</button>
+          </li>
+        </ul>
+      </details>
+    </li>
+        
+
           </ul>
         </div>
 
@@ -145,26 +161,26 @@ export const Navbar = () => {
             <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
           </div>  */}
           <li tabIndex={0}>
-            <details>
-              <summary className='text-lg font-semibold'>Chapters</summary>
-              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-                {chapters.map((chapter) => (
-                  <li key={chapter.chapter_number} className="grid justify-center w-32 ">
-                    <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                      <p className="p-1 text-sm" onClick={() => {
-                        const detailsElement = document.querySelector('details');
-                        if (detailsElement) {
-                          detailsElement.removeAttribute('open');
-                        }
-                      }}>
-                        Chapter {chapter.chapter_number}
-                      </p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          </li>
+          <details>
+            <summary className='text-lg font-semibold'>Chapters</summary>
+            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+              {chapters.map((chapter) => (
+                <li key={chapter.chapter_number} className="grid justify-center w-32 ">
+                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
+                    <p className="p-1 text-sm" onClick={() => {
+                      const detailsElement = document.querySelector('details');
+                      if (detailsElement) {
+                        detailsElement.removeAttribute('open');
+                      }
+                    }}>
+                      Chapter {chapter.chapter_number}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
 
           <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
