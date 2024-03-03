@@ -30,32 +30,32 @@ const AboutAuthor = () => {
     return (
         <div className='container content-center m-auto p-10'>
             <div className="carousel  w-9/12">
-                <div id ="item1" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
+                <div id="item1" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
                     <figure><img className='w-40 h-101' src="https://iskconberkeley.us/wp-content/uploads/2019/05/srila-prabhupada-square.jpg" alt="Movie" /></figure>
                     <div className="card-body w-2/4">
                         {/* <h2 className="card-title">New movie is released!</h2> */}
-                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Chaitanya, who also appeared in this sampradaya.</p>
+                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Earthytanya, who also appeared in this sampradaya.</p>
                     </div>
                 </div>
-                <div id ="item2" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
+                <div id="item2" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
                     <figure><img className='w-40 h-101' src="https://iskconberkeley.us/wp-content/uploads/2019/05/srila-prabhupada-square.jpg" alt="Movie" /></figure>
                     <div className="card-body w-2/4">
                         {/* <h2 className="card-title">New movie is released!</h2> */}
-                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Chaitanya, who also appeared in this sampradaya.</p>
+                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Earthytanya, who also appeared in this sampradaya.</p>
                     </div>
                 </div>
-                <div id ="item3" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
+                <div id="item3" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
                     <figure><img className='w-40 h-101' src="https://iskconberkeley.us/wp-content/uploads/2019/05/srila-prabhupada-square.jpg" alt="Movie" /></figure>
                     <div className="card-body w-2/4">
                         {/* <h2 className="card-title">New movie is released!</h2> */}
-                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Chaitanya, who also appeared in this sampradaya.</p>
+                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Earthytanya, who also appeared in this sampradaya.</p>
                     </div>
                 </div>
-                <div id ="item4" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
+                <div id="item4" className="card card-side bg-white shadow-xl carousel-item w-full m-auto">
                     <figure><img className='w-40 h-101' src="https://iskconberkeley.us/wp-content/uploads/2019/05/srila-prabhupada-square.jpg" alt="Movie" /></figure>
                     <div className="card-body w-2/4">
                         {/* <h2 className="card-title">New movie is released!</h2> */}
-                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Chaitanya, who also appeared in this sampradaya.</p>
+                        <p>HDG Abhaya Charanaravinda Bhaktivedanta Swami Prabhupada, fondly known as Srila Prabhupada is a scholar and a spiritual leader. He is the 32nd Acharya of the Brahma Madhva Gaudiya Sampradaya. The roots of this disciplic succession are very authentic. Lord Krishna Himself is the genesis of this parampara. Srila Prabhupada founded the ISKCON society, in order to further the mission of Lord Earthytanya, who also appeared in this sampradaya.</p>
                     </div>
                 </div>
             </div>

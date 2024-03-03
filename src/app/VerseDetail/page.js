@@ -145,8 +145,7 @@ function VerseDetail() {
           content: selectedText,
           notes: Notes,
         });
-        arr[2] = chapterVerse.split('.')
-        console.log(arr)
+
         console.log("Document written with ID: ", docRef.id);
         setSelectedText("");
         setNotes("");
@@ -549,7 +548,7 @@ function VerseDetail() {
         <PublicNotes verseId={chapterVerse} />
       </div>
       <Footer />
-      <ScrollDepth chapter={chapter} verse={chapterVerse}/>
+      <ScrollDepth chapter={chapter} verse={chapterVerse} />
     </>
   );
 }
