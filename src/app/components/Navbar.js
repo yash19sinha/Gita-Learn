@@ -121,7 +121,7 @@ export const Navbar = () => {
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
             <li className='text-base font-semibold'><Link href="Profile">Profile</Link></li>
-            <li className='text-base font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
+            <li className='text-base font-semibold'> <Link href='/' ><FullScreenComponent /> </Link> </li>
             <li tabIndex={0}>
           <details>
             <summary className='text-base font-semibold'>Chapters</summary>
@@ -140,17 +140,17 @@ export const Navbar = () => {
         </li>
 
         <li tabIndex={0}>
-      <details open={isOpen} ref={detailsRef}>
-        <summary className='text-lg font-semibold'>Theme</summary>
-        <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-          <li className='flex flex-col themes'>
-            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Light</button>
-            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
-            <button className="p-2 " onClick={() => { handleThemeChange('Ivy'); detailsRef.current.removeAttribute('open'); }}>Ivy</button>
+            <details open={isOpen} ref={detailsRef}>
+              <summary className='text-lg font-semibold'>Theme</summary>
+              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+                <li className='flex flex-col themes'>
+                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
+                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
+                  <button className="p-2 " onClick={() => { handleThemeChange('Earthy'); detailsRef.current.removeAttribute('open'); }}>Light</button>
+                </li>
+              </ul>
+            </details>
           </li>
-        </ul>
-      </details>
-    </li>
         
 
           </ul>
