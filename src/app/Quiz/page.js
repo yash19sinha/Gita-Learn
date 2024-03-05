@@ -115,12 +115,12 @@ function Quiz() {
   
 
   const maxTimer = 60;
+  const currentQuestion = questions[currentQuestionIndex];
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTimer((prevTimer) => {
-        // Check if the timer has reached 0, then move to the next question
-        if (prevTimer <= 0 && currentQuestion) {
+        if (prevTimer <= 0 && currentQuestion) { // Ensure currentQuestion is defined
           if (currentQuestion.type === 'fillUps') {
             handleFillUpsSubmit(); // Submit the fill-up answers
           } else {
@@ -133,15 +133,16 @@ function Quiz() {
       });
     }, 1000);
   
-    // Save the timer ID to state for later cleanup
+    // Save the timer ID to state for cleanup
     setTimerId(intervalId);
   
-    // Clear the timer when the component unmounts
+    // Cleanup
     return () => {
       clearInterval(intervalId);
-      setTimerId(null); // Clear the timer ID on unmount
+      setTimerId(null);
     };
-  }, [currentQuestionIndex, maxTimer]);
+  }, [currentQuestionIndex, maxTimer,currentQuestion]); // Include currentQuestion in dependencies
+  
   
   const handleOptionClick = (selectedOption) => {
     // Clear the timer
@@ -277,12 +278,12 @@ function Quiz() {
   
 
   if (questions.length === 0) {
-    return <p className="h-full mt-4 text-center ">Loading questions...</p>;
+    return <p className="h-full min-h-screen mt-4 text-center ">Loading questions...</p>;
   }
 
   if (currentQuestionIndex >= questions.length) {
     return (
-      <div className='flex justify-center h-full p-4 m-5 '>
+      <div className='flex justify-center h-full min-h-screen p-4 m-5 '>
         <div className="flex flex-col items-center w-4/5 h-64 p-4 m-5 bg-gray-200 rounded shadow-md">
           <p className="p-5 m-4 text-2xl font-bold text-center">Your final score: {score}</p>
           <button
@@ -297,17 +298,17 @@ function Quiz() {
   }
   
 
-  const currentQuestion = questions[currentQuestionIndex];
+ 
 
   
   
   return (
-    <div className="flex flex-col items-center h-full p-4   ">
+    <div className="flex flex-col items-center h-full min-h-screen p-4 ">
     <h1 className="p-6 m-2 my-4 text-3xl font-bold">Quiz for Verse: {verseId}</h1>
 
     {/* Render questions based on type */}
     {currentQuestion && (
-      <div key={currentQuestion.id} className="pt-4 bg-gray-300 rounded shadow-md md:w-4/5  dark:text-black">
+      <div key={currentQuestion.id} className="pt-4 bg-gray-300 rounded shadow-md md:w-4/5 dark:text-black">
         <p className="p-5 m-4 text-xl font-semibold text-center md:text-2xl">{currentQuestion.question}</p>
 
         {/* Time slider */}

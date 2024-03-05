@@ -12,52 +12,79 @@ import { useTheme } from '../context/ThemeContext';
 
 
 export const Navbar = () => {
-
   const [user] = useAuthState(auth);
-
   const [chapters, setChapters] = useState([]);
-
-  const { toggleTheme } = useTheme();
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  
   const [isOpen, setIsOpen] = useState(false);
   const detailsRef = useRef(null);
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== 'undefined') {
-      // Check if running in a browser environment
-      const savedTheme = window.localStorage.getItem('theme');
-      console.log('Theme retrieved from localStorage:', savedTheme);
-      return savedTheme || 'light';
-    } else {
-      // Fallback for non-browser environments
-      return 'light';
-    }
-  });
+  const [theme, setTheme] = useState('Earthy'); // Default theme
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Check if running in a browser environment
-      document.documentElement.setAttribute('data-theme', theme);
-      // Save the theme to localStorage
-      window.localStorage.setItem('theme', theme);
-      console.log('Theme saved to localStorage:', theme);
+    // Initialize theme from local storage if available
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
     }
+  }, []);
+
+  // Persist theme changes to local storage
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+  
+  useEffect(() => {
+    console.log('Setting data theme attribute:', theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else {
+      setTheme('Earthy');
+    }
+  }, []);
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('https://gita-learn-api.vercel.app/api/chapters');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setChapters(data.chapters);
+      } catch (error) {
+        console.error('Error fetching chapters with descriptions:', error);
+        // Handle error here
+      }
+    }
+    fetchData();
+  }, []);
 
-  let links = [
-    { name: "HOME", link: "/" },
-    { name: 'Bhagvad Gita', link: '/' },
-    { name: 'Chapters', link: '/' },
-    { name: 'Quotes', link: '/' },
-  ];
+  const handleThemeChange = (selectedTheme) => {
+    console.log('Selected theme:', selectedTheme);
+    setTheme(selectedTheme);
+    console.log('Theme after setting:', selectedTheme);
+    setIsOpen(false); // Close the dropdown after theme selection
+  };
+
+  const closeDropdown = () => {
+    const detailsElement = document.querySelector('details');
+    if (detailsElement) {
+      detailsElement.removeAttribute('open');
+    }
+  };
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -77,18 +104,7 @@ export const Navbar = () => {
     fetchData();
   }, []);
 
-  const handleThemeChange = (selectedTheme) => {
-    console.log('Selected theme:', selectedTheme);
-    setTheme(selectedTheme);
-    setIsOpen(false); // Close the dropdown after theme selection
-  };
 
-  const closeDropdown = () => {
-    const detailsElement = document.querySelector('details');
-    if (detailsElement) {
-      detailsElement.removeAttribute('open');
-    }
-  };
 
 
 
@@ -186,9 +202,9 @@ export const Navbar = () => {
               <summary className='text-lg font-semibold'>Theme</summary>
               <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
                 <li className='flex flex-col themes'>
-                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Light</button>
+                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
                   <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
-                  <button className="p-2 " onClick={() => { handleThemeChange('Earthy'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
+                  <button className="p-2 " onClick={() => { handleThemeChange('Earthy'); detailsRef.current.removeAttribute('open'); }}>Light</button>
                 </li>
               </ul>
             </details>
