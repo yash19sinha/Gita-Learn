@@ -143,7 +143,7 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:4000/api/timestamp/${chapterVerse}`
+        `https://gita-learn-api.vercel.app/api/timestamp/${chapterVerse}`
       );
 
       setStartTime(response.data["start-time"]);
@@ -229,7 +229,7 @@ function PublicNotes({ verseId }) {
 
   return (
     <div>
-      <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
+      {/* <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
         {showNotes ? "Hide Public Notes" : "Show Public Notes"}
       </button>
       ;
@@ -264,7 +264,7 @@ function PublicNotes({ verseId }) {
             </div>
           )}
         </div>
-      )}
+      )} */}
       {hasContent && (
         <div className="w-full mb-2 border border-gray-300 rounded-lg">
           <div className="p-4 ">
