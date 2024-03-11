@@ -65,7 +65,7 @@ function ChapterInfo() {
 
   return (
     <>
-      <div className="p-4 mt-4">
+      <div className="min-h-screen p-4 mt-4">
         <h1 className="flex justify-center mb-4 text-2xl font-semibold">
           Chapter {chapterNumber}
         </h1>
@@ -84,7 +84,7 @@ function ChapterInfo() {
           {verses.map((verse) => (
             <p
               key={verse.verse_number}
-              className="p-4 text-xl font-normal text-justify sm:mx-20 sm:px-16  hover:bg-gray-100 dark-theme"
+              className="p-4 text-xl font-normal text-justify sm:mx-20 sm:px-16 hover:bg-gray-100 dark-theme"
             >
               <Link
                 href={`/VerseDetail?chapterVerse=${chapterNumber}.${verse.verse_number}`}

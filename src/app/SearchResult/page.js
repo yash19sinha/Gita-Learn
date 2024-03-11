@@ -23,14 +23,14 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen mt-10">
-      <div className="flex items-center px-4 py-2 border border-gray-300 rounded-full w-96">
+    <div className="items-center min-h-screen px-8 mt-10 ">
+      <div className="flex items-center w-full p-2 bg-white border border-gray-300 rounded-full">
         <input
           type="text"
           placeholder="Search..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full focus:outline-none"
+          className="w-full bg-white focus:outline-none"
         />
         <button
           onClick={handleSearch}

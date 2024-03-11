@@ -177,6 +177,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
+        const chapterVerse = searchParams.get("chapterVerse");
         const response = await fetch(
           `https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`
         );
@@ -235,12 +236,33 @@ function VerseDetail() {
     setNotes(""); // Reset textarea
   };
   // Function to handle previous button click
+  // Function to handle previous button click
+  async function fetchAudioData(chapterVerse) {
+    try {
+      const response = await fetch(
+        `https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data.audio;
+    } catch (error) {
+      console.error("Error fetching audio data:", error);
+      return {};
+    }
+  }
+
+  // Function to handle previous button click
   const handlePreviousPage = async () => {
     try {
       const verseNumbers = await fetchVerseNumbers();
       const currentIndex = verseNumbers.indexOf(chapterVerse);
       if (currentIndex > 0) {
         const previousChapterVerse = verseNumbers[currentIndex - 1];
+        const audioDataResponse = await fetchAudioData(previousChapterVerse);
+        // setChapterVerse(previousChapterVerse);
+        setAudioData(audioDataResponse);
         router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
       } else {
         console.log("No previous verse available");
@@ -257,6 +279,9 @@ function VerseDetail() {
       const currentIndex = verseNumbers.indexOf(chapterVerse);
       if (currentIndex < verseNumbers.length - 1) {
         const nextChapterVerse = verseNumbers[currentIndex + 1];
+        const audioDataResponse = await fetchAudioData(nextChapterVerse);
+        // setChapterVerse(nextChapterVerse);
+        setAudioData(audioDataResponse);
         router.push(`/VerseDetail?chapterVerse=${nextChapterVerse}`);
       } else {
         console.log("No next verse available");
@@ -266,44 +291,46 @@ function VerseDetail() {
     }
   };
 
-  const redirectToQuiz = () => {
-    // Check if chapterVerse is a valid value before redirecting
-    if (chapterVerse) {
-      // Redirect to the quiz page with the current chapterVerse as a query parameter
-      router.push(`/Quiz?verseId=${chapterVerse}`);
-    } else {
-      console.error("Invalid chapterVerse:", chapterVerse);
-      // Handle the case where chapterVerse is null or invalid
-    }
-  };
+  // Fetch audio data function
 
-  const handleCreateCommunityId = async () => {
-    try {
-      const communityIdRef = doc(collection(getFirestore(), "communityIds"));
-      const communityIdSnapshot = await getDoc(communityIdRef);
+  // const redirectToQuiz = () => {
+  //   // Check if chapterVerse is a valid value before redirecting
+  //   if (chapterVerse) {
+  //     // Redirect to the quiz page with the current chapterVerse as a query parameter
+  //     router.push(`/Quiz?verseId=${chapterVerse}`);
+  //   } else {
+  //     console.error("Invalid chapterVerse:", chapterVerse);
+  //     // Handle the case where chapterVerse is null or invalid
+  //   }
+  // };
 
-      if (communityIdSnapshot.exists()) {
-        alert("Community ID already exists. Try entering the existing ID.");
-      } else {
-        const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
-        setGeneratedCommunityId(newCommunityId);
+  // const handleCreateCommunityId = async () => {
+  //   try {
+  //     const communityIdRef = doc(collection(getFirestore(), "communityIds"));
+  //     const communityIdSnapshot = await getDoc(communityIdRef);
 
-        setIsCreatingCommunityId(true);
+  //     if (communityIdSnapshot.exists()) {
+  //       alert("Community ID already exists. Try entering the existing ID.");
+  //     } else {
+  //       const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
+  //       setGeneratedCommunityId(newCommunityId);
 
-        const communityData = {
-          communityId: newCommunityId,
-          verseId: chapterVerse,
-        };
+  //       setIsCreatingCommunityId(true);
 
-        await addDoc(collection(getFirestore(), "communityIds"), communityData);
+  //       const communityData = {
+  //         communityId: newCommunityId,
+  //         verseId: chapterVerse,
+  //       };
 
-        console.log("Community ID created:", communityData);
-      }
-    } catch (error) {
-      console.error("Error creating community ID:", error);
-      // Handle error here
-    }
-  };
+  //       await addDoc(collection(getFirestore(), "communityIds"), communityData);
+
+  //       console.log("Community ID created:", communityData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error creating community ID:", error);
+  //     // Handle error here
+  //   }
+  // };
 
   const handleEnterCommunityId = async () => {
     if (!communityId) {
@@ -436,7 +463,7 @@ function VerseDetail() {
           <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
           {audioData.audioUrl && (
             <div className="flex items-center justify-center p-5">
-              <audio controls className="w-96">
+              <audio controls className="w-96" key={audioData.audioUrl}>
                 <source src={audioData.audioUrl} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>

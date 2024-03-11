@@ -16,7 +16,7 @@ body {
 }
 
 /* Default light theme styles */
-[data-theme='light'] {
+[data-theme='Earthy'] {
     --background-color: #ffffff;
     --text-color: #000000;
 }
@@ -54,51 +54,51 @@ body {
     --text-color-highlight: hsl(25, 70%, 45%);
 }
 
-/* Ivy theme styles */
-[data-theme='Ivy'] {
-    --background-color: #2F3E46;
+/* Earthy theme styles */
+[data-theme='light'] {
+    --background-color: #F2D4A4;
     /* Custom background color */
-    --text-color: #d5f2ec;
+    --text-color: #000;
     /* Custom text color */
 }
 
-[data-theme='Ivy'] .dark-theme:hover {
-    background-color: #374F54;
+[data-theme='light'] .dark-theme:hover {
+    background-color: #E7B884;
     /* Example: A green background on hover */
-    color: #C8D1C6;
+    color: #000;
     /* White text color on hover */
     transform: scale(1.05);
     /* Slightly scale up the element */
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-[data-theme='Ivy'] .them {
+[data-theme='light'] .them {
     background-color: #374F54;
     color: white;
 }
 
-[data-theme='Ivy'] .Quiz-theme {
+[data-theme='light'] .Quiz-theme {
     --background-color: #2F3E46;
     /* Custom background color */
     --text-color: #d5f2ec;
     /* Custom text color */
 }
 
-[data-theme='Ivy'] .navbar {
-    background-color: #233b40;
+[data-theme='light'] .navbar {
+    background-color: #D29656;
 }
 
-[data-theme='Ivy'] .leaderboard {
-    background-color: #1c353b;
+[data-theme='light'] .leaderboard {
+    background-color: #E7B884;
 }
 
-[data-theme='Ivy'] .table-auto {
-    background-color: #1c353b;
+[data-theme='light'] .table-auto {
+    background-color: #E7B884;
 }
 
-[data-theme='Ivy'] .footer {
-    background-color: #1c353b;
-    border: #1c353b;
+[data-theme='light'] .footer {
+    background-color: #E7B884;
+    border: #E7B884;
 }
 
 body {
