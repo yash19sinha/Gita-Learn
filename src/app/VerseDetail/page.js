@@ -42,8 +42,9 @@ function VerseDetail() {
   const [textBoxPosition, setTextBoxPosition] = useState({ top: 0, left: 0 });
   const [Notes, setNotes] = useState("");
   const boxRef = useRef(null);
-  const chapter = 0
-  const verse = 0
+  const chapter = 0;
+  const verse = 0;
+
   function handleTextSelection() {
     const text = window.getSelection().toString();
     const selection = window.getSelection();
@@ -145,9 +146,9 @@ function VerseDetail() {
           content: selectedText,
           notes: Notes,
         });
-        arr[2] = chapterVerse.split('.')
-        console.log(arr)
+
         console.log("Document written with ID: ", docRef.id);
+
         setSelectedText("");
         setNotes("");
       } catch (error) {
@@ -528,13 +529,15 @@ function VerseDetail() {
                 onChange={(e) => setCommunityId(e.target.value)}
                 className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               />
-              <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
+              <button
+                onClick={handleEnterCommunityId}
+                className="text-white bg-orange-400 btn"
+              >
                 Enter
               </button>
             </div>
           </div>
         )}
-
 
         <button
           onClick={handleToggleNotesSidebar}
@@ -549,7 +552,7 @@ function VerseDetail() {
         <PublicNotes verseId={chapterVerse} />
       </div>
       <Footer />
-      <ScrollDepth chapter={chapter} verse={chapterVerse}/>
+      <ScrollDepth chapter={chapter} verse={chapterVerse} />
     </>
   );
 }
