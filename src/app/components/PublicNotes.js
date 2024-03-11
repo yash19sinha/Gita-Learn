@@ -5,22 +5,34 @@ import { v4 } from "uuid";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
-
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 function PublicNotes({ verseId }) {
   const [showNotes, setShowNotes] = useState(false);
   const [showAccordions, setShowAccordions] = useState(false);
   const [image, setImg] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
-  const [podbean, setPodbean] = useState(null);
-  const [link, setLink] = useState(null);
+  const [podbean, setPodbean] = useState([]);
+  const [link, setLink] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  //to store start and end timestamp
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [videoId, setVideoId] = useState("");
   // const [accordionNames] = useState(['Images']);
   const [accordionNames] = useState([
     "Mindmap",
     "Prabupada Lecture",
-    "Senior Devotees Lectures",
+    "Video Lectures",
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
@@ -51,13 +63,94 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
+        `http://localhost:4000/api/links/${chapterVerse}`
       );
-
-      setLink(response.data.links);
-      // setPodbean(response.data.podbean);
+      const links = [];
+      // Check if response data exists and has links
+      if (response.data && response.data.links) {
+        // Iterate over each link object in the response
+        for (const key in response.data.links) {
+          if (Object.hasOwnProperty.call(response.data.links, key)) {
+            const linkObj = response.data.links[key];
+            // Check if link1 object has link property
+            if (Array.isArray(linkObj)) {
+              for (let i = 0; i < linkObj.length; i++) {
+                if (linkObj[i].link) {
+                  links.push({
+                    link: linkObj[i].link,
+                    title: linkObj[i].title,
+                  });
+                }
+              }
+            } else {
+              if (linkObj.link) {
+                links.push({ link: linkObj.link, title: linkObj.title });
+              }
+            }
+          }
+        }
+        setLink(links);
+      }
     } catch (error) {
       setError("Error fetching link");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function fetchPodbeanLink() {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `http://localhost:4000/api/podbeans/${chapterVerse}`
+      );
+      const links = [];
+      // Check if response data exists and has links
+      if (response.data && response.data.podbeans) {
+        // Iterate over each link object in the response
+        for (const key in response.data.podbeans) {
+          if (Object.hasOwnProperty.call(response.data.podbeans, key)) {
+            const linkObj = response.data.podbeans[key];
+            // Check if link1 object has link property
+            if (Array.isArray(linkObj)) {
+              for (let i = 0; i < linkObj.length; i++) {
+                if (linkObj[i].link) {
+                  links.push({
+                    link: linkObj[i].link,
+                    title: linkObj[i].title,
+                  });
+                }
+              }
+            } else {
+              if (linkObj.link) {
+                links.push({ link: linkObj.link, title: linkObj.title });
+              }
+            }
+          }
+        }
+        console.log(links);
+        setPodbean(links);
+      }
+    } catch (error) {
+      setError("Error fetching link");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //to fetch timestamp
+  async function fetchTimestamp() {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `http://localhost:4000/api/timestamp/${chapterVerse}`
+      );
+
+      setStartTime(response.data["start-time"]);
+      setEndTime(response.data["end-time"]);
+      setVideoId(response.data["video-id"]);
+    } catch (error) {
+      setError("Error fetching timestamp");
     } finally {
       setLoading(false);
     }
@@ -66,6 +159,8 @@ function PublicNotes({ verseId }) {
   useEffect(() => {
     if (chapterVerse) {
       fetchLink();
+      fetchPodbeanLink();
+      fetchTimestamp();
     }
   }, [chapterVerse]);
 
@@ -126,13 +221,50 @@ function PublicNotes({ verseId }) {
   const hasContent = [1, 2, 3].some((index) => {
     return (
       (index === 1 && imageUrls.length > 0) ||
-      (index === 2 && link && link.link1) ||
-      (index === 3 && link && link.podbean)
+      (index === 2 && link && link.length > 0) ||
+      (index === 2 && podbean && podbean.length > 0) ||
+      (index === 3 && startTime !== "" && endTime !== "")
     );
   });
 
   return (
     <div>
+      <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
+        {showNotes ? "Hide Public Notes" : "Show Public Notes"}
+      </button>
+      ;
+      {showNotes && (
+        <div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+            className="mt-4"
+          />
+          <button
+            onClick={handleImageUpload}
+            className="justify-center mt-4 btn btn-primary"
+          >
+            Upload Image
+          </button>
+
+          {imageUrls.length > 0 && (
+            <div>
+              <p>Uploaded Images:</p>
+              <div>
+                {imageUrls.map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Uploaded Image ${index + 1}`}
+                    className="max-w-full mt-2 h-180 w-180"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
       {hasContent && (
         <div className="w-full mb-2 border border-gray-300 rounded-lg">
           <div className="p-4 ">
@@ -150,8 +282,9 @@ function PublicNotes({ verseId }) {
 
               const hasContent =
                 (index === 1 && imageUrls.length > 0) ||
-                (index === 2 && link && link.link1.link) ||
-                (index === 3 && link && link.podbean.link);
+                (index === 2 && link && link.length > 0) ||
+                (index === 2 && podbean && podbean.length > 0) ||
+                (index === 3 && startTime !== "" && endTime !== "");
 
               return hasContent ? (
                 <div
@@ -183,15 +316,33 @@ function PublicNotes({ verseId }) {
                       )}
                       {index === 2 && (
                         <div>
-                          {link ? (
-                            <a
-                              href={link.link1.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="text-blue-500 hover:text-blue-700"
-                            >
-                              {link.link1.title}
-                            </a>
+                          {link || podbean ? (
+                            <ul className="list-decimal">
+                              {link.map((link, index) => (
+                                <li key={index} className="text-justify">
+                                  <a
+                                    href={link.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 hover:text-blue-700 hover:underline"
+                                  >
+                                    {link.title}
+                                  </a>
+                                </li>
+                              ))}
+                              {podbean.map((link, index) => (
+                                <li key={index} className="text-justify">
+                                  <a
+                                    href={link.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-500 hover:text-blue-700 hover:underline"
+                                  >
+                                    {link.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
                           ) : (
                             <p>No link found</p>
                           )}
@@ -199,18 +350,17 @@ function PublicNotes({ verseId }) {
                       )}
                       {index === 3 && (
                         <div>
-                          {link ? (
-                            <a
-                              href={link.podbean}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              class="text-blue-500 hover:text-blue-700"
-                            >
-                              {link.podbean.slice(34, link.podbean.length - 1)}
-                            </a>
-                          ) : (
-                            <p>No link found</p>
-                          )}
+                          {
+                            <iframe
+                              width="560"
+                              height="315"
+                              src={`https://www.youtube-nocookie.com/embed/${videoId};controls=0&amp;modestbranding=1&amp;start=${startTime}&&end=${endTime}`}
+                              title="YouTube video player"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              allowFullScreen
+                            ></iframe>
+                          }
                         </div>
                       )}
                     </div>
@@ -226,40 +376,3 @@ function PublicNotes({ verseId }) {
 }
 
 export default PublicNotes;
-
-{
-  /* <button
-        onClick={() => setShowNotes(!showNotes)}
-        className="mb-4 btn"
-      >
-        {showNotes ? 'Hide Public Notes' : 'Show Public Notes'}
-      </button>
-
-      {showNotes && (
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImg(e.target.files[0])}
-            className="mt-4"
-          />
-          <button
-            onClick={handleImageUpload}
-            className="justify-center mt-4 btn btn-primary"
-          >
-            Upload Image
-          </button>
-
-          {imageUrls.length > 0 && (
-            <div>
-              <p>Uploaded Images:</p>
-              <div>
-                {imageUrls.map((url, index) => (
-                  <img key={index} src={url} alt={`Uploaded Image ${index + 1}`} className="max-w-full mt-2 h-180 w-180"  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )} */
-}

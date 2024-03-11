@@ -42,9 +42,9 @@ function VerseDetail() {
   const [textBoxPosition, setTextBoxPosition] = useState({ top: 0, left: 0 });
   const [Notes, setNotes] = useState("");
   const boxRef = useRef(null);
-  const chapter = 0
-  const verse = 0
-  
+  const chapter = 0;
+  const verse = 0;
+
   function handleTextSelection() {
     const text = window.getSelection().toString();
     const selection = window.getSelection();
@@ -148,6 +148,7 @@ function VerseDetail() {
         });
 
         console.log("Document written with ID: ", docRef.id);
+
         setSelectedText("");
         setNotes("");
       } catch (error) {
@@ -231,74 +232,66 @@ function VerseDetail() {
     }
   };
 
-
-
-
   const handleClearAll = () => {
     setNotes(""); // Reset textarea
   };
   // Function to handle previous button click
-// Function to handle previous button click
-async function fetchAudioData(chapterVerse) {
-  try {
-    const response = await fetch(
-      `https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+  // Function to handle previous button click
+  async function fetchAudioData(chapterVerse) {
+    try {
+      const response = await fetch(
+        `https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      return data.audio;
+    } catch (error) {
+      console.error("Error fetching audio data:", error);
+      return {};
     }
-    const data = await response.json();
-    return data.audio;
-  } catch (error) {
-    console.error("Error fetching audio data:", error);
-    return {};
   }
-}
 
-
-// Function to handle previous button click
-const handlePreviousPage = async () => {
-  try {
-    const verseNumbers = await fetchVerseNumbers();
-    const currentIndex = verseNumbers.indexOf(chapterVerse);
-    if (currentIndex > 0) {
-      const previousChapterVerse = verseNumbers[currentIndex - 1];
-      const audioDataResponse = await fetchAudioData(previousChapterVerse);
-      // setChapterVerse(previousChapterVerse);
-      setAudioData(audioDataResponse);
-      router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
-    } else {
-      console.log("No previous verse available");
+  // Function to handle previous button click
+  const handlePreviousPage = async () => {
+    try {
+      const verseNumbers = await fetchVerseNumbers();
+      const currentIndex = verseNumbers.indexOf(chapterVerse);
+      if (currentIndex > 0) {
+        const previousChapterVerse = verseNumbers[currentIndex - 1];
+        const audioDataResponse = await fetchAudioData(previousChapterVerse);
+        // setChapterVerse(previousChapterVerse);
+        setAudioData(audioDataResponse);
+        router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
+      } else {
+        console.log("No previous verse available");
+      }
+    } catch (error) {
+      console.error("Error navigating to previous verse:", error);
     }
-  } catch (error) {
-    console.error("Error navigating to previous verse:", error);
-  }
-};
+  };
 
-// Function to handle next button click
-const handleNextPage = async () => {
-  try {
-    const verseNumbers = await fetchVerseNumbers();
-    const currentIndex = verseNumbers.indexOf(chapterVerse);
-    if (currentIndex < verseNumbers.length - 1) {
-      const nextChapterVerse = verseNumbers[currentIndex + 1];
-      const audioDataResponse = await fetchAudioData(nextChapterVerse);
-      // setChapterVerse(nextChapterVerse);
-      setAudioData(audioDataResponse);
-      router.push(`/VerseDetail?chapterVerse=${nextChapterVerse}`);
-    } else {
-      console.log("No next verse available");
+  // Function to handle next button click
+  const handleNextPage = async () => {
+    try {
+      const verseNumbers = await fetchVerseNumbers();
+      const currentIndex = verseNumbers.indexOf(chapterVerse);
+      if (currentIndex < verseNumbers.length - 1) {
+        const nextChapterVerse = verseNumbers[currentIndex + 1];
+        const audioDataResponse = await fetchAudioData(nextChapterVerse);
+        // setChapterVerse(nextChapterVerse);
+        setAudioData(audioDataResponse);
+        router.push(`/VerseDetail?chapterVerse=${nextChapterVerse}`);
+      } else {
+        console.log("No next verse available");
+      }
+    } catch (error) {
+      console.error("Error navigating to next verse:", error);
     }
-  } catch (error) {
-    console.error("Error navigating to next verse:", error);
-  }
-};
+  };
 
-
-
-// Fetch audio data function
-
-
+  // Fetch audio data function
 
   // const redirectToQuiz = () => {
   //   // Check if chapterVerse is a valid value before redirecting
@@ -476,7 +469,6 @@ const handleNextPage = async () => {
               </audio>
             </div>
           )}
-
         </div>
         <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
           <h2 className="flex justify-center p-3 text-2xl font-bold">
@@ -564,13 +556,15 @@ const handleNextPage = async () => {
                 onChange={(e) => setCommunityId(e.target.value)}
                 className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               />
-              <button onClick={handleEnterCommunityId} className="text-white bg-orange-400 btn">
+              <button
+                onClick={handleEnterCommunityId}
+                className="text-white bg-orange-400 btn"
+              >
                 Enter
               </button>
             </div>
           </div>
         )}
-
 
         <button
           onClick={handleToggleNotesSidebar}
