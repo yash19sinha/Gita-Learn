@@ -394,6 +394,11 @@ function VerseDetail() {
 
   return (
     <>
+    <head>
+    <title>Bhagavad Gita Chapter-wise Verses - Bhagavad Gita As It Is</title>
+    <meta name="description" content="Dive into the profound wisdom of the Bhagavad Gita chapter by chapter. Discover the authentic translations and interpretations from 'Bhagavad Gita As It Is' and explore the spiritual essence of each verse." />
+    <meta name="keywords" content="Bhagavad Gita, BG, Bhagwat Gita, Bhagvad Gita, Gita, Bhagavad Gita As It Is, Bhagavad Gita Verses, Chapter-wise Gita Verses, Spiritual Text, Hindu Scripture" />
+</head>
       <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
           Bg. {chapterVerse}

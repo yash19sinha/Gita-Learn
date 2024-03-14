@@ -12,16 +12,22 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    
-    <html lang="en" data-theme="light">     
+
+    <html lang="en" data-theme="light">
+<head>
+    <title>Learn Bhagavad Gita with Quizzes - Gita-Learn</title>
+    <meta name="description" content="Embark on a spiritual journey with Gita-Learn. Explore the Bhagavad Gita chapter by chapter with teachings from Srila Prabhupada. Test your understanding with interactive quizzes, manage your reading streaks, enjoy a fullscreen reading experience, and easily search for verses." />
+    <meta name="keywords" content="Bhagavad Gita Learning, BG, Gita Quizzes, Bhagavad Gita As It Is, Srila Prabhupada, Spiritual Learning, Hindu Scriptures, Gita Verses, Interactive Learning, Streak Management, Fullscreen Reading, Gita Search, Bhagwat Gita, Bhagvad Gita, Gita Study" />
+</head>
+
       <body className={inter.className}>
-     
-      <ThemeProvider>
+
+        <ThemeProvider>
           <Navbar />
           {children}
         </ThemeProvider>
       </body>
-      
+
     </html>
   )
 }
