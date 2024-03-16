@@ -407,6 +407,7 @@ function VerseDetail() {
 
   return (
     <>
+      <ToastContainer />
       <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
           Bg. {chapterVerse}
