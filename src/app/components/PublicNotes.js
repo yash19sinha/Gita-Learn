@@ -266,7 +266,7 @@ function PublicNotes({ verseId }) {
         </div>
       )}
       {hasContent && (
-        <div className="w-full mb-2 border border-gray-300 rounded-lg">
+        <div className="w-full mb-2 border border-orange-600 rounded-lg">
           <div className="p-4 ">
             {[1, 2, 3].map((index) => {
               const isActive = activeIndex === index;
@@ -274,8 +274,8 @@ function PublicNotes({ verseId }) {
                 ? "bg-orange-200 border-orange-500 dark:bg-coolGray-700"
                 : "bg-orange-100 hover:bg-orange-200 border-orange-300 hover:border-orange-500";
               const contentClass = isActive
-                ? "p-4 bg-orange-50 border border-orange-500 flex justify-center items-center"
-                : "p-4 bg-orange-50 border border-orange-300 flex justify-center items-center";
+                ? "p-4 bg-orange-100 border border-orange-500 flex justify-center items-center"
+                : "p-4 bg-orange-100 border border-orange-300 flex justify-center items-center";
               const buttonClass = isActive
                 ? "w-full p-4 text-xl text-center"
                 : "w-full p-4 text-xl text-left";
