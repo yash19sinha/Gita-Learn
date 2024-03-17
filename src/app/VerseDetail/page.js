@@ -11,6 +11,8 @@ import { FaPenSquare } from "react-icons/fa";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import PublicNotes from "../components/PublicNotes";
 import { useAuth } from "../hooks/auth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../icon/comment.png";
 import {
   addDoc,
@@ -82,8 +84,13 @@ function VerseDetail() {
         // Handle click on the "Open Notes" button
         const openNotesBtn = menu.querySelector("#openNotesBtn");
         openNotesBtn.addEventListener("click", () => {
-          setShowTextBox(true); // Show the text box
-          menu.remove(); // Remove the menu immediately
+          if (!user) {
+            // Assuming you have a function to check if the user is logged in
+            toast.error("Please sign in to use the notes section", {});
+          } else {
+            setShowTextBox(true); // Show the text box
+            menu.remove(); // Remove the menu immediately
+          }
         });
 
         // Create arrow element
@@ -158,7 +165,13 @@ function VerseDetail() {
   };
 
   const handleToggleNotesSidebar = () => {
-    setIsNotesSidebarOpen((prev) => !prev);
+    if (!user) {
+      // User is not signed in, show toast notification
+      toast.error("Please sign in to use the notes section", {});
+    } else {
+      // User is signed in, toggle notes sidebar
+      setIsNotesSidebarOpen((prev) => !prev);
+    }
   };
 
   useEffect(() => {
@@ -394,11 +407,7 @@ function VerseDetail() {
 
   return (
     <>
-    <head>
-    <title>Bhagavad Gita Chapter-wise Verses - Bhagavad Gita As It Is</title>
-    <meta name="description" content="Dive into the profound wisdom of the Bhagavad Gita chapter by chapter. Discover the authentic translations and interpretations from 'Bhagavad Gita As It Is' and explore the spiritual essence of each verse." />
-    <meta name="keywords" content="Bhagavad Gita, BG, Bhagwat Gita, Bhagvad Gita, Gita, Bhagavad Gita As It Is, Bhagavad Gita Verses, Chapter-wise Gita Verses, Spiritual Text, Hindu Scripture" />
-</head>
+      <ToastContainer />
       <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
           Bg. {chapterVerse}
@@ -570,14 +579,12 @@ function VerseDetail() {
             </div>
           </div>
         )}
-
         <button
           onClick={handleToggleNotesSidebar}
           className="fixed px-4 py-2 text-3xl text-white bg-blue-500 shadow rounded-3xl bottom-4 right-4 hover:bg-blue-600"
         >
           <FaPenSquare />
         </button>
-
         {isNotesSidebarOpen && (
           <NotesSidebar onClose={handleToggleNotesSidebar} />
         )}
