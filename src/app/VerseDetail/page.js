@@ -331,31 +331,51 @@ function VerseDetail() {
   //     // Handle error here
   //   }
   // };
-
   const handleEnterCommunityId = async () => {
     if (!communityId) {
       alert("Please enter a Community ID.");
       return;
     }
-
-    // Check if the entered community ID exists in the collection
-    const communityPinRef = collection(db, "communityIds");
-    const communityPinQuery = query(
-      communityPinRef,
-      where("communityId", "==", parseInt(communityId))
-    ); // Assuming 'communityId' is the field where the pin is stored
-    const communityPinSnapshot = await getDocs(communityPinQuery);
-
-    if (!communityPinSnapshot.empty) {
-      // The entered community ID exists in the collection
-      const currentVerseId = chapterVerse;
-      setIsCreatingCommunityId(false);
-      router.push(`/Quiz?verseId=${currentVerseId}&communityId=${communityId}`);
-    } else {
-      // The entered community ID does not exist in the collection
-      alert("Community ID does not exist. Please enter a valid ID.");
+  
+    try {
+      // Check if the entered community ID exists in the collection
+      const communityPinRef = collection(db, "communityIds");
+      const communityPinQuery = query(
+        communityPinRef,
+        where("communityId", "==", parseInt(communityId))
+      );
+      const communityPinSnapshot = await getDocs(communityPinQuery);
+  
+      if (!communityPinSnapshot.empty) {
+        // The entered community ID exists in the collection
+        const currentVerseId = chapterVerse;
+  
+        // Send request to the owner of the community ID
+        const requestData = {
+          communityId: parseInt(communityId),
+          status: 'pending',
+          createdAt: new Date()
+        };
+  
+        // Create communityIdRequests collection if it doesn't exist
+        const communityIdRequestsRef = collection(db, "communityIdRequests");
+        await addDoc(communityIdRequestsRef, { sampleField: "sampleValue" }); // Add a sample field to ensure the collection is created
+  
+        // Add request document to communityIdRequests collection
+        await addDoc(collection(db, 'communityIdRequests'), requestData);
+  
+        // Redirect user to the quiz page
+        window.location.href = `/Quiz?verseId=${currentVerseId}&communityId=${communityId}`;
+      } else {
+        // The entered community ID does not exist in the collection
+        alert("Community ID does not exist. Please enter a valid ID.");
+      }
+    } catch (error) {
+      console.error('Error entering community ID:', error);
+      // Handle error here
     }
   };
+  
 
   async function fetchQuestions(chapterVerse) {
     try {
