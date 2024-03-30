@@ -102,7 +102,7 @@ function NotesSidebar({ onClose }) {
 
   return user ? (
     <div
-      className="fixed top-0 right-0 p-4 m-4 mt-24 overflow-y-auto bg-white rounded-lg  h-3/4 md:w-2/6 notes-sidebar"
+      className="fixed top-0 right-0 p-4 m-4 mt-24 overflow-y-auto bg-white rounded-lg h-3/4 md:w-2/6 notes-sidebar"
       style={{
         boxShadow: "4px 8px 10px rgba(128, 128, 128, 0.5)",
         backgroundColor: "rgba(245, 247, 246)",
@@ -110,13 +110,13 @@ function NotesSidebar({ onClose }) {
         borderTop: "1px solid black",
       }}
     >
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="top-1100pt-5 text-2xl font-semibold flex-grow text-center">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="flex-grow text-2xl font-semibold text-center top-1100pt-5">
           Notes of Bg: {chapterVerse} ({notes.length})
         </h1>
 
         <button
-          className="fixed top-1000 right-10 bg-white p-1 pl-2 pr-2 border-black-1px border rounded-lg"
+          className="fixed p-1 pl-2 pr-2 bg-white border rounded-lg top-1000 right-10 border-black-1px"
           onClick={onClose}
           style={{ alignSelf: "flex-start" }}
         >
@@ -137,12 +137,12 @@ function NotesSidebar({ onClose }) {
         {notes.map((note) => (
           <div
             key={note.id}
-            className="mb-4 p-2 rounded-lg bg-white-300 shadow-lg opacity-400 border-gray-200 border"
+            className="p-2 mb-4 border border-gray-200 rounded-lg shadow-lg bg-white-300 opacity-400"
           >
             <div className="flex items-center justify-between mb-2">
               <div className="flex-grow overflow-hidden">
-                <p className="mb-1 bg-gray-100 p-3 rounded border border-black-5px text-center ">
-                  <span className="font-bold bg-green-200 font-semibold">
+                <p className="p-3 mb-1 text-center bg-gray-100 border rounded border-black-5px ">
+                  <span className="font-bold bg-green-200">
                     {note.content}
                   </span>
                 </p>
@@ -152,7 +152,7 @@ function NotesSidebar({ onClose }) {
               <div className="flex-grow overflow-hidden">
                 {editingNoteId === note.id ? (
                   <textarea
-                    className="w-full h-32 bg-gray-100 p-1 rounded border-none" // Increase height
+                    className="w-full h-32 p-1 bg-gray-100 border-none rounded" // Increase height
                     value={editedNote}
                     onChange={(e) => setEditedNote(e.target.value)}
                     placeholder="Enter your notes here..."
@@ -160,7 +160,7 @@ function NotesSidebar({ onClose }) {
                 ) : (
                   <div>
                     {showFullNote[note.id] ? (
-                      <p className="bg-gray-100 p-1 rounded">{note.notes}</p>
+                      <p className="p-1 bg-gray-100 rounded">{note.notes}</p>
                     ) : (
                       <p className="bg-gray-100 p-1 rounded h-20 text-ellipsis overflow-hidden ... ">
                         {note.notes}
@@ -183,13 +183,13 @@ function NotesSidebar({ onClose }) {
                 <>
                   <button
                     onClick={updateNote}
-                    className="m-1 text-xl text-gray-100 hover:text-black bg-blue-300 rounded px-3 py-1"
+                    className="px-3 py-1 m-1 text-xl text-gray-100 bg-blue-300 rounded hover:text-black"
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setEditingNoteId(null)}
-                    className="m-1 text-xl text-gray-100 hover:text-black bg-gray-400 rounded px-3 py-1"
+                    className="px-3 py-1 m-1 text-xl text-gray-100 bg-gray-400 rounded hover:text-black"
                   >
                     Cancel
                   </button>
@@ -201,13 +201,13 @@ function NotesSidebar({ onClose }) {
                       setEditedNote(note.notes); // Preserves the previous notes
                       setEditingNoteId(note.id);
                     }}
-                    className="m-1 text-xl text-gray-100 hover:text-black bg-blue-300 rounded px-3 py-1"
+                    className="px-3 py-1 m-1 text-xl text-gray-100 bg-blue-300 rounded hover:text-black"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteNote(note.id)}
-                    className="m-1 text-xl text-gray-100 hover:text-white bg-red-300 rounded px-3 py-1"
+                    className="px-3 py-1 m-1 text-xl text-gray-100 bg-red-300 rounded hover:text-white"
                   >
                     Delete
                   </button>

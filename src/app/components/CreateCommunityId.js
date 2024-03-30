@@ -1,10 +1,13 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { collection, query, where, getDocs, addDoc, onSnapshot, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, addDoc , setDoc, doc } from 'firebase/firestore';
 import { db, auth } from '../firebase/config';
+import JoinCommunity from './JoinCommunity';
+import Dashboard from './Dashboard';
 
-function CreateCommunityIdForm({ onCreate, verseId }) {
+function CreateCommunityIdForm() {
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
+  const [communityName, setCommunityName] = useState('');
   const [communityIds, setCommunityIds] = useState([]);
   const [requestSent, setRequestSent] = useState(false); // Track if request has been sent
   const currentUser = auth.currentUser;
@@ -28,26 +31,6 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
     fetchCommunityIds();
   }, [currentUser, requestSent]); // Add requestSent to dependencies array
 
-  const handleApprovedRequest = async () => {
-    try {
-      // Generate new community ID
-      const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
-
-      // Add new community ID to communityIds collection
-      const communityData = {
-        communityId: newCommunityId,
-        userId: currentUser.uid
-      };
-      await addDoc(collection(db, 'communityIds'), communityData);
-
-      // Update the UI with the new community ID
-      setGeneratedCommunityId(newCommunityId);
-    } catch (error) {
-      console.error('Error handling approved request:', error);
-      // Handle error here
-    }
-  };
-
   const handleCreateCommunityId = async () => {
     try {
       if (!currentUser) {
@@ -56,13 +39,14 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
       }
   
       // Check if user already has community IDs
-      const communityIdsRef = collection(db, 'communityIds');
-      const q = query(communityIdsRef, where('userId', '==', currentUser.uid));
-      const querySnapshot = await getDocs(q);
-  
-      // If user already has community IDs, do nothing
-      if (!querySnapshot.empty) {
+      if (communityIds.length > 0) {
         console.log('User already has community IDs.');
+        return;
+      }
+  
+      // Check if community name is provided
+      if (!communityName) {
+        alert('Please enter the name of your community.');
         return;
       }
   
@@ -72,7 +56,8 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
       // Add new community ID to communityIds collection
       const communityData = {
         communityId: newCommunityId,
-        userId: currentUser.uid
+        userId: currentUser.uid,
+        communityName: communityName
       };
       await addDoc(collection(db, 'communityIds'), communityData);
   
@@ -80,7 +65,11 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
       setGeneratedCommunityId(newCommunityId);
       setCommunityIds([newCommunityId]);
   
-      alert('Your first community ID has been created.');
+      // Store the community ID in the YourIds collection
+      const yourIdsRef = collection(db, 'YourIds');
+      await setDoc(doc(yourIdsRef, currentUser.uid), { yourIds: [newCommunityId] });
+  
+      alert('Your community ID has been created and stored.');
     } catch (error) {
       console.error('Error creating community ID:', error);
       // Handle error here
@@ -92,9 +81,18 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
     <div className="flex flex-col items-center justify-center p-5">
       <div className="mb-5">
         {!requestSent && (
-          <button onClick={handleCreateCommunityId} className="w-full px-4 py-2 text-white bg-orange-400 rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:ring focus:ring-orange-300">
-            Get Your Community ID
-          </button>
+          <div>
+            <input
+              type="text"
+              value={communityName}
+              onChange={(e) => setCommunityName(e.target.value)}
+              placeholder="Enter the name of your community"
+              className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-300"
+            />
+            <button onClick={handleCreateCommunityId} className="w-full px-4 py-2 text-white bg-orange-400 rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:ring focus:ring-orange-300">
+              Get Your Community ID
+            </button>
+          </div>
         )}
         {generatedCommunityId && (
           <p className="mt-2 text-lg">Generated Community ID: {generatedCommunityId}</p>
@@ -108,11 +106,14 @@ function CreateCommunityIdForm({ onCreate, verseId }) {
           ))}
         </ul>
       </div>
+      <JoinCommunity/>
+      <Dashboard/>
     </div>
   );
 }
 
 export default CreateCommunityIdForm;
+
 
 
 

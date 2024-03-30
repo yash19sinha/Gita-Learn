@@ -77,7 +77,9 @@ function ChapterInfo() {
             </h2>
           </div>
         ) : (
-          <p>Loading chapter information...</p>
+          <div className="flex items-center justify-center">
+          <span className="text-2xl  loading loading-dots loading-lg"></span>
+          </div>
         )}
 
         <div className="items-center justify-center overflow-x-auto md:m-10">
