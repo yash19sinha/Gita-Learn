@@ -110,25 +110,25 @@ function Dashboard() {
   
 
   return (
-    <div className="p-5">
-      <h2 className="mb-4 text-xl font-semibold">Requests to Join Your Communities:</h2>
-      <div className="overflow-x-auto">
-        <table className="w-full border border-collapse border-gray-400">
+    <div className="py-10 ">
+      <h2 className="mb-4 font-semibold md:text-xl text:sm">Requests to Join Your Communities:</h2>
+      <div className="">
+        <table className="w-full my-4 text-xs bg-white rounded shadow table-auto md:text-base">
           <thead>
             <tr className="bg-gray-200">
-              <th className="px-4 py-2">Community Name</th>
-              <th className="px-4 py-2">User Name</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="p-1 md:py-2 md:px-3">Community Name</th>
+              <th className="p-1md:py-2 md:px-3">User Name</th>
+              <th className="p-1 md:py-2 md:px-3">Status</th>
+              <th className="p-1 md:py-2 md:px-3">Actions</th>
             </tr>
           </thead>
           <tbody>
           {requests.map((request) => (
         <tr key={request.id}>
-          <td className="px-4 py-2 border">{request.communityName}</td>
-          <td className="px-4 py-2 border">{request.userName}</td>
-          <td className="px-4 py-2 border">{request.status}</td>
-          <td className="px-4 py-2 border">
+          <td className="p-1 border md:py-2 md:px-3">{request.communityName}</td>
+          <td className="p-1 border md:py-2 md:px-3">{request.userName}</td>
+          <td className="p-1 border md:py-2 md:px-3">{request.status}</td>
+          <td className="p-1 border md:py-2 md:px-3">
             {request.status === 'pending' && (
              <button onClick={() => {
               console.log("Request ID:", request.id);

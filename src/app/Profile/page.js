@@ -153,53 +153,53 @@ function Profile() {
   return (
 
     <div className="container p-4 mx-auto mt-4 ">
-<div class="container p-4 mx-auto mt-4">
-  <div class="flex flex-col md:flex-row items-center">
-    <div class="p-4 rounded shadow md:mr-4 mb-4 md:mb-0">
+<div className="container p-4 mx-auto mt-4">
+  <div className="flex flex-col items-center md:flex-row">
+    <div className="p-4 mb-4 rounded shadow md:mr-4 md:mb-0">
       {imageURL && (
         <img
           src={imageURL}
           alt="User Profile"
-          class="w-56 h-56 mx-auto mb-2 md:mr-4 rounded-full"
+          className="w-56 h-56 mx-auto mb-2 rounded-full md:mr-4"
         />
       )}
       {userData && (
-        <h1 class="text-3xl font-bold text-center text-black">
+        <h1 className="text-3xl font-bold text-center text-black">
           {name || userData.name}
         </h1>
       )}
     </div>
 
     {userData && (
-      <div class="w-full md:w-4/5 p-4 bg-white border border-gray-200 rounded-lg shadow-md h-72">
-        <div class="mb-2">
-          <span class="text-xl font-semibold">Name: {name || userData.name}</span>
+      <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md md:w-4/5 h-72">
+        <div className="mb-2">
+          <span className="text-xl font-semibold">Name: {name || userData.name}</span>
         </div>
-        <div class="mb-2">
-          <span class="text-xl font-semibold">Email: {email}</span>
+        <div className="mb-2">
+          <span className="text-xl font-semibold">Email: {email}</span>
         </div>
-        <div class="flex items-center mb-2">
-          <label class="text-xl font-semibold text-gray-600">Phone Number:</label>
+        <div className="flex items-center mb-2">
+          <label className="text-xl font-semibold text-gray-600">Phone Number:</label>
           {isEditing ? (
             <input
               type="text"
-              class="p-1 ml-2 border rounded"
+              className="p-1 ml-2 border rounded"
               value={newPhoneNo}
               onChange={(e) => setNewPhoneNo(e.target.value)}
             />
           ) : (
-            <p class="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
+            <p className="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
           )}
           {isEditing ? (
             <button
-              class="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
+              className="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
               onClick={updatePhoneNumber}
             >
               Save
             </button>
           ) : (
             <button
-              class="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
               onClick={() => setIsEditing(true)}
             >
               Edit

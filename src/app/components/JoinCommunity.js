@@ -47,7 +47,7 @@ function JoinCommunity({}) {
   
 
   return (
-    <div className="flex flex-col items-center justify-center p-5">
+    <div className="flex flex-col items-center justify-center ">
       <input
         type="text"
         value={communityId}

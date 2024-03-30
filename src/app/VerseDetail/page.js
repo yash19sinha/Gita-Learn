@@ -46,6 +46,33 @@ function VerseDetail() {
   const boxRef = useRef(null);
   const chapter = 0;
   const verse = 0;
+  const [communityNames, setCommunityNames] = useState({});
+  const currentUser = auth.currentUser;
+
+  useEffect(() => {
+    const fetchCommunityNames = async () => {
+      try {
+        if (!currentUser) return;
+
+        const userId = currentUser.uid;
+        const yourIdsDoc = await getDoc(doc(db, 'YourIds', userId));
+        const yourIds = yourIdsDoc.exists() ? yourIdsDoc.data().yourIds : [];
+
+        const communityNamesData = {};
+        for (const id of yourIds) {
+          const communityDoc = await getDoc(doc(db, 'communityIds', id));
+          if (communityDoc.exists()) {
+            communityNamesData[id] = communityDoc.data().communityName;
+          }
+        }
+        setCommunityNames(communityNamesData);
+      } catch (error) {
+        console.error('Error fetching community names:', error);
+      }
+    };
+
+    fetchCommunityNames();
+  }, [currentUser]);
 
   function handleTextSelection() {
     const text = window.getSelection().toString();

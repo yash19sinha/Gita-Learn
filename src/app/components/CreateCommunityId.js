@@ -41,6 +41,7 @@ function CreateCommunityIdForm() {
       // Check if user already has community IDs
       if (communityIds.length > 0) {
         console.log('User already has community IDs.');
+        alert('User already has community IDs.')
         return;
       }
   
@@ -78,8 +79,10 @@ function CreateCommunityIdForm() {
   
 
   return (
-    <div className="flex flex-col items-center justify-center p-5">
-      <div className="mb-5">
+    <div className="flex flex-col items-center justify-center p-5 m-2 ">
+      
+      <div className="p-5 mb-5 text-center border-2 md:p-8 md:w-full">
+      <h2 className='p-5 text-lg font-semibold md:text-2xl'>Create your own community id</h2>
         {!requestSent && (
           <div>
             <input
@@ -87,9 +90,9 @@ function CreateCommunityIdForm() {
               value={communityName}
               onChange={(e) => setCommunityName(e.target.value)}
               placeholder="Enter the name of your community"
-              className="w-full px-4 py-2 mb-2 border rounded-md focus:outline-none focus:ring focus:ring-gray-300"
+              className="w-4/5 px-4 py-2 mb-2 text-sm text-center border rounded-md focus:outline-none focus:ring focus:ring-gray-300 md:text-base"
             />
-            <button onClick={handleCreateCommunityId} className="w-full px-4 py-2 text-white bg-orange-400 rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:ring focus:ring-orange-300">
+            <button onClick={handleCreateCommunityId} className="w-4/5 px-4 py-2 text-sm text-white bg-orange-400 rounded-md shadow-md hover:bg-orange-500 focus:outline-none focus:ring focus:ring-orange-300 md:text-base">
               Get Your Community ID
             </button>
           </div>
@@ -107,7 +110,10 @@ function CreateCommunityIdForm() {
         </ul>
       </div>
       <JoinCommunity/>
+    
       <Dashboard/>
+    
+     
     </div>
   );
 }
