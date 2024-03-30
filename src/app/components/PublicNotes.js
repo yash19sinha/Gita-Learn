@@ -253,6 +253,24 @@ function PublicNotes({ verseId }) {
 
   return (
     <div>
+      <div className="p-4">
+      {userRole === "admin" && (
+        <div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+            className="mt-4"
+          />
+          <button
+            onClick={handleImageUpload}
+            className="justify-center mt-4 btn btn-primary"
+          >
+            Upload Image
+          </button>
+        </div>
+      )}
+    </div>
       {/* <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
         {showNotes ? "Hide Public Notes" : "Show Public Notes"}
       </button>
@@ -338,24 +356,7 @@ function PublicNotes({ verseId }) {
                           ))}
 
 
-<div>
-      {userRole === "admin" && (
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImg(e.target.files[0])}
-            className="mt-4"
-          />
-          <button
-            onClick={handleImageUpload}
-            className="justify-center mt-4 btn btn-primary"
-          >
-            Upload Image
-          </button>
-        </div>
-      )}
-    </div>
+
                         </div>
                         
                         
@@ -398,8 +399,10 @@ function PublicNotes({ verseId }) {
                         <div>
                           {
                             <iframe
-                              width="560"
-                              height="315"
+                              // width="560"
+                              // height="315"
+                              className="md:h-[400px] md:w-[600px] h-4/5 m-4/5"
+                              
                               src={`https://www.youtube-nocookie.com/embed/${videoId};controls=0&amp;modestbranding=1&amp;start=${startTime}&&end=${endTime}`}
                               title="YouTube video player"
                               frameBorder="0"
