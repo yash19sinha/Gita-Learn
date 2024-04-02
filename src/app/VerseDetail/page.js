@@ -280,7 +280,7 @@ function VerseDetail() {
       try {
         const chapterVerse = searchParams.get("chapterVerse");
         const response = await fetch(
-          `http://localhost:4000/api/verse/${chapterVerse}`
+          `https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`
         );
 
         if (!response.ok) {

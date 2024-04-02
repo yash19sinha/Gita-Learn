@@ -13,7 +13,7 @@ function ChapterInfo() {
       // Function to fetch data for the selected section
       const fetchSectionData = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/api/section/${sectionName}`);
+          const response = await fetch(`https://gita-learn-api.vercel.app/api/section/${sectionName}`);
           if (!response.ok) {
             throw new Error('Failed to fetch section data');
           }
@@ -29,7 +29,9 @@ function ChapterInfo() {
   }, [sectionName]);
 
   if (!sectionData) {
-    return <div>Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen">
+    <span className="text-2xl loading loading-dots loading-lg"></span>
+    </div>
   }
 
   return (

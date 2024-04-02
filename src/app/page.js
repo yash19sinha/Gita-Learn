@@ -18,7 +18,7 @@ function Chapters() {
     // Function to fetch sections
     const fetchSections = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/sections');
+        const response = await fetch('https://gita-learn-api.vercel.app/api/sections');
         if (!response.ok) {
           throw new Error('Failed to fetch sections');
         }
@@ -35,7 +35,7 @@ function Chapters() {
   useEffect(() => {
     async function fetchChapters() {
       try {
-        const response = await fetch('http://localhost:4000/api/chapters');
+        const response = await fetch('https://gita-learn-api.vercel.app/api/chapters');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
