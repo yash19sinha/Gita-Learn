@@ -72,23 +72,33 @@ const Login = () => {
       const uid = user.uid;
       const displayName = user.displayName;
   
-      // Set or update the user's document in Firestore
-      const userRef = doc(collection(db, 'users'), uid);
-      await setDoc(userRef, {
-        displayName: displayName,
-        authMethod: 'google',  // Set the authMethod to 'google'
-        // Other user profile data as needed
-      });
+      // Check if the user already exists in Firestore
+      const userRef = doc(db, 'users', uid);
+      const userSnapshot = await getDoc(userRef);
   
-      // Optionally, you can check if the user already exists in your database
-      // and perform additional actions.
+      if (userSnapshot.exists()) {
+        // User already exists, update their authentication method if needed
+        const userData = userSnapshot.data();
+        if (userData.authMethod !== 'google') {
+          // If the user's authMethod is not 'google', update it
+          await setDoc(userRef, { authMethod: 'google' }, { merge: true });
+        }
+      } else {
+        // User does not exist, add their information to Firestore
+        await setDoc(userRef, {
+          displayName: displayName,
+          authMethod: 'google',
+          // Other user profile data as needed
+        });
+      }
   
-      // For example, you can redirect the user to another page after successful authentication
+      // Redirect the user to another page after successful authentication
       router.push('/');
     } catch (error) {
       console.error('Error signing in with Google:', error);
     }
   };
+  
   
 
   return (

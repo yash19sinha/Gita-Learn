@@ -9,19 +9,21 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // State to track loading
+  const [isLoading, setIsLoading] = useState(false);
+  const [firstSearch, setFirstSearch] = useState(true); // State to track if it's the first search
 
   const handleSearch = async () => {
-    setIsLoading(true); // Set loading to true when search starts
+    setIsLoading(true);
     try {
       const response = await axios.post('https://gita-ml-search.onrender.com/search', { user_query: searchQuery });
       setSearchResults(response.data);
       setError(null);
+      setFirstSearch(false); // Set firstSearch to false after the first search completes
     } catch (error) {
       console.error('Error:', error);
       setError('Internal server error');
     }
-    setIsLoading(false); // Set loading to false when search completes
+    setIsLoading(false);
   };
 
   const handleInputChange = (e) => {
@@ -29,8 +31,8 @@ const SearchBar = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Prevent form submission
-    handleSearch(); // Perform search when the form is submitted
+    e.preventDefault();
+    handleSearch();
   };
 
   return (
@@ -50,7 +52,8 @@ const SearchBar = () => {
           Search
         </button>
       </form>
-      {isLoading && <span className="loading loading-dots loading-5xl"></span>} {/* Display loader when isLoading is true */}
+      {firstSearch && <p className="mt-2 text-lg font-semibold">First search may take some time...</p>}
+      {isLoading && <span className="loading loading-dots loading-5xl"></span>}
       {error && <p className="mt-2 text-red-500">{error}</p>}
       {searchResults.length > 0 && <SearchResults searchResults={searchResults} />}
     </div>

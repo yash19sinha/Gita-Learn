@@ -97,14 +97,18 @@ function Dashboard() {
       console.log("Fetching username for requesterId:", requesterId); // Log requesterId for debugging
       if (!requesterId) return ''; // Return an empty string if requesterId is undefined
       const userDoc = await getDoc(doc(db, 'users', requesterId)); // Assuming 'users' is the collection storing user information
+      console.log("User Doc:", userDoc.data()); // Log the entire user document for debugging
       if (userDoc.exists()) {
-        return userDoc.data().displayName;
+        let displayName = userDoc.data().displayName || userDoc.data().name || 'Unknown User';
+        console.log("Final Display Name:", displayName); // Log the final display name for debugging
+        return displayName;
       }
     } catch (error) {
       console.error('Error fetching username:', error);
     }
     return ''; // Return an empty string if username retrieval fails
   };
+  
   
   
   

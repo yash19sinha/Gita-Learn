@@ -25,6 +25,20 @@ function JoinCommunity({}) {
         return;
       }
   
+      // Check if user has already sent a request for this community
+      const requestQuery = query(
+        collection(db, 'communityRequests'),
+        where('requesterId', '==', currentUser.uid),
+        where('communityId', '==', parseInt(communityId))
+      );
+      const requestSnapshot = await getDocs(requestQuery);
+  
+      if (!requestSnapshot.empty) {
+        console.log('Request already sent for this community.');
+        alert("Request already sent for this community.");
+        return;
+      }
+  
       // Send request to community owner
       const communityDoc = querySnapshot.docs[0];
       const ownerUserId = communityDoc.data().userId;
@@ -44,6 +58,7 @@ function JoinCommunity({}) {
       // Handle error here
     }
   };
+  
   
 
   return (

@@ -48,19 +48,34 @@ function VerseDetail() {
   const verse = 0;
   const [communityNames, setCommunityNames] = useState({});
   const currentUser = auth.currentUser;
+  // const [selectedCommunity, setSelectedCommunity] = useState('');
+  // const [yourCommunities, setYourCommunities] = useState([]);
+  const [yourIds, setYourIds] = useState([]);
+  const [selectedCommunityId, setSelectedCommunityId] = useState("");
 
   useEffect(() => {
-    const fetchCommunityNames = async () => {
+    const fetchYourIds = async () => {
       try {
         if (!currentUser) return;
 
         const userId = currentUser.uid;
         const yourIdsDoc = await getDoc(doc(db, 'YourIds', userId));
-        const yourIds = yourIdsDoc.exists() ? yourIdsDoc.data().yourIds : [];
+        const ids = yourIdsDoc.exists() ? yourIdsDoc.data().yourIds : [];
+        setYourIds(ids);
+      } catch (error) {
+        console.error('Error fetching your IDs:', error);
+      }
+    };
 
+    fetchYourIds();
+  }, [currentUser]);
+
+  useEffect(() => {
+    const fetchCommunityNames = async () => {
+      try {
         const communityNamesData = {};
         for (const id of yourIds) {
-          const communityDoc = await getDoc(doc(db, 'communityIds', id));
+          const communityDoc = await getDoc(doc(db, 'communityIds', id.toString()));
           if (communityDoc.exists()) {
             communityNamesData[id] = communityDoc.data().communityName;
           }
@@ -72,7 +87,53 @@ function VerseDetail() {
     };
 
     fetchCommunityNames();
-  }, [currentUser]);
+  }, [yourIds]);
+
+  const handleEnterCommunityId = async () => {
+    if (!communityId) {
+      alert("Please enter a Community ID.");
+      return;
+    }
+
+    try {
+      // Check if the entered community ID exists in the collection
+      const communityPinRef = collection(db, "communityIds");
+      const communityPinQuery = query(
+        communityPinRef,
+        where("communityId", "==", parseInt(communityId))
+      );
+      const communityPinSnapshot = await getDocs(communityPinQuery);
+
+      if (!communityPinSnapshot.empty) {
+        // The entered community ID exists in the collection
+        const currentVerseId = chapterVerse;
+
+        // Send request to the owner of the community ID
+        const requestData = {
+          communityId: parseInt(communityId),
+          status: 'pending',
+          createdAt: new Date()
+        };
+
+        // Create communityIdRequests collection if it doesn't exist
+        const communityIdRequestsRef = collection(db, "communityIdRequests");
+        await addDoc(communityIdRequestsRef, { sampleField: "sampleValue" }); // Add a sample field to ensure the collection is created
+
+        // Add request document to communityIdRequests collection
+        await addDoc(collection(db, 'communityIdRequests'), requestData);
+
+        // Redirect user to the quiz page
+        window.location.href = `/Quiz?verseId=${currentVerseId}&communityId=${communityId}`;
+      } else {
+        // The entered community ID does not exist in the collection
+        alert("Community ID does not exist. Please enter a valid ID.");
+      }
+    } catch (error) {
+      console.error('Error entering community ID:', error);
+      // Handle error here
+    }
+  };
+
 
   function handleTextSelection() {
     const text = window.getSelection().toString();
@@ -219,7 +280,7 @@ function VerseDetail() {
       try {
         const chapterVerse = searchParams.get("chapterVerse");
         const response = await fetch(
-          `https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`
+          `http://localhost:4000/api/verse/${chapterVerse}`
         );
 
         if (!response.ok) {
@@ -371,50 +432,50 @@ function VerseDetail() {
   //     // Handle error here
   //   }
   // };
-  const handleEnterCommunityId = async () => {
-    if (!communityId) {
-      alert("Please enter a Community ID.");
-      return;
-    }
+  // const handleEnterCommunityId = async () => {
+  //   if (!communityId) {
+  //     alert("Please enter a Community ID.");
+  //     return;
+  //   }
   
-    try {
-      // Check if the entered community ID exists in the collection
-      const communityPinRef = collection(db, "communityIds");
-      const communityPinQuery = query(
-        communityPinRef,
-        where("communityId", "==", parseInt(communityId))
-      );
-      const communityPinSnapshot = await getDocs(communityPinQuery);
+  //   try {
+  //     // Check if the entered community ID exists in the collection
+  //     const communityPinRef = collection(db, "communityIds");
+  //     const communityPinQuery = query(
+  //       communityPinRef,
+  //       where("communityId", "==", parseInt(communityId))
+  //     );
+  //     const communityPinSnapshot = await getDocs(communityPinQuery);
   
-      if (!communityPinSnapshot.empty) {
-        // The entered community ID exists in the collection
-        const currentVerseId = chapterVerse;
+  //     if (!communityPinSnapshot.empty) {
+  //       // The entered community ID exists in the collection
+  //       const currentVerseId = chapterVerse;
   
-        // Send request to the owner of the community ID
-        const requestData = {
-          communityId: parseInt(communityId),
-          status: 'pending',
-          createdAt: new Date()
-        };
+  //       // Send request to the owner of the community ID
+  //       const requestData = {
+  //         communityId: parseInt(communityId),
+  //         status: 'pending',
+  //         createdAt: new Date()
+  //       };
   
-        // Create communityIdRequests collection if it doesn't exist
-        const communityIdRequestsRef = collection(db, "communityIdRequests");
-        await addDoc(communityIdRequestsRef, { sampleField: "sampleValue" }); // Add a sample field to ensure the collection is created
+  //       // Create communityIdRequests collection if it doesn't exist
+  //       const communityIdRequestsRef = collection(db, "communityIdRequests");
+  //       await addDoc(communityIdRequestsRef, { sampleField: "sampleValue" }); // Add a sample field to ensure the collection is created
   
-        // Add request document to communityIdRequests collection
-        await addDoc(collection(db, 'communityIdRequests'), requestData);
+  //       // Add request document to communityIdRequests collection
+  //       await addDoc(collection(db, 'communityIdRequests'), requestData);
   
-        // Redirect user to the quiz page
-        window.location.href = `/Quiz?verseId=${currentVerseId}&communityId=${communityId}`;
-      } else {
-        // The entered community ID does not exist in the collection
-        alert("Community ID does not exist. Please enter a valid ID.");
-      }
-    } catch (error) {
-      console.error('Error entering community ID:', error);
-      // Handle error here
-    }
-  };
+  //       // Redirect user to the quiz page
+  //       window.location.href = `/Quiz?verseId=${currentVerseId}&communityId=${communityId}`;
+  //     } else {
+  //       // The entered community ID does not exist in the collection
+  //       alert("Community ID does not exist. Please enter a valid ID.");
+  //     }
+  //   } catch (error) {
+  //     console.error('Error entering community ID:', error);
+  //     // Handle error here
+  //   }
+  // };
   
 
   async function fetchQuestions(chapterVerse) {
@@ -612,25 +673,30 @@ function VerseDetail() {
           </div>
         )} */}
 
-        {questionsExist && !isCreatingCommunityId && (
-          <div className="flex justify-center p-4">
-            <div className="flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Enter Community ID"
-                value={communityId}
-                onChange={(e) => setCommunityId(e.target.value)}
-                className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              />
-              <button
-                onClick={handleEnterCommunityId}
-                className="text-white bg-orange-400 btn"
-              >
-                Enter
-              </button>
-            </div>
+{questionsExist && !isCreatingCommunityId && (
+        <div className="flex justify-center p-4">
+          <div className="flex items-center space-x-4">
+          <select
+            value={communityId}
+            onChange={(e) => setCommunityId(e.target.value)}
+            className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+          >
+            <option value="">Select Community ID</option>
+            {yourIds.map((id) => (
+              <option key={id} value={id}>{id}</option>
+            ))}
+          </select>
+
+            <button
+              onClick={handleEnterCommunityId}
+              className="text-white bg-orange-400 btn"
+            >
+              Enter
+            </button>
           </div>
-        )}
+        </div>
+      )}
+
         <button
           onClick={handleToggleNotesSidebar}
           className="fixed px-4 py-2 text-3xl text-white bg-blue-500 shadow rounded-3xl bottom-4 right-4 hover:bg-blue-600"
@@ -643,7 +709,7 @@ function VerseDetail() {
         <PublicNotes verseId={chapterVerse} />
       </div>
       <Footer />
-      <ScrollDepth chapter={chapter} verse={chapterVerse} />
+      {/* <ScrollDepth chapter={chapter} verse={chapterVerse} /> */}
     </>
   );
 }
