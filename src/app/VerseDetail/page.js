@@ -521,7 +521,7 @@ function VerseDetail() {
         <meta name="keywords" content="Bhagavad Gita, BG, Bhagwat Gita, Bhagvad Gita, Gita, Bhagavad Gita As It Is, Bhagavad Gita Verses, Chapter-wise Gita Verses, Spiritual Text, Hindu Scripture" />
     </head>
       <ToastContainer />
-      <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
+      <div className="p-4 " id={`verse${chapterVerse}`}>
         <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
           Bg. {chapterVerse}
         </h1>
@@ -709,7 +709,7 @@ function VerseDetail() {
         <PublicNotes verseId={chapterVerse} />
       </div>
       <Footer />
-      {/* <ScrollDepth chapter={chapter} verse={chapterVerse} /> */}
+      <ScrollDepth verse={chapterVerse} />
     </>
   );
 }
