@@ -50,65 +50,61 @@ function Dashboard() {
     fetchRequests();
   }, [currentUser]);
 
-  const approveRequest = async (requestId, communityId) => {
+  const approveRequest = async (requestId, communityId, communityName) => {
     console.log("Community ID:", communityId); // Check communityId value
     try {
-      // Check if requestId or communityId is undefined
-      if (!requestId || !communityId) {
-        console.error("Request ID or Community ID is undefined.");
-        return;
-      }
-  
-      // Update the status of the request to 'approved' in the 'communityRequests' collection
-      await updateDoc(doc(db, 'communityRequests', requestId), { status: 'approved' });
-  
-      // Retrieve the requesterId associated with the requestId
-      const requestDoc = await getDoc(doc(db, 'communityRequests', requestId));
-      const requesterId = requestDoc.data().requesterId;
-  
-      // Store the approved community ID in the 'YourIds' collection specific to the requester's user ID
-      const requesterYourIdsRef = doc(db, 'YourIds', requesterId);
-      const requesterDocSnapshot = await getDoc(requesterYourIdsRef);
-  
-      // Check if requester document exists
-      if (requesterDocSnapshot.exists()) {
-        const requesterYourIds = requesterDocSnapshot.data().yourIds || [];
-        // Update requester document with the new approved community ID
-        await updateDoc(requesterYourIdsRef, { yourIds: [...requesterYourIds, communityId] });
-      } else {
-        // Create a new requester document with the approved community ID
-        await setDoc(requesterYourIdsRef, { yourIds: [communityId] });
-      }
-  
-      // Optional: Remove the approved request from the state
-      setRequests(prevRequests => prevRequests.filter(request => request.id !== requestId));
-    } catch (error) {
-      console.error('Error approving request:', error);
-      // Handle error here
-    }
-  };
-  
-  
-  
-  
+        // Check if requestId, communityId, or communityName is undefined
+        if (!requestId || !communityId || !communityName) {
+            console.error("Request ID, Community ID, or Community Name is undefined.");
+            return;
+        }
 
-  const getUsername = async (requesterId) => {
-    try {
-      console.log("Fetching username for requesterId:", requesterId); // Log requesterId for debugging
-      if (!requesterId) return ''; // Return an empty string if requesterId is undefined
-      const userDoc = await getDoc(doc(db, 'users', requesterId)); // Assuming 'users' is the collection storing user information
-      console.log("User Doc:", userDoc.data()); // Log the entire user document for debugging
-      if (userDoc.exists()) {
-        let displayName = userDoc.data().displayName || userDoc.data().name || 'Unknown User';
-        console.log("Final Display Name:", displayName); // Log the final display name for debugging
-        return displayName;
-      }
+        // Update the status of the request to 'approved' in the 'communityRequests' collection
+        await updateDoc(doc(db, 'communityRequests', requestId), { status: 'approved' });
+
+        // Retrieve the requesterId associated with the requestId
+        const requestDoc = await getDoc(doc(db, 'communityRequests', requestId));
+        const requesterId = requestDoc.data().requesterId;
+
+        // Store the approved community ID and name in the 'YourIds' collection specific to the requester's user ID
+        const requesterYourIdsRef = doc(db, 'YourIds', requesterId);
+        const requesterDocSnapshot = await getDoc(requesterYourIdsRef);
+
+        // Check if requester document exists
+        if (requesterDocSnapshot.exists()) {
+            const requesterYourIds = requesterDocSnapshot.data().yourIds || [];
+            // Update requester document with the new approved community ID and name
+            await updateDoc(requesterYourIdsRef, { yourIds: [...requesterYourIds, { communityId, communityName }] });
+        } else {
+            // Create a new requester document with the approved community ID and name
+            await setDoc(requesterYourIdsRef, { yourIds: [{ communityId, communityName }] });
+        }
+
+        // Optional: Remove the approved request from the state
+        setRequests(prevRequests => prevRequests.filter(request => request.id !== requestId));
     } catch (error) {
-      console.error('Error fetching username:', error);
+        console.error('Error approving request:', error);
+        // Handle error here
+    }
+};
+
+
+const getUsername = async (requesterId) => {
+    try {
+        console.log("Fetching username for requesterId:", requesterId); // Log requesterId for debugging
+        if (!requesterId) return ''; // Return an empty string if requesterId is undefined
+        const userDoc = await getDoc(doc(db, 'users', requesterId)); // Assuming 'users' is the collection storing user information
+        console.log("User Doc:", userDoc.data()); // Log the entire user document for debugging
+        if (userDoc.exists()) {
+            let displayName = userDoc.data().displayName || userDoc.data().name || 'Unknown User';
+            console.log("Final Display Name:", displayName); // Log the final display name for debugging
+            return displayName;
+        }
+    } catch (error) {
+        console.error('Error fetching username:', error);
     }
     return ''; // Return an empty string if username retrieval fails
-  };
-  
+};
   
   
   
@@ -138,7 +134,7 @@ function Dashboard() {
               console.log("Request ID:", request.id);
               console.log("Community ID:", request.communityId);
               console.log("Community Name:", request.communityName); 
-              approveRequest(request.id, request.communityId);
+              approveRequest(request.id, request.communityId, request.communityName);
           }} className="px-3 py-1 mt-2 text-white bg-green-500 rounded-md">Approve</button>
           
             )}

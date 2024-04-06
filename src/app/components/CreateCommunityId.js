@@ -33,49 +33,50 @@ function CreateCommunityIdForm() {
 
   const handleCreateCommunityId = async () => {
     try {
-      if (!currentUser) {
-        console.error('No user signed in.');
-        return;
-      }
-  
-      // Check if user already has community IDs
-      if (communityIds.length > 0) {
-        console.log('User already has community IDs.');
-        alert('User already has community IDs.')
-        return;
-      }
-  
-      // Check if community name is provided
-      if (!communityName) {
-        alert('Please enter the name of your community.');
-        return;
-      }
-  
-      // Generate new community ID
-      const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
-  
-      // Add new community ID to communityIds collection
-      const communityData = {
-        communityId: newCommunityId,
-        userId: currentUser.uid,
-        communityName: communityName
-      };
-      await addDoc(collection(db, 'communityIds'), communityData);
-  
-      // Update the UI with the new community ID
-      setGeneratedCommunityId(newCommunityId);
-      setCommunityIds([newCommunityId]);
-  
-      // Store the community ID in the YourIds collection
-      const yourIdsRef = collection(db, 'YourIds');
-      await setDoc(doc(yourIdsRef, currentUser.uid), { yourIds: [newCommunityId] });
-  
-      alert('Your community ID has been created and stored.');
+        if (!currentUser) {
+            console.error('No user signed in.');
+            return;
+        }
+
+        // Check if user already has community IDs
+        if (communityIds.length > 0) {
+            console.log('User already has community IDs.');
+            alert('User already has community IDs.')
+            return;
+        }
+
+        // Check if community name is provided
+        if (!communityName) {
+            alert('Please enter the name of your community.');
+            return;
+        }
+
+        // Generate new community ID
+        const newCommunityId = Math.floor(100000 + Math.random() * 900000); // Generate a 6-digit ID
+
+        // Add new community ID to communityIds collection
+        const communityData = {
+            communityId: newCommunityId,
+            userId: currentUser.uid,
+            communityName: communityName
+        };
+        await addDoc(collection(db, 'communityIds'), communityData);
+
+        // Update the UI with the new community ID
+        setGeneratedCommunityId(newCommunityId);
+        setCommunityIds([newCommunityId]);
+
+        // Store the community ID and community name in the YourIds collection
+        const yourIdsRef = collection(db, 'YourIds');
+        await setDoc(doc(yourIdsRef, currentUser.uid), { yourIds: [{ communityId: newCommunityId, communityName }] });
+
+        alert('Your community ID has been created and stored.');
     } catch (error) {
-      console.error('Error creating community ID:', error);
-      // Handle error here
+        console.error('Error creating community ID:', error);
+        // Handle error here
     }
-  };
+};
+
   
 
   return (

@@ -57,7 +57,7 @@ function VerseDetail() {
     const fetchYourIds = async () => {
       try {
         if (!currentUser) return;
-
+  
         const userId = currentUser.uid;
         const yourIdsDoc = await getDoc(doc(db, 'YourIds', userId));
         const ids = yourIdsDoc.exists() ? yourIdsDoc.data().yourIds : [];
@@ -66,28 +66,36 @@ function VerseDetail() {
         console.error('Error fetching your IDs:', error);
       }
     };
-
+  
     fetchYourIds();
   }, [currentUser]);
+  
+  
+  
+  
+  
+  
+  
+  
 
+  const fetchCommunityData = async () => {
+    try {
+      const communityData = {};
+      const communityIdsSnapshot = await getDocs(collection(db, 'communityIds'));
+      communityIdsSnapshot.forEach(doc => {
+        const data = doc.data();
+        communityData[doc.id] = data.communityName;
+      });
+      setCommunityNames(communityData);
+    } catch (error) {
+      console.error('Error fetching community data:', error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchCommunityNames = async () => {
-      try {
-        const communityNamesData = {};
-        for (const id of yourIds) {
-          const communityDoc = await getDoc(doc(db, 'communityIds', id.toString()));
-          if (communityDoc.exists()) {
-            communityNamesData[id] = communityDoc.data().communityName;
-          }
-        }
-        setCommunityNames(communityNamesData);
-      } catch (error) {
-        console.error('Error fetching community names:', error);
-      }
-    };
-
-    fetchCommunityNames();
-  }, [yourIds]);
+    fetchCommunityData();
+  }, []);
+  
 
   const handleEnterCommunityId = async () => {
     if (!communityId) {
@@ -674,28 +682,32 @@ function VerseDetail() {
         )} */}
 
 {questionsExist && !isCreatingCommunityId && (
-        <div className="flex justify-center p-4">
-          <div className="flex items-center space-x-4">
-          <select
-            value={communityId}
-            onChange={(e) => setCommunityId(e.target.value)}
-            className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-          >
-            <option value="">Select Community ID</option>
-            {yourIds.map((id) => (
-              <option key={id} value={id}>{id}</option>
-            ))}
-          </select>
+  <div className="flex justify-center p-4">
+    <div className="flex items-center space-x-4">
+      <select
+        value={communityId}
+        onChange={(e) => setCommunityId(e.target.value)}
+        className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+      >
+        <option value="">Select Community ID</option>
+        {yourIds.map((id) => (
+          <option key={id.communityId} value={id.communityId}>
+            {id.communityId} - {id.communityName}
+          </option>
+        ))}
+      </select>
 
-            <button
-              onClick={handleEnterCommunityId}
-              className="text-white bg-orange-400 btn"
-            >
-              Enter
-            </button>
-          </div>
-        </div>
-      )}
+      <button
+        onClick={handleEnterCommunityId}
+        className="text-white bg-orange-400 btn"
+      >
+        Enter
+      </button>
+    </div>
+  </div>
+)}
+
+
 
         <button
           onClick={handleToggleNotesSidebar}
