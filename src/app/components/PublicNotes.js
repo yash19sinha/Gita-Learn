@@ -34,8 +34,8 @@ function PublicNotes({ verseId }) {
   // const [accordionNames] = useState(['Images']);
   const [accordionNames] = useState([
     "Mindmap",
-    "Prabupada Lecture",
-    "Video Lectures",
+    "Audio Lecture",
+    "Video Lecture",
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");

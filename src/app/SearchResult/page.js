@@ -52,7 +52,7 @@ const SearchBar = () => {
           Search
         </button>
       </form>
-      {firstSearch && <p className="mt-2 text-lg font-semibold">First search may take some time...</p>}
+      {firstSearch && <p className="mt-2 text-lg font-semibold">First search may take upto 50 seconds..</p>}
       {isLoading && <span className="loading loading-dots loading-5xl"></span>}
       {error && <p className="mt-2 text-red-500">{error}</p>}
       {searchResults.length > 0 && <SearchResults searchResults={searchResults} />}

@@ -4,6 +4,7 @@ import { collection, query, where, getDocs, addDoc , setDoc, doc } from 'firebas
 import { db, auth } from '../firebase/config';
 import JoinCommunity from './JoinCommunity';
 import Dashboard from './Dashboard';
+import { FaRegClipboard } from "react-icons/fa6";
 
 function CreateCommunityIdForm() {
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
@@ -77,10 +78,21 @@ function CreateCommunityIdForm() {
     }
 };
 
+const copyIdToClipboard = (id) => {
+  navigator.clipboard.writeText(id)
+    .then(() => {
+      console.log('Community ID copied to clipboard:', id);
+      // You can add further feedback to the user here if needed
+    })
+    .catch((error) => {
+      console.error('Error copying community ID to clipboard:', error);
+    });
+};
+
   
 
   return (
-    <div className="flex flex-col items-center justify-center p-5 m-2 ">
+    <div className="flex flex-col items-center justify-center ">
       
       <div className="p-5 mb-5 text-center border-2 md:p-8 md:w-full">
       <h2 className='p-5 text-lg font-semibold md:text-2xl'>Create your own community id</h2>
@@ -101,15 +113,31 @@ function CreateCommunityIdForm() {
         {generatedCommunityId && (
           <p className="mt-2 text-lg">Generated Community ID: {generatedCommunityId}</p>
         )}
-      </div>
+
       <div>
-        <h2 className="mb-2 text-xl font-semibold">Your Community IDs:</h2>
-        <ul className="pl-6 list-disc">
-          {communityIds.map(id => (
-            <li key={id} className="mb-1">{id}</li>
-          ))}
-        </ul>
+          <h2 className="p-2 m-2 text-xl font-semibold">Your Community IDs:</h2>
+          <ul className="flex flex-wrap justify-center p-3">
+        {communityIds.map((id) => (
+          <li key={id} className="flex items-center mb-2 mr-2">
+            <label
+              className="px-2 py-1 text-lg text-center rounded-l w-44 bg-slate-200"
+              htmlFor={`copyBtn${id}`}
+            >
+              {id}
+            </label>
+            <button
+              id={`copyBtn${id}`}
+              onClick={() => copyIdToClipboard(id)}
+              className="px-2 py-1 text-white transition duration-300 ease-in-out bg-blue-500 rounded-r hover:bg-blue-600"
+            >
+              <FaRegClipboard className='m-1 text-xl'/>
+            </button>
+          </li>
+        ))}
+      </ul>
+        </div>
       </div>
+      
       <JoinCommunity/>
     
       <Dashboard/>
