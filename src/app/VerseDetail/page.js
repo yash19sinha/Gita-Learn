@@ -306,7 +306,7 @@ function VerseDetail() {
     async function fetchAudioData() {
       try {
         const response = await fetch(
-          `http://localhost:4000/api/audio/${chapterVerse}`
+          `https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
