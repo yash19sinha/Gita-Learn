@@ -1,13 +1,15 @@
 // pages/VerseDetail.js
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import Head from "next/head";
+import { useEffect, useState, useRef, useContext } from "react";
 import { Footer } from "../components/Footer";
 import RenderPurport from "../components/RenderPurport";
 import { useRouter } from "next/navigation";
 import NotesSidebar from "../components/NotesSidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPenSquare } from "react-icons/fa";
+import { FaCog } from 'react-icons/fa';
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import PublicNotes from "../components/PublicNotes";
 import { useAuth } from "../hooks/auth";
@@ -24,6 +26,7 @@ import {
 import { auth, db } from "../firebase/config";
 import { getFirestore } from "firebase/firestore";
 import ScrollDepth from "../components/ScrollDepth";
+import { useFontSize } from '../context/FontSizeContext';
 
 function VerseDetail() {
   const { user } = useAuth();
@@ -44,6 +47,52 @@ function VerseDetail() {
   const boxRef = useRef(null);
   const chapter = 0;
   const verse = 0;
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const settingsRef = useRef();
+
+
+  const toggleSettings = () => {
+    setIsSettingsOpen(prev => !prev);
+  };
+
+  const handleClickOutside = (event) => {
+    if (settingsRef.current && !settingsRef.current.contains(event.target)) {
+      setIsSettingsOpen(false);
+    }
+  };
+ 
+  const { fontSizeClass, setFontSizeClass } = useFontSize();
+
+
+  // Dynamically apply the font size class to the body or a top-level div
+  
+
+  // Define font size steps
+  const fontSizeSteps = ['text-xs', 'text-sm', 'text-base', 'text-lg', 'text-xl',
+    'text-2xl', 'text-3xl', 'text-4xl', 'text-5xl', 'text-6xl'];
+  const currentSizeIndex = fontSizeSteps.indexOf(fontSizeClass);
+
+  // Function to increase font size
+  const increaseFontSize = () => {
+    const nextIndex = currentSizeIndex + 1 < fontSizeSteps.length ? currentSizeIndex + 1 : currentSizeIndex;
+    setFontSizeClass(fontSizeSteps[nextIndex]);
+  };
+
+  // Function to decrease font size
+  const decreaseFontSize = () => {
+    const prevIndex = currentSizeIndex - 1 >= 0 ? currentSizeIndex - 1 : currentSizeIndex;
+    setFontSizeClass(fontSizeSteps[prevIndex]);
+  };
+
+
+  useEffect(() => {
+    // Add when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+    // Remove when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   function handleTextSelection() {
     const text = window.getSelection().toString();
@@ -177,7 +226,7 @@ function VerseDetail() {
   useEffect(() => {
     async function fetchVerseDetails() {
       try {
-        const chapterVerse = searchParams.get("chapterVerse");
+        
         const response = await fetch(
           `https://gita-learn-api.vercel.app/api/verse/${chapterVerse}`
         );
@@ -263,7 +312,8 @@ function VerseDetail() {
         const audioDataResponse = await fetchAudioData(previousChapterVerse);
         // setChapterVerse(previousChapterVerse);
         setAudioData(audioDataResponse);
-        router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
+        router.push(`/VerseDetail?chapter
+        Verse=${previousChapterVerse}`);
       } else {
         console.log("No previous verse available");
       }
@@ -393,14 +443,17 @@ function VerseDetail() {
   }, [chapterVerse]);
 
   return (
-    <>
-    <head>
-    <title>Bhagavad Gita Chapter-wise Verses - Bhagavad Gita As It Is</title>
-    <meta name="description" content="Dive into the profound wisdom of the Bhagavad Gita chapter by chapter. Discover the authentic translations and interpretations from 'Bhagavad Gita As It Is' and explore the spiritual essence of each verse." />
-    <meta name="keywords" content="Bhagavad Gita, BG, Bhagwat Gita, Bhagvad Gita, Gita, Bhagavad Gita As It Is, Bhagavad Gita Verses, Chapter-wise Gita Verses, Spiritual Text, Hindu Scripture" />
-</head>
-      <div className="p-4 " id={`chapter${chapter}-verse${chapterVerse}`}>
-        <h1 className="flex justify-center pt-6 mb-4 text-3xl font-bold 32">
+
+    <div className={`p-4 ${fontSizeClass}`}>
+      <Head>
+        <title>Bhagavad Gita Chapter-wise Verses - Bhagavad Gita As It Is</title>
+        <meta name="description" content="Dive into the profound wisdom of the Bhagavad Gita chapter by chapter. Discover the authentic translations and interpretations from 'Bhagavad Gita As It Is' and explore the spiritual essence of each verse." />
+        <meta name="keywords" content="Bhagavad Gita, BG, Bhagwat Gita, Bhagvad Gita, Gita, Bhagavad Gita As It Is, Bhagavad Gita Verses, Chapter-wise Gita Verses, Spiritual Text, Hindu Scripture" />
+      </Head>
+      
+
+      <div className={`p-4 ${fontSizeClass}`} id={`chapter${chapter}-verse${chapterVerse}`}>
+        <h1 className={`flex justify-center text-2xl pt-6 mb-4 font-bold ${fontSizeClass}`}>
           Bg. {chapterVerse}
         </h1>
 
@@ -409,7 +462,7 @@ function VerseDetail() {
           style={{ whiteSpace: "pre-line" }}
         >
           <p
-            className="flex p-5 text-xl font-bold text-center w-100"
+            className="flex p-5  font-bold text-center w-100 ${fontSizeClass}"
             onMouseUp={handleTextSelection}
           >
             {verseDetails.sanskrit_shlok}
@@ -458,14 +511,14 @@ function VerseDetail() {
           style={{ whiteSpace: "pre-line" }}
         >
           <p
-            className="flex p-3 text-xl italic text-center w-100"
+            className="flex p-3 italic text-center w-100 ${fontSizeClass}"
             onMouseUp={handleTextSelection}
           >
             {verseDetails.english_shlok}
           </p>
         </div>
-        <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
-          <h2 className="flex justify-center text-xl font-semibold ">Audio</h2>
+        <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10 ">
+          <h2 className="flex justify-center  font-semibold ${fontSizeClass}">Audio</h2>
           {audioData.audioUrl && (
             <div className="flex items-center justify-center p-5">
               <audio controls className="w-96" key={audioData.audioUrl}>
@@ -476,28 +529,34 @@ function VerseDetail() {
           )}
         </div>
         <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ">
-          <h2 className="flex justify-center p-3 text-2xl font-bold">
+          <h2 className="flex justify-center p-3 font-bold ${fontSizeClass}">
             Synonyms
           </h2>
           <p
-            className="flex justify-center p-3 text-lg "
+            className="flex justify-center p-3 "
             onMouseUp={handleTextSelection}
           >
             {verseDetails.synonyms}
           </p>
         </div>
-        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10">
-          <h2 className="flex justify-center p-3 text-2xl font-bold ">
+        <div className="p-4 font-normal text-justify sm:mx-20 sm:px-10 ${fontSizeClass}">
+          <h2 className="flex justify-center p-3  font-bold ${fontSizeClass}">
             Translation
           </h2>
           <p
-            className="flex justify-center p-3 text-lg font-semibold"
+            className="flex justify-center p-3  font-semibold"
             onMouseUp={handleTextSelection}
           >
             {verseDetails.translation}
           </p>
         </div>
-        <div onMouseUp={handleTextSelection}>{RenderPurport(verseDetails)}</div>
+        <div className={`${fontSizeClass}`} onMouseUp={handleTextSelection}>
+
+        <RenderPurport verseDetails={verseDetails} fontSizeClass={fontSizeClass} />
+
+        
+</div>
+
 
         {/* Conditionally render the Purport section */}
         {/* Display audio data */}
@@ -571,6 +630,30 @@ function VerseDetail() {
           </div>
         )}
 
+<div className="flex flex-col">
+      <button onClick={toggleSettings} className="fixed bottom-12 right-6 mb-4 px-4 py-2 text-white rounded-full bg-blue-500 shadow-lg focus:outline-none z-50">
+      <FaCog />
+      </button>
+      
+      {isSettingsOpen && (
+        <div ref={settingsRef} className="fixed bottom-24 right-6 mb-4 rounded-lg text-black bg-gray-200 p-4 w-42 z-40">
+          <div className="flex items-center justify-start space-x-4">
+          <span>Font Size</span>
+          
+          <div className="flex items-center justify-between bg-white p-1 rounded h-6 w-13">
+          <button onClick={decreaseFontSize} className="px-1 py-2 text-xl font-bold mr-2">-</button>
+          <button onClick={increaseFontSize} className="px-1 py-2 text-xl font-bold">+</button>
+          </div>
+          </div>
+        </div>
+      )}
+        {/* <select value={fontSizeClass} onChange={(e) => setFontSizeClass(e.target.value)}>
+    <option value="text-base">Base</option>
+    <option value="text-lg">Large</option>
+    <option value="text-2xl">Extra Large</option>
+    //Additional options as needed 
+  </select> */}
+      </div>
         <button
           onClick={handleToggleNotesSidebar}
           className="fixed px-4 py-2 text-3xl text-white bg-blue-500 shadow rounded-3xl bottom-4 right-4 hover:bg-blue-600"
@@ -585,7 +668,7 @@ function VerseDetail() {
       </div>
       <Footer />
       <ScrollDepth chapter={chapter} verse={chapterVerse} />
-    </>
+    </div>
   );
 }
 

@@ -12,6 +12,12 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontSize: {
+        'custom-small': '0.875rem', // Example custom font size
+        'custom-base': '1rem',      // Example custom base font size
+        'custom-large': '1.25rem',  // Example custom large font size
+        // Add more custom sizes as needed
+      },
     },
   },
   plugins: [require("daisyui")],
