@@ -595,20 +595,20 @@ function VerseDetail() {
           </p>
         </div>
         <div className="p-4 mb-4 font-normal text-justify sm:mx-20 sm:px-10">
-      <h2 className="flex justify-center text-xl font-semibold">Audio</h2>
-      {Array.isArray(audioData.audioUrl) ? (
-        <div className="flex flex-col items-center justify-center p-5 ">
-          {audioData.audioUrl.map((url, index) => (
-            <audio controls className="m-2 w-96" key={index}>
-              <source src={url} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-          ))}
-        </div>
+            <h2 className="flex justify-center text-xl font-semibold">Audio</h2>
+            {Array.isArray(audioData.audioUrl) ? (
+              <div className="flex flex-col items-center justify-center p-5 ">
+                {audioData.audioUrl.map((url, index) => (
+                  <audio controls className="m-2 w-72 md:w-96 " key={index}>
+                    <source src={url} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                ))}
+              </div>
       ) : (
         audioData.audioUrl && (
           <div className="flex items-center justify-center p-5">
-            <audio controls className="w-96">
+            <audio controls className="w-72 md:w-96">
               <source src={audioData.audioUrl} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
