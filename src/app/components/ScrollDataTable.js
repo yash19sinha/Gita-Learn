@@ -6,6 +6,7 @@ const ScrollDataTable = () => {
   const [scrollData, setScrollData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +29,11 @@ const ScrollDataTable = () => {
             timeSpent: value.timeSpent,
             timestamp: new Date(value.timestamp.toDate()).toLocaleString()
           })).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-          
-          // Select the latest 5 pages based on currentPage and itemsPerPage
+
+          // Set total pages based on available data
+          setTotalPages(Math.ceil(dataArray.length / itemsPerPage));
+
+          // Select the data for the current page
           const startIndex = (currentPage - 1) * itemsPerPage;
           const endIndex = startIndex + itemsPerPage;
           const latestData = dataArray.slice(startIndex, endIndex);
@@ -42,7 +46,7 @@ const ScrollDataTable = () => {
     };
 
     fetchData();
-  }, [currentPage]); // Add currentPage to dependency array
+  }, [currentPage]);
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -50,7 +54,7 @@ const ScrollDataTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <h2 className="mb-4 text-lg font-bold">Scroll Data</h2>
+      <h2 className="mb-4 text-lg font-bold">Track Your Progress</h2>
       <table className="w-full border-collapse">
         <thead>
           <tr>
@@ -69,7 +73,7 @@ const ScrollDataTable = () => {
               <td className="px-4 py-2 border">{data.timeSpent}</td> 
               <td className="px-4 py-2 border">{data.timestamp}</td>
               <td className="px-4 py-2 border">
-                {data.scrollDepth > 80 && data.timeSpent >= 0.20 ? (
+                {data.scrollDepth > 80 && data.timeSpent >= 5 ? (
                   <span className="inline-block h-4 w-4 rounded-full bg-green-500"></span>
                 ) : (
                   <span className="inline-block h-4 w-4 rounded-full bg-yellow-500"></span>
@@ -80,8 +84,8 @@ const ScrollDataTable = () => {
         </tbody>
       </table>
       <div className="flex justify-center mt-4">
-        {Array.from({ length: 5 }, (_, index) => (
-          <button key={index + 1} onClick={() => handlePageClick(index + 1)} className={`mx-1 px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-600'}`}>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button key={index + 1} onClick={() => handlePageClick(index + 1)} disabled={index + 1 > totalPages} className={`mx-1 px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-green-600 text-white' : 'bg-green-600 text-white'}`}>
             {index + 1}
           </button>
         ))}
