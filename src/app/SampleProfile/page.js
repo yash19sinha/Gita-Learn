@@ -165,84 +165,82 @@ const Page = () => {
     <div className="min-h-screen drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" checked={isDrawerOpen} onChange={toggleDrawer} />
       <div className="drawer-content">
-        <label htmlFor="my-drawer" className="text-3xl btn drawer-button">
-        <GiHamburgerMenu className='5xl' />
+        <label htmlFor="my-drawer" className="text-2xl bg-orange-300 btn drawer-button">
+        <GiHamburgerMenu className=' 5xl' />
         </label>
         <div className="p-8">
           <div>
             {activeContent === 'Profile' && (
-                   <div className='flex'>
-                   <div className='p-4 rounded shadow '>
-           
-                     {imageURL && (
-                       <img
-                         src={imageURL}
-                         alt="User Profile"
-                         className="w-56 h-56 mx-auto mr-4 rounded-full"
-                       />
-                     )}
-                     <div>
-                       {userData && (
-                         <h1 className="flex items-center justify-center my-2 text-3xl font-bold text-center ">
-                           {name || userData.name}
-                         </h1>
-                       )
-                       }
-                     </div>
-                   </div>
-                   {userData && (
-           
-             <div className="w-4/5 p-4 ml-4 border border-gray-200 rounded-lg shadow-md">
-               <div className="mb-2">
-               <span className="text-xl font-semibold">Name: {name || userData.name}</span> 
-               </div>
-               <div className="mb-2">
-               <span className="text-xl font-semibold">Email: {email}</span> 
-               </div>
-               <div className="flex items-center mb-2">
-                 <label className="text-xl font-semibold ">Phone Number:</label>
-                 {isEditing ? (
-                   <input
-                     type="text"
-                     className="p-1 ml-2 border rounded"
-                     value={newPhoneNo}
-                     onChange={(e) => setNewPhoneNo(e.target.value)}
-                   />
-                 ) : (
-                   <p className="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
-                 )}
-                 {isEditing ? (
-                   <button
-                     className="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
-                     onClick={updatePhoneNumber}
-                   >
-                     Save
-                   </button>
-                 ) : (
-                   <button
-                     className="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                     onClick={() => setIsEditing(true)}
-                   >
-                     Edit
-                   </button>
-                 )}
-               </div>
-             </div>
-           )}
-           
-           
-           
-                 </div>
+                    
+                      <div className="container p-4 mx-auto mt-4">
+                        <div className="flex flex-col items-center md:flex-row">
+                          <div className="p-4 mb-4 rounded shadow md:mr-4 md:mb-0">
+                            {imageURL && (
+                              <img
+                                src={imageURL}
+                                alt="User Profile"
+                                className="w-56 h-56 mx-auto mb-2 rounded-full md:mr-4"
+                              />
+                            )}
+                            {userData && (
+                              <h1 className="text-3xl font-bold text-center text-black">
+                                {name || userData.name}
+                              </h1>
+                            )}
+                          </div>
+                      
+                          {userData && (
+                            <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md md:w-4/5 h-72">
+                              <div className="mb-2">
+                                <span className="text-xl font-semibold">Name: {name || userData.name}</span>
+                              </div>
+                              <div className="mb-2">
+                                <span className="text-xl font-semibold">Email: {email}</span>
+                              </div>
+                              <div className="flex items-center mb-2">
+                                <label className="text-xl font-semibold text-gray-600">Phone Number:</label>
+                                {isEditing ? (
+                                  <input
+                                    type="text"
+                                    className="p-1 ml-2 border rounded"
+                                    value={newPhoneNo}
+                                    onChange={(e) => setNewPhoneNo(e.target.value)}
+                                  />
+                                ) : (
+                                  <p className="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
+                                )}
+                                {isEditing ? (
+                                  <button
+                                    className="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
+                                    onClick={updatePhoneNumber}
+                                  >
+                                    Save
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                                    onClick={() => setIsEditing(true)}
+                                  >
+                                    Edit
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
             )}
             {activeContent === 'Create Quiz Id' && (
-              <div className='flex justify-center p-5'>
-              <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
-              </div>
+                   <div className='flex justify-center'>
+                   <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
+                   </div>
             )}
             {activeContent === 'Streaks' && (
               <div>
                 <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
+                <div className='overflow-x-scroll md:w-full md:h-full'>
                 <CalendarHeatmap
+                  className="h-96"
                   startDate={new Date('2024-01-01')} // Adjust the start date as needed
                   endDate={new Date('2024-12-31')} // Adjust the end date as needed
                   values={
@@ -273,8 +271,9 @@ const Page = () => {
                       'data-tip': `${value.date}: ${value.count}`,
                     };
                   }}
-                  className="w-full max-w-screen-md px-4 mx-auto"
+                
                 />
+                </div>
                 <Tooltip />
                 <table className="w-full my-4 bg-white rounded shadow table-auto">
                   <thead>

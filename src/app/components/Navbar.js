@@ -121,6 +121,7 @@ export const Navbar = () => {
             <li><Link href="Chapters">Bhagvad Gita</Link></li>
             <li><Link href="QuizPage">Quiz</Link></li> */}
             <li className='text-base font-semibold'><Link href="Profile">Profile</Link></li>
+            <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
             <li className='text-base font-semibold'> <Link href='/' ><FullScreenComponent /> </Link> </li>
             <li tabIndex={0}>
           <details>

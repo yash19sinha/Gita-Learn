@@ -12,8 +12,25 @@ function Chapters() {
   const chapterNumber = searchParams.get('chapterNumber');
   const [chapters, setChapters] = useState([]);
   const [verses, setVerses] = useState([]);
+  const [sections, setSections] = useState([]);
 
+  useEffect(() => {
+    // Function to fetch sections
+    const fetchSections = async () => {
+      try {
+        const response = await fetch('https://gita-learn-api.vercel.app/api/sections');
+        if (!response.ok) {
+          throw new Error('Failed to fetch sections');
+        }
+        const data = await response.json();
+        setSections(data);
+      } catch (error) {
+        console.error('Error fetching sections:', error);
+      }
+    };
 
+    fetchSections();
+  }, []);
 
   useEffect(() => {
     async function fetchChapters() {
@@ -71,7 +88,19 @@ function Chapters() {
       </h1>
       <div className="mb-4">
         <div className="items-start overflow-x-auto md:m-10 ">
+          
           <ul className='gap-10 p-3 m-5 sm:p-6 justify-items-center'>
+
+          {Object.keys(sections).map((sectionName, index) => (
+        <li key={index} className="justify-center w-full mb-4">
+          <Link href={`/ChapterIntro?sectionName=${sectionName}`}>
+            <h3 className="py-3 text-xl font-medium text-start sm:mx-20 sm:px-10 dark-theme">
+              {sectionName}
+            </h3>
+          </Link>
+        </li>
+      ))}
+         
             {chapters.map((chapter) => (
               <li key={chapter.chapter_number} className="justify-center w-full mb-4 ">
                 <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>

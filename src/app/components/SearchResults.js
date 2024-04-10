@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const SearchResults = ({ searchResults }) => {
   return (
-    <ul className="p-5 m-4 mt-4">
+    <ul className="mt-4 md:m-4 md:p-5">
       {searchResults.length > 0 ? (
         searchResults.map(result => (
           <li key={`${result.chapter_number}-${result.verse_number}`} className="py-4 border-b border-gray-200">

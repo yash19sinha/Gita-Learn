@@ -1,10 +1,12 @@
+"use client"
 import React, { useState, useEffect, useRef } from "react";
-import { auth, storage } from "../firebase/config";
+import { auth, storage, db } from "../firebase/config";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { v4 } from "uuid";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import axios from "axios";
+import firebase from "firebase/compat/app";
 import {
   addDoc,
   collection,
@@ -15,6 +17,7 @@ import {
   where,
 } from "firebase/firestore";
 function PublicNotes({ verseId }) {
+  
   const [showNotes, setShowNotes] = useState(false);
   const [showAccordions, setShowAccordions] = useState(false);
   const [image, setImg] = useState(null);
@@ -31,12 +34,33 @@ function PublicNotes({ verseId }) {
   // const [accordionNames] = useState(['Images']);
   const [accordionNames] = useState([
     "Mindmap",
-    "Prabupada Lecture",
-    "Video Lectures",
+    "Audio Lecture",
+    "Video Lecture",
   ]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
   const accordionRef = useRef(null);
+
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const user = auth.currentUser; // Corrected: firebase.auth().currentUser
+      if (!user) return;
+
+      const userDocRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userDocRef);
+      if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+        setUserRole(null); // User is not an admin
+        return;
+      }
+
+      setUserRole('admin'); // User is an admin
+    };
+
+    fetchUserRole();
+  }, []);
+
 
   useEffect(() => {
     const handleClickOutsideAccordion = (event) => {
@@ -63,7 +87,7 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:4000/api/links/${chapterVerse}`
+        `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
       );
       const links = [];
       // Check if response data exists and has links
@@ -102,7 +126,7 @@ function PublicNotes({ verseId }) {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:4000/api/podbeans/${chapterVerse}`
+        `https://gita-learn-api.vercel.app/api/podbeans/${chapterVerse}`
       );
       const links = [];
       // Check if response data exists and has links
@@ -229,6 +253,24 @@ function PublicNotes({ verseId }) {
 
   return (
     <div>
+      <div className="p-4">
+      {userRole === "admin" && (
+        <div>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+            className="mt-4"
+          />
+          <button
+            onClick={handleImageUpload}
+            className="justify-center mt-4 btn btn-primary"
+          >
+            Upload Image
+          </button>
+        </div>
+      )}
+    </div>
       {/* <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
         {showNotes ? "Hide Public Notes" : "Show Public Notes"}
       </button>
@@ -264,9 +306,9 @@ function PublicNotes({ verseId }) {
             </div>
           )}
         </div>
-      )} */}
+      )}  */}
       {hasContent && (
-        <div className="w-full mb-2 border border-gray-300 rounded-lg">
+        <div className="w-full mb-2 border border-orange-600 rounded-lg">
           <div className="p-4 ">
             {[1, 2, 3].map((index) => {
               const isActive = activeIndex === index;
@@ -274,8 +316,8 @@ function PublicNotes({ verseId }) {
                 ? "bg-orange-200 border-orange-500 dark:bg-coolGray-700"
                 : "bg-orange-100 hover:bg-orange-200 border-orange-300 hover:border-orange-500";
               const contentClass = isActive
-                ? "p-4 bg-orange-50 border border-orange-500 flex justify-center items-center"
-                : "p-4 bg-orange-50 border border-orange-300 flex justify-center items-center";
+                ? "p-4 bg-orange-100 border border-orange-500 flex justify-center items-center"
+                : "p-4 bg-orange-100 border border-orange-300 flex justify-center items-center";
               const buttonClass = isActive
                 ? "w-full p-4 text-xl text-center"
                 : "w-full p-4 text-xl text-left";
@@ -312,7 +354,12 @@ function PublicNotes({ verseId }) {
                               className="max-w-full mt-2 h-180 w-180"
                             />
                           ))}
+
+
+
                         </div>
+                        
+                        
                       )}
                       {index === 2 && (
                         <div>
@@ -352,8 +399,10 @@ function PublicNotes({ verseId }) {
                         <div>
                           {
                             <iframe
-                              width="560"
-                              height="315"
+                              // width="560"
+                              // height="315"
+                              className="md:h-[400px] md:w-[600px] h-4/5 m-4/5"
+                              
                               src={`https://www.youtube-nocookie.com/embed/${videoId};controls=0&amp;modestbranding=1&amp;start=${startTime}&&end=${endTime}`}
                               title="YouTube video player"
                               frameBorder="0"
