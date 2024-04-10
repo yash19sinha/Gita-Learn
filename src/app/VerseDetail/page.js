@@ -762,7 +762,7 @@ function VerseDetail() {
         onChange={(e) => setCommunityId(e.target.value)}
         className="w-64 px-4 py-2 text-black bg-white border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
       >
-        <option value="">Select Community ID</option>
+        <option value="">Select Community Name</option>
         {yourIds.map((id) => (
           <option key={id.communityId} value={id.communityId}>
             {id.communityId} - {id.communityName}
