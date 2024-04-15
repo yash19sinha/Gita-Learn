@@ -6,6 +6,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
 
+
+
 import { useTheme } from '../context/ThemeContext';
 // import SearchBar from './SearchBar';
 

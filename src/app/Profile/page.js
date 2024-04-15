@@ -14,6 +14,7 @@ import ScrollDataTable from '../components/ScrollDataTable';
 
 
 
+
 function Profile() {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
@@ -122,6 +123,7 @@ function Profile() {
 
     fetchUserProfile();
   }, [user]);
+
 
 
 
