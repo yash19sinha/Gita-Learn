@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
+import Image from 'next/image'
 
 
 
@@ -162,8 +163,10 @@ export const Navbar = () => {
 
 
         <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">
-          <img
+          <Image
             className="w-auto h-10 mx-auto"
+            height={300}
+            width={300}
             src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
             alt="Your Company"
           />
