@@ -421,8 +421,7 @@ function VerseDetail() {
         const audioDataResponse = await fetchAudioData(previousChapterVerse);
         // setChapterVerse(previousChapterVerse);
         setAudioData(audioDataResponse);
-        router.push(`/VerseDetail?chapter
-        Verse=${previousChapterVerse}`);
+        router.push(`/VerseDetail?chapterVerse=${previousChapterVerse}`);
       } else {
         console.log("No previous verse available");
       }
