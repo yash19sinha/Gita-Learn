@@ -76,6 +76,8 @@ function Dashboard() {
             const userDataWithDisplayName = await getUserData(userData.userId);
             return { userId: userData.userId, displayName: userDataWithDisplayName.displayName, photoURL: userDataWithDisplayName.photoURL, communityId: community.communityId };
           });
+          
+
           const userDataArray = await Promise.all(userDataPromises);
           communityMembersData.push(...userDataArray);
         }
@@ -109,19 +111,42 @@ function Dashboard() {
     }
     return ''; // Return an empty string if username retrieval fails
   };
-
+  
   const getUserData = async (userId) => {
     try {
       console.log("Fetching user data for userId:", userId);
       if (!userId) return {};
-  
+    
       const userDoc = await getDoc(doc(db, 'users', userId));
       if (userDoc.exists()) {
         const userData = userDoc.data();
         console.log("User Data:", userData);
-        return { displayName: userData.displayName, photoURL: userData.photoURL };
+        
+        // Fetch photoURL of the user with the provided userId
+        let photoURL = ''; // Initialize photoURL
+        
+        // Check if the user used Google authentication
+        if (userData.authMethod === 'google') {
+          // If Google authenticated, try to fetch the photoURL from user data
+          if (userData.photoURL) {
+            photoURL = userData.photoURL;
+            console.log("Photo URL from User Data:", photoURL); // Log the photoURL from user data
+          } else {
+            console.log("Photo URL not found in user data."); // Log a message indicating that photoURL is not found
+          }
+        } else {
+          console.log("User did not use Google authentication."); // Log a message indicating that the user did not use Google authentication
+        }
+        
+        // Fetch displayName of the user with the provided userId
+        const displayName = userData.displayName || 'Unknown User'; // Use the displayName from user data or set it to 'Unknown User' if not available
+        
+        console.log("Photo URL:", photoURL); // Log the photoURL
+        console.log("Display Name:", displayName); // Log the displayName
+        
+        return { displayName, photoURL }; // Return photoURL and displayName
       } else {
-        console.log("User document not found.");
+        console.log("User document not found for userId:", userId);
         return {};
       }
     } catch (error) {
@@ -129,28 +154,37 @@ function Dashboard() {
       return {};
     }
   };
+  
+  
+  
+  
+  
+  
 
   return (
     <div className="min-h-screen p-10">
       <h2 className="mb-4 text-xl font-bold ">Community Members:</h2>
       <div className="">
         <ul>
-          {communityMembers.map((member, index) => (
-            <li key={index} className="flex items-center py-2 space-x-4">
-              {/* Display the user's profile photo */}
-              {member.photoURL ? (
-                <img src={member.photoURL} alt="Profile" className="w-10 h-10 rounded-full" />
-              ) : (
-                <img src={imgUrl} alt="Profile" className="w-10 h-10 rounded-full" />
-              )}
-              {/* Display the user's display name */}
-              {member.displayName && <span className="text-gray-800">{member.displayName}</span>}
-              {/* Redirect to the user's profile page on click */}
-              <Link href={`/OtherUserProfile?userId=${member.userId}`} className="text-blue-500 hover:underline">
-             View Profile
-              </Link>
-            </li>
-          ))}
+        {communityMembers.map((member, index) => (
+  <li key={index} className="flex items-center py-2 space-x-4">
+    {/* Log the member's photoURL */}
+    {console.log("Member Photo URL:", member.photoURL)}
+    {/* Display the user's profile photo */}
+    {member.photoURL ? (
+      <img src={member.photoURL} alt="Profile" className="w-10 h-10 rounded-full" />
+    ) : (
+      <img src={imgUrl} alt="Profile" className="w-10 h-10 rounded-full" />
+    )}
+    {/* Display the user's display name */}
+    {member.displayName && <span className="text-gray-800">{member.displayName}</span>}
+    {/* Redirect to the user's profile page on click */}
+    <Link href={`/OtherUserProfile?userId=${member.userId}`} className="text-blue-500 hover:underline">
+      View Profile
+    </Link>
+  </li>
+))}
+
         </ul>
       </div>
     </div>
