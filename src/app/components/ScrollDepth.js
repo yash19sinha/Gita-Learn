@@ -3,20 +3,24 @@ import { db, auth } from '../firebase/config';
 import { collection, doc, setDoc } from "firebase/firestore";
 
 const ScrollDepth = ({ verse }) => {
-  const startTime = useRef(new Date().getTime());
+  const startTime = useRef(null);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const user = auth.currentUser;
-      if (!user) return; 
+      if (!user) return;
 
       const userId = user.uid;
 
       const logScrollDepth = () => {
+        if (!startTime.current) {
+          startTime.current = new Date().getTime();
+        }
+
         const currentTime = new Date().getTime();
         const timeSpentInSeconds = (currentTime - startTime.current) / 1000;
-        const timeSpentInMinutes = timeSpentInSeconds / 60; 
+        const timeSpentInMinutes = timeSpentInSeconds / 60;
 
         const verseElement = document.getElementById(`verse${verse}`);
         if (!verseElement) return;
@@ -40,10 +44,7 @@ const ScrollDepth = ({ verse }) => {
               timeSpent: timeSpentInMinutes.toFixed(2),
               timestamp: new Date()
             }
-          }, { merge: true }); 
-        } else if (verseScrollDepth >= 100) {
-          console.log(`Verse ${verse} Scroll Depth reached 100%. Stopping the timer.`);
-          window.removeEventListener('scroll', logScrollDepth);
+          }, { merge: true });
         }
 
         lastScrollY.current = scrollTop;
@@ -60,6 +61,21 @@ const ScrollDepth = ({ verse }) => {
 
     fetchData();
   }, [verse]);
+
+  useEffect(() => {
+    const handlePageChange = () => {
+      console.log(`Page changed. Stopping the timer.`);
+      startTime.current = null;
+    };
+
+    // Add event listener for page change (e.g., when user navigates away)
+    window.addEventListener('unload', handlePageChange);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('unload', handlePageChange);
+    };
+  }, []);
 
   return null;
 };
