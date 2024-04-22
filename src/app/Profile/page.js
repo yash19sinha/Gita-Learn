@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 
 
 
+
 function Profile() {
   const { user } = useAuth();
   const [userData, setUserData] = useState(null);
@@ -30,6 +31,7 @@ function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [imageURL, setImageURL] = useState(null);
   const imgUrl = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'
+  
 
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
   const today = new Date(); // Get today's date
@@ -222,6 +224,7 @@ function Profile() {
 </div>
 
 <ScrollDataTable/> 
+
       
       <div className='flex justify-center p-5'>
       <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
