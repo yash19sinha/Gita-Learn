@@ -139,7 +139,7 @@ function Dashboard() {
         }
         
         // Fetch displayName of the user with the provided userId
-        const displayName = userData.displayName || 'Unknown User'; // Use the displayName from user data or set it to 'Unknown User' if not available
+        let displayName = userData.displayName || userData.name || 'Unknown User'; // Use the displayName from user data, or fallback to the name field, or set it to 'Unknown User' if not available
         
         console.log("Photo URL:", photoURL); // Log the photoURL
         console.log("Display Name:", displayName); // Log the displayName
@@ -154,6 +154,7 @@ function Dashboard() {
       return {};
     }
   };
+  
   
   
   

@@ -35,7 +35,7 @@ function OtherUserProfile() {
           }
   
           // Manage displayName and name
-          let displayName = userDataFromFirestore.displayName || userDataFromFirestore.name || 'Unknown User';
+          let displayName = userDataFromFirestore.name|| userDataFromFirestore.name  || 'Unknown User';
           console.log('User Data:', userDataFromFirestore); // Log the user data
           console.log('DisplayName:', displayName);
           console.log('Email:', userDataFromFirestore.email);
@@ -65,14 +65,14 @@ function OtherUserProfile() {
             className="w-56 h-56 mx-auto mb-2 rounded-full md:mr-4"
           />
           {userData && (
-            <h1 className="text-3xl font-bold text-center text-black">{userData.displayName}</h1>
+            <h1 className="text-3xl font-bold text-center text-black">{userData.displayName || userData.name}</h1>
           )}
         </div>
 
         {userData && (
           <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md md:w-4/5 h-72">
             <div className="mb-2">
-              <span className="text-xl font-semibold">Name: {userData.displayName}</span>
+              <span className="text-xl font-semibold">Name: {userData.displayName || userData.name }</span>
             </div>
             <div className="mb-2">
               <span className="text-xl font-semibold">PhoneNumber: {userData.phoneNo}</span>

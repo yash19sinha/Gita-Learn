@@ -10,6 +10,7 @@ import 'react-calendar-heatmap/dist/styles.css';
 import { Tooltip } from 'react-tooltip';
 import CreateCommunityIdForm from '../components/CreateCommunityId';
 import { GiHamburgerMenu } from "react-icons/gi";
+import ScrollDataTable from '../components/ScrollDataTable';
 
 const Page = () => {
   const { user } = useAuth();
@@ -28,6 +29,10 @@ const Page = () => {
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeContent, setActiveContent] = useState('Profile');
+  const today = new Date(); // Get today's date
+  const startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()); // Set start date to today 1 year before
+  const endDate = today;
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -168,68 +173,73 @@ const Page = () => {
         <label htmlFor="my-drawer" className="text-2xl bg-orange-300 btn drawer-button">
         <GiHamburgerMenu className=' 5xl' />
         </label>
-        <div className="p-8">
+        <div className="p-2">
           <div>
             {activeContent === 'Profile' && (
-                    
-                      <div className="container p-4 mx-auto mt-4">
-                        <div className="flex flex-col items-center md:flex-row">
-                          <div className="p-4 mb-4 rounded shadow md:mr-4 md:mb-0">
-                            {imageURL && (
-                              <img
-                                src={imageURL}
-                                alt="User Profile"
-                                className="w-56 h-56 mx-auto mb-2 rounded-full md:mr-4"
-                              />
-                            )}
-                            {userData && (
-                              <h1 className="text-3xl font-bold text-center text-black">
-                                {name || userData.name}
-                              </h1>
-                            )}
-                          </div>
-                      
-                          {userData && (
-                            <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md md:w-4/5 h-72">
-                              <div className="mb-2">
-                                <span className="text-xl font-semibold">Name: {name || userData.name}</span>
-                              </div>
-                              <div className="mb-2">
-                                <span className="text-xl font-semibold">Email: {email}</span>
-                              </div>
-                              <div className="flex items-center mb-2">
-                                <label className="text-xl font-semibold text-gray-600">Phone Number:</label>
-                                {isEditing ? (
-                                  <input
-                                    type="text"
-                                    className="p-1 ml-2 border rounded"
-                                    value={newPhoneNo}
-                                    onChange={(e) => setNewPhoneNo(e.target.value)}
-                                  />
-                                ) : (
-                                  <p className="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
-                                )}
-                                {isEditing ? (
-                                  <button
-                                    className="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
-                                    onClick={updatePhoneNumber}
-                                  >
-                                    Save
-                                  </button>
-                                ) : (
-                                  <button
-                                    className="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                                    onClick={() => setIsEditing(true)}
-                                  >
-                                    Edit
-                                  </button>
-                                )}
-                              </div>
-                            </div>
+              
+                  <div className="container p-4 mx-auto mt-4">
+                  <div className="flex flex-col items-center md:flex-row">
+                    <div className="p-4 mb-4 rounded shadow md:mr-4 md:mb-0">
+                      {imageURL && (
+                        <img
+                          src={imageURL}
+                          alt="User Profile"
+                          className="w-56 h-56 mx-auto mb-2 rounded-full md:mr-4"
+                        />
+                      )}
+                      {userData && (
+                        <h1 className="text-3xl font-bold text-center text-black">
+                          {name || userData.name}
+                        </h1>
+                      )}
+                    </div>
+
+                    {userData && (
+                      <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow-md md:w-4/5 h-72">
+                        <div className="mb-2">
+                          <span className="text-xl font-semibold">Name: {name || userData.name}</span>
+                        </div>
+                        <div className="mb-2">
+                          <span className="text-xl font-semibold">Email: {email}</span>
+                        </div>
+                        <div className="flex items-center mb-2">
+                          <label className="text-xl font-semibold text-gray-600">Phone Number:</label>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              className="p-1 ml-2 border rounded"
+                              value={newPhoneNo}
+                              onChange={(e) => setNewPhoneNo(e.target.value)}
+                            />
+                          ) : (
+                            <p className="ml-2 text-lg">{phoneno || userData.phoneNo}</p>
+                          )}
+                          {isEditing ? (
+                            <button
+                              className="px-3 py-1 ml-2 text-white bg-green-500 rounded hover:bg-green-600"
+                              onClick={updatePhoneNumber}
+                            >
+                              Save
+                            </button>
+                          ) : (
+                            <button
+                              className="px-3 py-1 ml-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                              onClick={() => setIsEditing(true)}
+                            >
+                              Edit
+                            </button>
                           )}
                         </div>
                       </div>
+                      
+                    )} 
+                  </div>
+ 
+                 </div>
+                  
+                
             )}
+            <ScrollDataTable/> 
             {activeContent === 'Create Quiz Id' && (
                    <div className='flex justify-center'>
                    <CreateCommunityIdForm onCreate={handleCommunityIdCreated} />
