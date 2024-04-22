@@ -10,6 +10,9 @@ import 'react-calendar-heatmap/dist/styles.css';
 import { Tooltip } from 'react-tooltip';
 import CreateCommunityIdForm from '../components/CreateCommunityId';
 import ScrollDataTable from '../components/ScrollDataTable';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -31,6 +34,10 @@ function Profile() {
   
 
   const [generatedCommunityId, setGeneratedCommunityId] = useState('');
+  const today = new Date(); // Get today's date
+  const startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()); // Set start date to today 1 year before
+  const endDate = today;
+
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -124,6 +131,8 @@ function Profile() {
 
     fetchUserProfile();
   }, [user]);
+
+
 
 
 
@@ -223,8 +232,8 @@ function Profile() {
 
       <h2 className="mt-4 mb-2 text-2xl font-bold text-black">Reading Streak</h2>
       <CalendarHeatmap
-        startDate={new Date('2024-01-01')} // Adjust the start date as needed
-        endDate={new Date('2024-12-31')} // Adjust the end date as needed
+        startDate={startDate} // Adjust the start date as needed
+        endDate={endDate} // Adjust the end date as needed
         values={
           timersData.map((timer) => ({
             date: timer.timestamp.toISOString().split('T')[0],

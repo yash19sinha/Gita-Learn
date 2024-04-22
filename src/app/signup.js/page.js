@@ -55,14 +55,14 @@ const SignUp = () => {
 
   return (
   
-      <div className="flex flex-col justify-center flex-1 h-screen px-6 py-12 bg-white lg:px-8">
+      <div className="flex flex-col justify-center flex-1 min-h-screen px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="w-auto h-10 mx-auto"
             src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
             alt="Your Company"
           />
-          <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
+          <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">
             Sign Up to your Account
           </h2>
         </div>
@@ -70,7 +70,7 @@ const SignUp = () => {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSignUp}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="email" className="block text-sm font-medium leading-6">
                 Email address
               </label>
               <div className="mt-2">
@@ -88,7 +88,7 @@ const SignUp = () => {
             </div>
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="name" className="block text-sm font-medium leading-6 ">
                 Enter Your Name
               </label>
               <div className="mt-2">
@@ -100,13 +100,13 @@ const SignUp = () => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 bg-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phoneno" className="block text-sm font-medium leading-6 text-gray-900 bg-white">
+              <label htmlFor="phoneno" className="block text-sm font-medium leading-6">
                 Enter Your Phone Number
               </label>
               <div className="mt-2">
@@ -118,14 +118,14 @@ const SignUp = () => {
                   required
                   value={phoneNo}
                   onChange={(e) => setPhoneNo(e.target.value)}
-                  className="block w-full rounded-md border-0 py-1.5 bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 bg-white"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="password" className="block text-sm font-medium leading-6 ">
                   Create Your Password
                 </label>
               </div>

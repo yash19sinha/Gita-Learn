@@ -92,8 +92,9 @@ const ScrollDataTable = () => {
              <td className="px-4 py-2 border">
                 {data.scrollDepth > 80 && data.timeSpent >= verseEstimatedTimes[data.verse] ? (
                   <span className="inline-block h-4 w-4 rounded-full bg-green-500"></span>
+
                 ) : (
-                  <span className="inline-block h-4 w-4 rounded-full bg-yellow-500"></span>
+                  <span className="inline-block w-4 h-4 bg-yellow-500 rounded-full"></span>
                 )}
               </td>
             </tr>

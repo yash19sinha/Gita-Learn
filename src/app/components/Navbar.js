@@ -5,6 +5,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import FullScreenComponent from '../FullScreen/FullScreenComponent';
+import Image from 'next/image'
+import { useRouter } from 'next/navigation';
+
+
 
 import { useTheme } from '../context/ThemeContext';
 // import SearchBar from './SearchBar';
@@ -12,6 +16,7 @@ import { useTheme } from '../context/ThemeContext';
 
 
 export const Navbar = () => {
+  const router = useRouter();
   const [user] = useAuthState(auth);
   const [chapters, setChapters] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -107,6 +112,11 @@ export const Navbar = () => {
 
 
 
+  const handleLogout = () => {
+    auth.signOut(); // Assuming auth is your authentication provider
+    router.push('/'); // Redirect to the home page
+  };
+
 
   return (
 
@@ -160,8 +170,10 @@ export const Navbar = () => {
 
 
         <Link href="/" className="text-2xl font-bold normal-case btn btn-ghost">
-          <img
+          <Image
             className="w-auto h-10 mx-auto"
+            height={300}
+            width={300}
             src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
             alt="Your Company"
           />
@@ -217,7 +229,9 @@ export const Navbar = () => {
       <div className="navbar-end">
         {user ? (
           // If user is authenticated, show Logout button
-          <button onClick={() => auth.signOut()} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Logout</button>
+          <button onClick={handleLogout} className="text-white bg-orange-500 border-none btn hover:bg-orange-300">
+          Logout
+        </button>
         ) : (
           // If user is not authenticated, show Login button
           <Link href="/login" className="text-white bg-orange-500 border-none btn hover:bg-orange-300">Login</Link>
