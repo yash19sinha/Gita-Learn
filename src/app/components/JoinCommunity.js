@@ -6,6 +6,7 @@ import { db, auth } from '../firebase/config';
 function JoinCommunity({}) {
   const [communityId, setCommunityId] = useState('');
   const [requestSent, setRequestSent] = useState(false);
+  const [isCommunityLeader, setIsCommunityLeader] = useState(false);
   const currentUser = auth.currentUser;
 
   const handleJoinCommunity = async () => {
@@ -14,17 +15,17 @@ function JoinCommunity({}) {
         console.error('No user signed in.');
         return;
       }
-  
+
       // Check if community ID exists
       const communityRef = collection(db, 'communityIds');
       const q = query(communityRef, where('communityId', '==', parseInt(communityId)));
       const querySnapshot = await getDocs(q);
-  
+
       if (querySnapshot.empty) {
         console.log('Community ID does not exist.');
         return;
       }
-  
+
       // Check if user has already sent a request for this community
       const requestQuery = query(
         collection(db, 'communityRequests'),
@@ -32,39 +33,42 @@ function JoinCommunity({}) {
         where('communityId', '==', parseInt(communityId))
       );
       const requestSnapshot = await getDocs(requestQuery);
-  
+
       if (!requestSnapshot.empty) {
         console.log('Request already sent for this community.');
-        alert("Request already sent for this community.");
+        alert('Request already sent for this community.');
         return;
       }
-  
-      // Send request to community owner
+
+      // Check if user is the leader of the community
       const communityDoc = querySnapshot.docs[0];
       const ownerUserId = communityDoc.data().userId;
-  
+
+      if (ownerUserId === currentUser.uid) {
+        alert('You are the community leader. You cannot join your own community.');
+        return;
+      }
+
+      // Send request to community owner
       const request = {
         requesterId: currentUser.uid,
-        communityId: parseInt(communityId), // Make sure communityId is properly set
+        communityId: parseInt(communityId),
         status: 'pending'
       };
-  
+
       await addDoc(collection(db, 'communityRequests'), request);
       setRequestSent(true);
-  
+
       alert('Request sent to community owner.');
     } catch (error) {
       console.error('Error joining community:', error);
       // Handle error here
     }
   };
-  
-  
 
   return (
     <div className="flex flex-col items-center justify-center p-5 mb-5 text-center border-2 md:p-8 md:w-3/5 ">
-    
-      <h1 className='p-5 text-lg font-semibold md:text-2xl'>Join Community</h1>
+      <h1 className="p-5 text-lg font-semibold md:text-2xl">Join Community</h1>
       <input
         type="text"
         value={communityId}
@@ -85,8 +89,7 @@ function JoinCommunity({}) {
       >
         {requestSent ? 'Request Sent' : 'Join Community'}
       </button>
-      </div>
-    
+    </div>
   );
 }
 

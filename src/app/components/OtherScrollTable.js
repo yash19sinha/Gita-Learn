@@ -1,8 +1,9 @@
+// components/ScrollDataTable.js
 import React, { useEffect, useState } from 'react';
-import { db, auth } from '../firebase/config';
+import { db } from '../firebase/config';
 import { collection, doc, getDoc } from "firebase/firestore";
 
-const ScrollDataTable = () => {
+const OtherScrollTable = ({ userId }) => {
   const [scrollData, setScrollData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -10,14 +11,9 @@ const ScrollDataTable = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const userId = user.uid;
-
       try {
-        const userRef = doc(db, 'users', userId);
-        const scrollDataRef = doc(collection(userRef, 'scrollData'), 'data');
+        const userDocRef = doc(db, 'users', userId);
+        const scrollDataRef = doc(collection(userDocRef, 'scrollData'), 'data');
         const scrollDataSnapshot = await getDoc(scrollDataRef);
         const data = scrollDataSnapshot.data();
 
@@ -46,7 +42,7 @@ const ScrollDataTable = () => {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, userId]);
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -94,4 +90,4 @@ const ScrollDataTable = () => {
   );
 };
 
-export default ScrollDataTable;
+export default OtherScrollTable;
