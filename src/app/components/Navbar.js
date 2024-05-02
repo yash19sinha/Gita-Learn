@@ -25,6 +25,11 @@ export const Navbar = () => {
   };
   const [isOpen, setIsOpen] = useState(false);
   const detailsRef = useRef(null);
+
+  const closeNavDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+  
   const [theme, setTheme] = useState('Earthy'); // Default theme
 
   useEffect(() => {
@@ -122,50 +127,46 @@ export const Navbar = () => {
 
     <div className="bg-gray-100 navbar">
       <div className="navbar-start">
-        <div className=" dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-          </label>
-          <ul tabIndex={0} className="p-2 mt-3 text-black bg-white shadow menu menu-sm dropdown-content rounded-box w-52 ">
-            {/* <li className='text-2xl'><Link href="/">Home</Link></li>
-            <li><Link href="Chapters">Bhagvad Gita</Link></li>
-            <li><Link href="QuizPage">Quiz</Link></li> */}
-            <li className='text-base font-semibold'><Link href="Profile">Profile</Link></li>
-            <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
-            <li className='text-base font-semibold'> <Link href='/' ><FullScreenComponent /> </Link> </li>
-            <li tabIndex={0}>
-          <details>
-            <summary className='text-base font-semibold'>Chapters</summary>
-            <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-              {chapters.map((chapter) => (
-                <li key={chapter.chapter_number} className="grid justify-center w-32 ">
-                  <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                    <p className="p-1 text-sm" onClick={() => {closeDropdown()}}>
-                      Chapter {chapter.chapter_number}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </details>
+      <div className="dropdown">
+      <label tabIndex={0} className="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+      </label>
+      <ul tabIndex={0}  className="p-2 mt-3 text-black bg-white shadow menu menu-sm dropdown-content rounded-box w-52">
+  <li className='text-base font-semibold'><Link href={'/Profile'}  onClick={closeDropdown}>Profile</Link></li>
+  <li className='text-lg font-semibold'><Link href="SearchResult" >Search</Link></li>
+  <li className='text-base font-semibold'> <Link href='/' ><FullScreenComponent /></Link></li>
+  <li tabIndex={0} onClick={closeDropdown}>
+  <details open={isOpen} ref={detailsRef}>
+    <summary className='text-base font-semibold'>Chapters</summary>
+    <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+      {chapters.map((chapter) => (
+        <li className="flex flex-col w-32" key={chapter.chapter_number}>
+          <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`} onClick={(e) => { closeDropdown(); e.stopPropagation(); }}>
+            <p className="p-1 text-sm">
+              Chapter {chapter.chapter_number}
+            </p>
+          </Link>
         </li>
+      ))}
+    </ul>
+  </details>
+</li>
 
-        <li tabIndex={0}>
-            <details open={isOpen} ref={detailsRef}>
-              <summary className='text-lg font-semibold'>Theme</summary>
-              <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-                <li className='flex flex-col themes'>
-                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
-                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
-                  <button className="p-2 " onClick={() => { handleThemeChange('Earthy'); detailsRef.current.removeAttribute('open'); }}>Light</button>
-                </li>
-              </ul>
-            </details>
-          </li>
-        
+  <li tabIndex={0} onClick={closeDropdown}>
+    <details open={isOpen} ref={detailsRef}>
+      <summary className='text-lg font-semibold'>Theme</summary>
+      <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
+        <li className='flex flex-col themes'>
+          <button className="p-2 mr-2" onClick={() => { handleThemeChange('light'); setIsOpen(false); }}>Earthy</button>
+          <button className="p-2 mr-2" onClick={() => { handleThemeChange('dark'); setIsOpen(false); }}>Dark</button>
+          <button className="p-2" onClick={() => { handleThemeChange('Earthy'); setIsOpen(false); }}>Light</button>
+        </li>
+      </ul>
+    </details>
+  </li>
+</ul>
 
-          </ul>
-        </div>
+    </div>
 
 
 
@@ -184,20 +185,17 @@ export const Navbar = () => {
       <div className="hidden navbar-center lg:flex ">
         <ul className="gap-8 px-1 menu menu-horizontal">
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
-          {/* <li className='text-lg font-semibold'><Link href="Chapters">Bhagvad Gita</Link></li> */}
           <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
           <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
-          {/* <div className="form-control">
-            <input type="text" placeholder="Search" className="w-24 input input-bordered md:w-auto" />
-          </div>  */}
-          <li tabIndex={0} onBlur={closeDropdown}>
+        
+          <li tabIndex={0}>
       <details open={isDropdownOpen} onClick={toggleDropdown}>
         <summary className='text-lg font-semibold'>Chapters</summary>
         <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
           {chapters.map((chapter) => (
             <li key={chapter.chapter_number} className="grid justify-center w-32">
-              <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`}>
-                <p className="p-1 text-sm" onClick={closeDropdown}>
+                   <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`} onClick={closeDropdown}>
+                <p className="p-1 text-sm" >
                   Chapter {chapter.chapter_number}
                 </p>
               </Link>

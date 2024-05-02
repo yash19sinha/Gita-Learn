@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
 import { sendPasswordResetEmail } from 'firebase/auth';
+import Image from 'next/image';
 
 
 const Login = () => {
@@ -110,8 +111,10 @@ const Login = () => {
 
       <div className="flex flex-col justify-center flex-1 min-h-screen px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="w-auto h-10 mx-auto"
+        <Image
+            className="w-auto h-16 mx-auto"
+            height={600}
+            width={600}
             src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
             alt="Your Company"
           />
