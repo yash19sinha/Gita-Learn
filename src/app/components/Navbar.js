@@ -218,7 +218,7 @@ export const Navbar = () => {
 
           <li tabIndex={0}>
             <details open={isOpen} ref={detailsRef}>
-              <summary className='text-lg font-semibold'>Themess</summary>
+              <summary className='text-lg font-semibold'>Themes</summary>
               <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
                 <li className='flex flex-col themes'>
                   <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
