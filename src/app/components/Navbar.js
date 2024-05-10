@@ -20,8 +20,13 @@ export const Navbar = () => {
   const [user] = useAuthState(auth);
   const [chapters, setChapters] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
+  };
+  
+  const closeDropdowns = () => {
+    setIsDropdownOpen(false);
   };
   const [isOpen, setIsOpen] = useState(false);
   const detailsRef = useRef(null);
@@ -152,14 +157,14 @@ export const Navbar = () => {
   </details>
 </li>
 
-  <li tabIndex={0} onClick={closeDropdown}>
-    <details open={isOpen} ref={detailsRef}>
+      <li tabIndex={0}>
+      <details open={isOpen} ref={detailsRef}>
       <summary className='text-lg font-semibold'>Theme</summary>
       <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
         <li className='flex flex-col themes'>
-          <button className="p-2 mr-2" onClick={() => { handleThemeChange('light'); setIsOpen(false); }}>Earthy</button>
-          <button className="p-2 mr-2" onClick={() => { handleThemeChange('dark'); setIsOpen(false); }}>Dark</button>
-          <button className="p-2" onClick={() => { handleThemeChange('Earthy'); setIsOpen(false); }}>Light</button>
+            <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
+                  <button className="p-2 mr-2 " onClick={() => { handleThemeChange('dark'); detailsRef.current.removeAttribute('open'); }}>Dark</button>
+                  <button className="p-2 " onClick={() => { handleThemeChange('Earthy'); detailsRef.current.removeAttribute('open'); }}>Light</button>
         </li>
       </ul>
     </details>
@@ -187,30 +192,33 @@ export const Navbar = () => {
           <li className='text-lg font-semibold'><Link href="/">Home</Link></li>
           <li className='text-lg font-semibold'><Link href="SearchResult">Search</Link></li>
           <li className='text-lg font-semibold'><Link href="Profile">Profile</Link></li>
-        
-          <li tabIndex={0}>
-      <details open={isDropdownOpen} onClick={toggleDropdown}>
-        <summary className='text-lg font-semibold'>Chapters</summary>
-        <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
-          {chapters.map((chapter) => (
-            <li key={chapter.chapter_number} className="grid justify-center w-32">
-                   <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`} onClick={closeDropdown}>
-                <p className="p-1 text-sm" >
-                  Chapter {chapter.chapter_number}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </details>
-    </li>
+          
+          <li tabIndex={0} style={{ position: 'relative' }}>
+  <summary className='text-lg font-semibold' onClick={toggleDropdown}>Chapters</summary>
+  {isDropdownOpen && (
+    <ul className="z-10 p-2 overflow-hidden overflow-y-auto w-36 max-h-60"
+        style={{ position: 'absolute', top: '100%', left: 0 }}>
+      {chapters.map((chapter) => (
+        <li key={chapter.chapter_number} className="p-1 text-sm bg-white">
+          <Link href={`/ChapterInfo?chapterNumber=${chapter.chapter_number}`} onClick={closeDropdown}>
+            <p className="p-1 text-sm text-center" onClick={closeDropdowns}>Chapter {chapter.chapter_number}</p>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )}
+</li>
+
+
+
+    
 
           <li className='text-lg font-semibold'> <Link href='/' > <FullScreenComponent /> </Link> </li>
           {/* <li className='text-lg font-semibold'><a>Quotes</a></li> */}
 
           <li tabIndex={0}>
             <details open={isOpen} ref={detailsRef}>
-              <summary className='text-lg font-semibold'>Theme</summary>
+              <summary className='text-lg font-semibold'>Themess</summary>
               <ul className="z-10 p-2 overflow-hidden overflow-y-auto flex-2 max-h-60 menu menu-horizontal">
                 <li className='flex flex-col themes'>
                   <button className="p-2 mr-2 " onClick={() => { handleThemeChange('light'); detailsRef.current.removeAttribute('open'); }}>Earthy</button>
