@@ -67,7 +67,7 @@ function JoinCommunity({}) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-5 mb-5 text-center border-2 md:p-8 md:w-3/5 ">
+    <div className="flex flex-col items-center justify-center w-full p-5 mb-5 text-center border-2 md:p-8 ">
       <h1 className="p-5 text-lg font-semibold md:text-2xl">Join Community</h1>
       <input
         type="text"

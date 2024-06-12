@@ -94,7 +94,7 @@ const copyIdToClipboard = (id) => {
   return (
     <div className="flex flex-col items-center justify-center ">
       
-      <div className="p-5 mb-5 text-center border-2 md:p-8 md:w-full">
+      <div className="w-full p-5 mb-5 text-center border-2 md:p-8">
       <h2 className='p-5 text-lg font-semibold md:text-2xl'>Create your own community id</h2>
         {!requestSent && (
           <div>
