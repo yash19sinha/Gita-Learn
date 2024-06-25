@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import NotesSidebar from "../components/NotesSidebar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaPenSquare } from "react-icons/fa";
-import { FaCog } from 'react-icons/fa';
+import { BiFontSize } from "react-icons/bi";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import PublicNotes from "../components/PublicNotes";
 import { useAuth } from "../hooks/auth";
@@ -783,7 +783,7 @@ function VerseDetail() {
 
 <div className="flex flex-col">
       <button onClick={toggleSettings} className="fixed z-50 px-4 py-2 mb-4 text-3xl text-white bg-blue-500 rounded-full shadow-lg bottom-12 right-5 focus:outline-none">
-      <FaCog />
+      <BiFontSize />
       </button>
       
       {isSettingsOpen && (
@@ -798,12 +798,6 @@ function VerseDetail() {
           </div>
         </div>
       )}
-        {/* <select value={fontSizeClass} onChange={(e) => setFontSizeClass(e.target.value)}>
-    <option value="text-base">Base</option>
-    <option value="text-lg">Large</option>
-    <option value="text-2xl">Extra Large</option>
-    //Additional options as needed 
-  </select> */}
       </div>
         <button
           onClick={handleToggleNotesSidebar}

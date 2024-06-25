@@ -86,9 +86,9 @@ const ScrollDataTable = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="items-center justify-center w-auto overflow-x-auto text-xs md:text-lg md:w-full">
       <h2 className="mb-4 text-lg font-bold">Scroll Data</h2>
-      <table className="w-full border-collapse">
+      <table className="border-collapse ">
         <thead>
           <tr>
             <th className="px-4 py-2 text-left bg-gray-200">Verse</th>
@@ -107,7 +107,7 @@ const ScrollDataTable = () => {
               <td className="px-4 py-2 border">{data.timestamp}</td>
              <td className="px-4 py-2 border">
                 {data.scrollDepth > 80 && data.timeSpent >= verseEstimatedTimes[data.verse] ? (
-                  <span className="inline-block h-4 w-4 rounded-full bg-green-500"></span>
+                  <span className="inline-block w-4 h-4 bg-green-500 rounded-full"></span>
 
                 ) : (
                   <span className="inline-block w-4 h-4 bg-yellow-500 rounded-full"></span>

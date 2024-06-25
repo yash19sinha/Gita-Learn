@@ -1,109 +1,77 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react";
 import { auth, storage, db } from "../firebase/config";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import axios from "axios";
-import firebase from "firebase/compat/app";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { FaTrash } from "react-icons/fa"; // Import the trash icon
+
 function PublicNotes({ verseId }) {
-  
   const [showNotes, setShowNotes] = useState(false);
   const [showAccordions, setShowAccordions] = useState(false);
   const [image, setImg] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
+  const [imageRefs, setImageRefs] = useState([]); // Store references for deletion
   const [activeIndex, setActiveIndex] = useState(null);
   const [podbean, setPodbean] = useState([]);
   const [link, setLink] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  //to store start and end timestamp
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [videoId, setVideoId] = useState("");
-  // const [accordionNames] = useState(['Images']);
-  const [accordionNames] = useState([
-    "Mindmap",
-    "Audio Lecture",
-    "Video Lecture",
-  ]);
+  const [accordionNames] = useState(["Mindmap", "Audio Lecture", "Video Lecture"]);
   const searchParams = useSearchParams();
   const chapterVerse = searchParams.get("chapterVerse");
   const accordionRef = useRef(null);
-
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
     const fetchUserRole = async () => {
-      const user = auth.currentUser; // Corrected: firebase.auth().currentUser
+      const user = auth.currentUser;
       if (!user) return;
 
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
       if (!userDoc.exists() || userDoc.data().role !== 'admin') {
-        setUserRole(null); // User is not an admin
+        setUserRole(null);
         return;
       }
 
-      setUserRole('admin'); // User is an admin
+      setUserRole('admin');
     };
 
     fetchUserRole();
   }, []);
 
-
   useEffect(() => {
     const handleClickOutsideAccordion = (event) => {
-      // Check if the click occurred outside the accordion
-      if (
-        accordionRef.current &&
-        !accordionRef.current.contains(event.target)
-      ) {
-        setActiveIndex(null); // Close the accordion
+      if (accordionRef.current && !accordionRef.current.contains(event.target)) {
+        setActiveIndex(null);
       }
     };
 
-    // Add event listener to handle clicks outside the accordion
     document.body.addEventListener("click", handleClickOutsideAccordion);
-
-    // Cleanup function to remove event listener when component unmounts
     return () => {
       document.body.removeEventListener("click", handleClickOutsideAccordion);
     };
-  }, [activeIndex]); // Re-run effect when activeIndex changes
+  }, [activeIndex]);
 
-  //to fetch links
   async function fetchLink() {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://gita-learn-api.vercel.app/api/links/${chapterVerse}`
-      );
+      const response = await axios.get(`https://gita-learn-api.vercel.app/api/links/${chapterVerse}`);
       const links = [];
-      // Check if response data exists and has links
       if (response.data && response.data.links) {
-        // Iterate over each link object in the response
         for (const key in response.data.links) {
           if (Object.hasOwnProperty.call(response.data.links, key)) {
             const linkObj = response.data.links[key];
-            // Check if link1 object has link property
             if (Array.isArray(linkObj)) {
               for (let i = 0; i < linkObj.length; i++) {
                 if (linkObj[i].link) {
-                  links.push({
-                    link: linkObj[i].link,
-                    title: linkObj[i].title,
-                  });
+                  links.push({ link: linkObj[i].link, title: linkObj[i].title });
                 }
               }
             } else {
@@ -125,24 +93,16 @@ function PublicNotes({ verseId }) {
   async function fetchPodbeanLink() {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://gita-learn-api.vercel.app/api/podbeans/${chapterVerse}`
-      );
+      const response = await axios.get(`https://gita-learn-api.vercel.app/api/podbeans/${chapterVerse}`);
       const links = [];
-      // Check if response data exists and has links
       if (response.data && response.data.podbeans) {
-        // Iterate over each link object in the response
         for (const key in response.data.podbeans) {
           if (Object.hasOwnProperty.call(response.data.podbeans, key)) {
             const linkObj = response.data.podbeans[key];
-            // Check if link1 object has link property
             if (Array.isArray(linkObj)) {
               for (let i = 0; i < linkObj.length; i++) {
                 if (linkObj[i].link) {
-                  links.push({
-                    link: linkObj[i].link,
-                    title: linkObj[i].title,
-                  });
+                  links.push({ link: linkObj[i].link, title: linkObj[i].title });
                 }
               }
             } else {
@@ -152,7 +112,6 @@ function PublicNotes({ verseId }) {
             }
           }
         }
-        console.log(links);
         setPodbean(links);
       }
     } catch (error) {
@@ -162,14 +121,10 @@ function PublicNotes({ verseId }) {
     }
   }
 
-  //to fetch timestamp
   async function fetchTimestamp() {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://gita-learn-api.vercel.app/api/timestamp/${chapterVerse}`
-      );
-
+      const response = await axios.get(`https://gita-learn-api.vercel.app/api/timestamp/${chapterVerse}`);
       setStartTime(response.data["start-time"]);
       setEndTime(response.data["end-time"]);
       setVideoId(response.data["video-id"]);
@@ -200,18 +155,20 @@ function PublicNotes({ verseId }) {
 
         const urls = await Promise.all(
           imagesList.items.map(async (item) => {
-            return await getDownloadURL(item);
+            const imageUrl = await getDownloadURL(item);
+            return { url: imageUrl, ref: item.fullPath };
           })
         );
 
-        setImageUrls(urls);
+        setImageUrls(urls.map((item) => item.url));
+        setImageRefs(urls.map((item) => item.ref));
       } catch (error) {
         console.error("Error fetching images:", error);
       }
     };
 
     fetchImages();
-  }, [verseId]); // Fetch the image URLs when verseId changes
+  }, [verseId]);
 
   const handleImageUpload = async () => {
     try {
@@ -220,18 +177,14 @@ function PublicNotes({ verseId }) {
         const uid = user.uid;
 
         if (image !== null) {
-          // Upload image to Firebase Storage
-          const storageRef = ref(
-            storage,
-            `publicNotes/${verseId}/images/${v4()}`
-          );
+          const storageRef = ref(storage, `publicNotes/${verseId}/images/${v4()}`);
           await uploadBytes(storageRef, image).then(async (value) => {
             const imageUrl = await getDownloadURL(value.ref);
             setImageUrls((prevUrls) => [...prevUrls, imageUrl]);
+            setImageRefs((prevRefs) => [...prevRefs, value.ref.fullPath]);
           });
         }
 
-        // Clear the image state
         setImg(null);
       }
     } catch (error) {
@@ -239,9 +192,22 @@ function PublicNotes({ verseId }) {
     }
   };
 
+  const handleImageDelete = async (index) => {
+    try {
+      const imageRef = ref(storage, imageRefs[index]);
+      await deleteObject(imageRef);
+
+      setImageUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+      setImageRefs((prevRefs) => prevRefs.filter((_, i) => i !== index));
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+
   const handleMindmapClick = () => {
     setShowAccordions((prevShowAccordions) => !prevShowAccordions);
   };
+
   const hasContent = [1, 2, 3].some((index) => {
     return (
       (index === 1 && imageUrls.length > 0) ||
@@ -251,65 +217,39 @@ function PublicNotes({ verseId }) {
     );
   });
 
+  useEffect(() => {
+    const handleAuthStateChange = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        setUserRole(null);
+      }
+    });
+
+    return () => handleAuthStateChange();
+  }, []);
+
   return (
     <div>
       <div className="p-4">
-      {userRole === "admin" && (
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImg(e.target.files[0])}
-            className="mt-4"
-          />
-          <button
-            onClick={handleImageUpload}
-            className="justify-center mt-4 btn btn-primary"
-          >
-            Upload Image
-          </button>
-        </div>
-      )}
-    </div>
-      {/* <button onClick={() => setShowNotes(!showNotes)} className="mb-4 btn">
-        {showNotes ? "Hide Public Notes" : "Show Public Notes"}
-      </button>
-      ;
-      {showNotes && (
-        <div>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImg(e.target.files[0])}
-            className="mt-4"
-          />
-          <button
-            onClick={handleImageUpload}
-            className="justify-center mt-4 btn btn-primary"
-          >
-            Upload Image
-          </button>
-
-          {imageUrls.length > 0 && (
-            <div>
-              <p>Uploaded Images:</p>
-              <div>
-                {imageUrls.map((url, index) => (
-                  <img
-                    key={index}
-                    src={url}
-                    alt={`Uploaded Image ${index + 1}`}
-                    className="max-w-full mt-2 h-180 w-180"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}  */}
+        {userRole === "admin" && (
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImg(e.target.files[0])}
+              className="mt-4"
+            />
+            <button
+              onClick={handleImageUpload}
+              className="justify-center mt-4 btn btn-primary"
+            >
+              Upload Image
+            </button>
+          </div>
+        )}
+      </div>
       {hasContent && (
         <div className="w-full mb-2 border border-orange-600 rounded-lg">
-          <div className="p-4 ">
+          <div className="p-4">
             {[1, 2, 3].map((index) => {
               const isActive = activeIndex === index;
               const accordionClass = isActive
@@ -347,19 +287,23 @@ function PublicNotes({ verseId }) {
                       {index === 1 && (
                         <div>
                           {imageUrls.map((url, index) => (
-                            <img
-                              key={index}
-                              src={url}
-                              alt={`Uploaded Image ${index + 1}`}
-                              className="max-w-full mt-2 h-180 w-180"
-                            />
+                            <div key={index} className="relative inline-block m-2">
+                              <img
+                                src={url}
+                                alt={`Uploaded Image ${index + 1}`}
+                                className="max-w-full h-180 w-180"
+                              />
+                              {userRole === "admin" && (
+                                <button
+                                  onClick={() => handleImageDelete(index)}
+                                  className="absolute top-0 right-0 p-2 text-white bg-red-600 rounded-full"
+                                >
+                                  <FaTrash />
+                                </button>
+                              )}
+                            </div>
                           ))}
-
-
-
                         </div>
-                        
-                        
                       )}
                       {index === 2 && (
                         <div>
@@ -397,19 +341,14 @@ function PublicNotes({ verseId }) {
                       )}
                       {index === 3 && (
                         <div>
-                          {
-                            <iframe
-                              // width="560"
-                              // height="315"
-                              className="md:h-[400px] md:w-[600px] h-4/5 m-4/5"
-                              
-                              src={`https://www.youtube-nocookie.com/embed/${videoId};controls=0&amp;modestbranding=1&amp;start=${startTime}&&end=${endTime}`}
-                              title="YouTube video player"
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                              allowFullScreen
-                            ></iframe>
-                          }
+                          <iframe
+                            className="md:h-[400px] md:w-[600px] h-4/5 m-4/5"
+                            src={`https://www.youtube-nocookie.com/embed/${videoId};controls=0&amp;modestbranding=1&amp;start=${startTime}&&end=${endTime}`}
+                            title="YouTube video player"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          ></iframe>
                         </div>
                       )}
                     </div>
