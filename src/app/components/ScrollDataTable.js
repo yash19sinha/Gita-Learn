@@ -86,9 +86,9 @@ const ScrollDataTable = () => {
   };
 
   return (
-    <div className="items-center justify-center w-auto overflow-x-auto text-xs md:text-lg md:w-full">
+    <div className="overflow-x-auto md:w-full w-80">
       <h2 className="mb-4 text-lg font-bold">Scroll Data</h2>
-      <table className="border-collapse ">
+      <table className="w-full border-collapse">
         <thead>
           <tr>
             <th className="px-4 py-2 text-left bg-gray-200">Verse</th>

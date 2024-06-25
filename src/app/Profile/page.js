@@ -219,7 +219,7 @@
         )}   
          
       </div>
-      <div className=''>
+      <div className='overflow-x-auto'>
       <ScrollDataTable/>
       </div>
       </div>
