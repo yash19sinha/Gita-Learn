@@ -398,7 +398,7 @@ function VerseDetail() {
   async function fetchAudioData(chapterVerse) {
     try {
       const response = await fetch(
-        `http://localhost:4000/api/audio/${chapterVerse}`
+        `https://gita-learn-api.vercel.app/api/audio/${chapterVerse}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -671,7 +671,7 @@ function VerseDetail() {
         )
       )}
     </div>
-        <div className={`p-4 font-normal text-justify sm:mx-20 sm:px-10 ${fontSizeClass}`}>
+        <div className={`p-0 font-normal text-justify sm:mx-10 sm:px-5  ${fontSizeClass}`}>
           <h2 className="flex justify-center p-3 font-bold ${fontSizeClass}">
             Synonyms
           </h2>
@@ -682,7 +682,7 @@ function VerseDetail() {
             {verseDetails.synonyms}
           </p>
         </div>
-        <div className={`p-4 font-normal text-justify sm:mx-20 sm:px-10 ${fontSizeClass}`}>
+        <div className={`p-0 font-normal text-justify sm:mx-10 sm:px-5 pt-3  ${fontSizeClass}`}>
           <h2 className="flex justify-center p-3  font-bold ${fontSizeClass}">
             Translation
           </h2>
@@ -704,12 +704,12 @@ function VerseDetail() {
         {/* Conditionally render the Purport section */}
         {/* Display audio data */}
         {/* <div className="grid grid-cols-2 join"> */}
-        <div className="p-4 flex justify-between mx-2.5 font-normal text-justify sm:mx-20 sm:px-10">
+        <div className="flex justify-between p-0 mt-5 text-justify fo:nt-normal md:my-5 md:mx-12 sm:mx-15 sm:px-0">
           <button
             onClick={handlePreviousPage}
             className="join-item btn btn-outline"
           >
-            Previous page
+            Previous
           </button>
           <button
             onClick={handleNextPage}
