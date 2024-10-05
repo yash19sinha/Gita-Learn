@@ -62,7 +62,7 @@ const SignUp = () => {
             className="w-auto h-16 mx-auto"
             height={600}
             width={600}
-            src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
+            src="https://prabhupadaworld.com/prabhupada-world-logo.png"
             alt="Your Company"
           />
           <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center">

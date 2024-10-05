@@ -180,7 +180,7 @@ export const Navbar = () => {
             className="w-auto h-10 mx-auto"
             height={300}
             width={300}
-            src="https://i0.wp.com/cdn.prabhupadaworld.com/wp-content/uploads/2021/10/logo.webp?w=500&ssl=1"
+            src="https://prabhupadaworld.com/prabhupada-world-logo.png"
             alt="Your Company"
           />
           GitaLearn
